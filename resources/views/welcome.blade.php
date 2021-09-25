@@ -30,7 +30,8 @@ The above copyright notice and this permission notice shall be included in all c
   <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
 </head>
 
-<body class="index-page sidebar-collapse">
+<body class="sidebar-collapse">
+    {{-- Navigation --}}
   <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
@@ -51,22 +52,27 @@ The above copyright notice and this permission notice shall be included in all c
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)" onclick="scrollToDownload()">
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToAbout()">
               About
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)" onclick="scrollToDownload()">
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToService()">
+              Services
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToContact()">
               Contact
             </a>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank" data-original-title="Follow us on Twitter" rel="nofollow">
               <i class="fa fa-twitter"></i>
             </a>
-          </li>
+          </li> --}}
           <li class="nav-item">
-            <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/CreativeTim" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
+            <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/KAYAK-Adventure-Rathgama-LAKE-100909892311542" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
               <i class="fa fa-facebook-square"></i>
             </a>
           </li>
@@ -79,19 +85,69 @@ The above copyright notice and this permission notice shall be included in all c
       </div>
     </div>
   </nav>
+  {{-- banner --}}
   <div class="page-header header-filter clear-filter purple-filter" data-parallax="true" style="background-image: url('./assets/img/bg/bg1.jpeg');">
     <div class="container">
       <div class="row">
-        <div class="col-md-8 ml-auto mr-auto">
+        <div class="col-md-8 ml-auto mr-auto text-center">
           <div class="brand">
-            <h1>KAYAK ADVENTURE</h1>
-            <h3>let's kayak in butifull rathgama lake</h3>
+            <h1 class="title text-bold">KAYAK ADVENTURE</h1>
+            <h3>let's kayak with style</h3>
+            <a class="btn btn-primary btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToAbout()">LEARN MORE</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="main main-raised">
+  <div class="main">
+    <div class="section section-about" id="aboutSection">
+        <div class="container">
+            <div class="cd-section">
+                <div class="row">
+                    <div class="col-md-5 mx-auto">
+                        <img src="./assets/img/about.jpeg" alt="Raised Image" class="img-raised rounded img-fluid">
+                    </div>
+                    <div class="col-md-7 mx-auto">
+                        <div class="title">
+                            <h2 class="">ABOUT US</h2>
+                        </div>
+                        <div class="note">
+                            <p class="">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section section-service" id="serviceSection">
+        <div class="container">
+            <div class="cd-section">
+                <div class="title">
+                    <h2 class="">OUR SERVICES</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 mx-auto">
+                        <img src="./assets/img/about.jpeg" alt="Raised Image" class="img-raised rounded img-fluid">
+                    </div>
+                    <div class="col-md-7 mx-auto">
+                        <div class="title">
+                            <h2 class="">SERVICES</h2>
+                        </div>
+                        <div class="note">
+                            <p class="">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="section section-basic">
       <div class="container">
         <div class="title">
@@ -1425,14 +1481,29 @@ The above copyright notice and this permission notice shall be included in all c
       materialKit.initSliders();
     });
 
-
     function scrollToDownload() {
       if ($('.section-download').length != 0) {
         $("html, body").animate({
           scrollTop: $('.section-download').offset().top
         }, 1000);
       }
-    }
+    };service
+
+    function scrollToAbout() {
+      if ($('.section-about').length != 0) {
+        $("html, body").animate({
+          scrollTop: $('.section-about').offset().top
+        }, 1000);
+      }
+    };
+
+    function scrollToService() {
+      if ($('.section-service').length != 0) {
+        $("html, body").animate({
+          scrollTop: $('.section-service').offset().top
+        }, 1000);
+      }
+    };
   </script>
 </body>
 

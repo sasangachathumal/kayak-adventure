@@ -24,7 +24,7 @@ The above copyright notice and this permission notice shall be included in all c
   </title>
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Material+Icons+Outlined|Material+Icons+Round" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
@@ -58,7 +58,7 @@ The above copyright notice and this permission notice shall be included in all c
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="scrollToService()">
-              Services
+              Why Us?
             </a>
           </li>
           <li class="nav-item">
@@ -93,7 +93,7 @@ The above copyright notice and this permission notice shall be included in all c
           <div class="brand">
             <h1 class="title text-bold">KAYAK ADVENTURE</h1>
             <h3>let's kayak with style</h3>
-            <a class="btn btn-primary btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToAbout()">LEARN MORE</a>
+            <a class="btn btn-info btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToAbout()">LEARN MORE</a>
           </div>
         </div>
       </div>
@@ -122,26 +122,73 @@ The above copyright notice and this permission notice shall be included in all c
         </div>
     </div>
 
-    <div class="section section-service" id="serviceSection">
+    <div class="section section-whyus" id="whyusSection">
         <div class="container">
             <div class="cd-section">
                 <div class="title">
-                    <h2 class="">OUR SERVICES</h2>
+                    <h2 class="">Why Us ?</h2>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 mx-auto">
-                        <img src="./assets/img/about.jpeg" alt="Raised Image" class="img-raised rounded img-fluid">
-                    </div>
-                    <div class="col-md-7 mx-auto">
-                        <div class="title">
-                            <h2 class="">SERVICES</h2>
-                        </div>
-                        <div class="note">
-                            <p class="">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>
+                    <div class="col-md-3 mx-auto">
+                        <div class="card service-card">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <span class="material-icons-round">health_and_safety</span>
+                                </div>
+                                <h4 class="title text-center">Safety</h4>
+                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-3 mx-auto">
+                        <div class="card service-card">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <span class="material-icons-round">support</span>
+                                </div>
+                                <h4 class="title text-center">Support</h4>
+                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mx-auto">
+                        <div class="card service-card">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <span class="material-icons-round">route</span>
+                                </div>
+                                <h4 class="title text-center">Custom Routes</h4>
+                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mx-auto">
+                        <div class="card service-card">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <span class="material-icons-round">kayaking</span>
+                                </div>
+                                <h4 class="title text-center">Best in the Country</h4>
+                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Card with header --}}
+                    {{-- <div class="col-md-4 mx-auto">
+                        <div class="card service-card">
+                            <div class="card-header card-header-info text-center">
+                                <div class="card-text">
+                                    <h4 class="card-title">Maximum Safety</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-icon">
+                                    <span class="material-icons">health_and_safety</span>
+                                </div>
+                                <p class="description text-center">Or Be Classical</p>
+                            </div>
+                        </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -1498,9 +1545,9 @@ The above copyright notice and this permission notice shall be included in all c
     };
 
     function scrollToService() {
-      if ($('.section-service').length != 0) {
+      if ($('.section-whyus').length != 0) {
         $("html, body").animate({
-          scrollTop: $('.section-service').offset().top
+          scrollTop: $('.section-whyus').offset().top
         }, 1000);
       }
     };

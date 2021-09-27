@@ -15921,10 +15921,39 @@ footer .pull-center {
     width: 245px;
   }
 }
+.btn-info {
+  background: linear-gradient(60deg, #26c6da, #0097a7);
+}
+
 .btn-leran-more {
   margin-top: 30px;
 }
 
 .section-about .cd-section {
   margin-top: 50px;
+}
+
+.section-whyus .service-card {
+  background: transparent;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.section-whyus .service-card .card-header {
+  padding: 0.5rem 15px;
+}
+.section-whyus .service-card .card-header h4 {
+  margin: 0;
+}
+.section-whyus .service-card .card-body {
+  padding: 0.8rem 0.8rem;
+}
+.section-whyus .service-card .card-body .card-icon .material-icons, .section-whyus .service-card .card-body .card-icon .material-icons-outlined, .section-whyus .service-card .card-body .card-icon .material-icons-round {
+  font-size: 72px;
+  text-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+  background: -webkit-linear-gradient(60deg, #26c6da 100%, #0097a7 20%, #26c6da 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.section-whyus .service-card .card-body .title {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

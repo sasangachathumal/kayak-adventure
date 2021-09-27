@@ -1,8 +1,49 @@
+.btn-info {
+    background: linear-gradient(
+60deg, #26c6da, #0097a7);
+}
+
 .btn-leran-more {
     margin-top: 30px;
 }
 .section-about {
     .cd-section {
         margin-top: 50px;
+    }
+}
+
+.section-whyus {
+    .service-card {
+        background: transparent;
+        box-shadow: 0 1px 5px 0 rgb(0 0 0 / 12%);
+        // box-shadow: none;
+        // border-left-width: 1px;
+        // border-left-style: solid;
+        // border-left-color: gray;
+        // border-right-width: 1px;
+        // border-right-style: solid;
+        // border-right-color: gray;
+        .card-header {
+            padding: 0.5rem 15px;
+            h4 {
+                margin: 0;
+            }
+        }
+        .card-body {
+            padding: 0.8rem 0.8rem;
+            .card-icon {
+                .material-icons, .material-icons-outlined, .material-icons-round {
+                    font-size: 72px;
+                    text-shadow: 0 0 7px rgba(0, 0, 0, 20%);
+                    background: -webkit-linear-gradient(60deg, #26c6da 100%, #0097a7 20%, #26c6da 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+            .title {
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+        }
     }
 }

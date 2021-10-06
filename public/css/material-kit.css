@@ -15925,6 +15925,10 @@ footer .pull-center {
   background: linear-gradient(60deg, #26c6da, #0097a7);
 }
 
+.section {
+  padding-bottom: 0;
+}
+
 .btn-leran-more {
   margin-top: 30px;
 }
@@ -15956,4 +15960,35 @@ footer .pull-center {
 .section-whyus .service-card .card-body .title {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.section-post .row .col-md-4 {
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+}
+.section-post .card-columns {
+  display: inline-block;
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .section-post .card-columns {
+    -moz-column-count: 4;
+         column-count: 4;
+  }
+}
+.section-post .memory-card {
+  margin-top: 7.5px;
+  margin-bottom: 7.5px;
+}
+.section-post .memory-card .card-img-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+.section-post .memory-card .card-body {
+  padding: 0.8rem 0.8rem;
+}
+.section-post .memory-card .card-body .title {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+.section-post .memory-card .card-body .description {
+  line-height: 15px;
 }

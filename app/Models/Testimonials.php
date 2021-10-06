@@ -2,26 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property integer $id
  * @property integer $user_id
+ * @property string $from_name
+ * @property string $from_title
  * @property string $content
- * @property string $trip_date
  * @property int $type
- * @property string $image_url_1
- * @property string $image_url_2
- * @property string $image_url_3
- * @property string $image_url_4
- * @property string $image_url_5
+ * @property string $user_img_url
  * @property string $video_url
  * @property string $created_at
  * @property string $updated_at
  * @property User $user
  */
-class Post extends Model
+class Testimonials extends Model
 {
     /**
      * The "type" of the auto-incrementing ID.
@@ -33,7 +29,7 @@ class Post extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'content', 'trip_date', 'type', 'image_url_1', 'image_url_2', 'image_url_3', 'image_url_4', 'image_url_5', 'video_url', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id', 'from_name', 'from_title', 'content', 'type', 'user_img_url', 'video_url', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

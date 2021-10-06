@@ -2,6 +2,9 @@
     background: linear-gradient(
 60deg, #26c6da, #0097a7);
 }
+.section {
+    padding-bottom: 0;
+}
 
 .btn-leran-more {
     margin-top: 30px;
@@ -43,6 +46,43 @@
             .title {
                 margin-top: 15px;
                 margin-bottom: 15px;
+            }
+        }
+    }
+}
+
+.section-post {
+    .row {
+        .col-md-4 {
+            // padding: 0;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+        }
+    }
+    .card-columns {
+        display: inline-block;
+        @include media-breakpoint-only(lg) {
+          column-count: 4;
+        }
+        @include media-breakpoint-only(xl) {
+        //   column-count: 5;
+        }
+      }
+    .memory-card {
+        // margin: 0;
+        margin-top: 7.5px;
+        margin-bottom: 7.5px;
+        .card-img-overlay {
+            background: rgba(0,0,0,0.5);
+        }
+        .card-body {
+            padding: 0.8rem 0.8rem;
+            .title {
+                margin-top: 0;
+                margin-bottom: 15px;
+            }
+            .description {
+                line-height: 15px;
             }
         }
     }

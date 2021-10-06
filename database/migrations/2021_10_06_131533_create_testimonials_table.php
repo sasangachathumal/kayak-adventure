@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
+class CreateTestimonialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,15 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('content')->nullable(true);
-            $table->timestamp('trip_date')->nullable(true);
+            $table->string('from_name')->nullable(false);
+            $table->string('from_title')->nullable(false);
+            $table->string('content')->nullable(false);
             $table->integer('type')->nullable(false);
-            $table->string('image_url_1')->nullable(true);
-            $table->string('image_url_2')->nullable(true);
-            $table->string('image_url_3')->nullable(true);
-            $table->string('image_url_4')->nullable(true);
-            $table->string('image_url_5')->nullable(true);
+            $table->string('user_img_url')->nullable(false);
             $table->string('video_url')->nullable(true);
             $table->timestamps();
         });
@@ -37,6 +34,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('testimonials');
     }
 }

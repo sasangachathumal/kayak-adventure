@@ -17,9 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('title');
-            $table->string('message');
-            $table->timestamp('trip_date');
+            $table->string('image_url');
             $table->timestamps();
         });
     }

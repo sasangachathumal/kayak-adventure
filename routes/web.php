@@ -19,3 +19,4 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Auth::routes();
 
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+Route::post('post',[App\Http\Controllers\AdminController::class, 'post']);

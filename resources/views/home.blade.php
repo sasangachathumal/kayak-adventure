@@ -49,50 +49,46 @@ The above copyright notice and this permission notice shall be included in all c
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="scrollToTop()">
                 Home
+                <div class="ripple-container"></div>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="scrollToAbout()">
                 About
+                <div class="ripple-container"></div>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)" onclick="scrollToService()">
-                Why Us?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)" onclick="scrollToMemories()">
-                Memories
+            <a class="nav-link" href="javascript:void(0)" onclick="scrollToGallery()">
+                Gallery
+                <div class="ripple-container"></div>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="scrollToContact()">
                 Contact
+                <div class="ripple-container"></div>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/KAYAK-Adventure-Rathgama-LAKE-100909892311542" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
               <i class="fa fa-facebook-square"></i>
+              Facebook
+              <div class="ripple-container"></div>
             </a>
           </li>
-          {{-- <li class="nav-item">
-            <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.instagram.com/CreativeTimOfficial" target="_blank" data-original-title="Follow us on Instagram" rel="nofollow">
-              <i class="fa fa-instagram"></i>
-            </a>
-          </li> --}}
         </ul>
       </div>
     </div>
   </nav>
   {{-- banner --}}
-  <div class="page-header header-filter clear-filter purple-filter" data-parallax="true" style="background-image: url('./assets/img/bg/bg1.jpeg');">
+  <div class="page-header header-filter" data-parallax="true" style="background-image: url('./assets/img/bg/bg1.jpeg');">
     <div class="container">
       <div class="row">
         <div class="col-md-8 ml-auto mr-auto text-center">
           <div class="brand">
             <h1 class="text-bold">KAYAK ADVENTURE</h1>
-            <h3>let's kayak with style</h3>
+            <h3>It is now time for some adventure and feel the beauty of the nature</h3>
             <a class="btn btn-info btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToAbout()">LEARN MORE</a>
           </div>
         </div>
@@ -123,83 +119,129 @@ The above copyright notice and this permission notice shall be included in all c
     </div>
 
     <div class="section section-whyus" id="whyusSection">
-        <div class="container">
-            <div class="cd-section">
-                <div class="title text-center">
-                    <h2 class="">Why Us ?</h2>
+      <div class="container">
+        <div class="cd-section">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="row justify-content-start">
+                <div class="col-md-6 feature">
+                  <div class="info">
+                    <i class="material-icons text-3xl text-gradient text-info mb-3">health_and_safety</i>
+                    <h5>Safety</h5>
+                    <p>Our first priority is you safety, we always want you to be safe during the trip and before and after </p>
+                  </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-3 mx-auto">
-                        <div class="card service-card">
-                            <div class="card-body text-center">
-                                <div class="card-icon">
-                                    <span class="material-icons-round">health_and_safety</span>
-                                </div>
-                                <h4 class="title text-center">Safety</h4>
-                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
-                            </div>
+                <div class="col-md-6 feature">
+                  <div class="info">
+                    <i class="material-icons text-3xl text-gradient text-info mb-3">support</i>
+                    <h5>Support</h5>
+                    <p>We have well experienced and amazing team to support you, while providing the things you need</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-start mt-4">
+                <div class="col-md-6 feature">
+                  <div class="info">
+                    <i class="material-icons text-3xl text-gradient text-info mb-3">route</i>
+                    <h5>Custom Routes</h5>
+                    <p>We didn't have fixed routes and we always open to what customer requests. If you want custom route we can provide it</p>
+                  </div>
+                </div>
+                <div class="col-md-6 feature">
+                  <div class="info">
+                    <i class="material-icons text-3xl text-gradient text-info mb-3">kayaking</i>
+                    <h5>Best in the Country</h5>
+                    <p>We are one of the best company in the country that provide amazing and memarable kayaking experience</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 full-feature-list">
+                <div class="feature-container">
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <i class="material-icons text-3xl text-gradient text-info mb-3">local_bar</i>
+                        </div>
+                        <div class="col-md-10 text-col">
+                            <h5>Welcome Drink</h5>
                         </div>
                     </div>
-                    <div class="col-md-3 mx-auto">
-                        <div class="card service-card">
-                            <div class="card-body text-center">
-                                <div class="card-icon">
-                                    <span class="material-icons-round">support</span>
-                                </div>
-                                <h4 class="title text-center">Support</h4>
-                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
-                            </div>
+
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <i class="material-icons text-3xl text-gradient text-info mb-3">local_parking</i>
+                        </div>
+                        <div class="col-md-10 text-col">
+                            <h5>Car Parking</h5>
                         </div>
                     </div>
-                    <div class="col-md-3 mx-auto">
-                        <div class="card service-card">
-                            <div class="card-body text-center">
-                                <div class="card-icon">
-                                    <span class="material-icons-round">route</span>
-                                </div>
-                                <h4 class="title text-center">Custom Routes</h4>
-                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
-                            </div>
+
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <i class="material-icons text-3xl text-gradient text-info mb-3">checkroom</i>
+                        </div>
+                        <div class="col-md-10 text-col">
+                            <h5>Changing Facilities</h5>
                         </div>
                     </div>
-                    <div class="col-md-3 mx-auto">
-                        <div class="card service-card">
-                            <div class="card-body text-center">
-                                <div class="card-icon">
-                                    <span class="material-icons-round">kayaking</span>
-                                </div>
-                                <h4 class="title text-center">Best in the Country</h4>
-                                <p class="description text-center">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</p>
-                            </div>
+
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <i class="material-icons text-3xl text-gradient text-info mb-3">shower</i>
+                        </div>
+                        <div class="col-md-10 text-col">
+                            <h5>Bathroom</h5>
                         </div>
                     </div>
-                    {{-- Card with header --}}
-                    {{-- <div class="col-md-4 mx-auto">
-                        <div class="card service-card">
-                            <div class="card-header card-header-info text-center">
-                                <div class="card-text">
-                                    <h4 class="card-title">Maximum Safety</h4>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="card-icon">
-                                    <span class="material-icons">health_and_safety</span>
-                                </div>
-                                <p class="description text-center">Or Be Classical</p>
-                            </div>
+
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <img src="./assets/img/life-jacket.png" alt="life-jacket">
                         </div>
-                    </div> --}}
+                        <div class="col-md-10 text-col">
+                            <h5>Life Jacket</h5>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <img src="./assets/img/sunset.png" alt="sun-set">
+                        </div>
+                        <div class="col-md-10 text-col">
+                            <h5>Watch Sunset</h5>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <img src="./assets/img/bird.png" alt="bird-watching">
+                        </div>
+                        <div class="col-md-10 text-col">
+                            <h5>Bird Watching</h5>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start feature">
+                        <div class="col-md-1 icon-col">
+                            <img src="./assets/img/harbour.png" alt="harbour access">
+                        </div>
+                        <div class="col-md-10 text-col">
+                            <h5>Visit Dodanduwa Harbour</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+      </div>
     </div>
+  </div>
 
     {{-- team section --}}
-    <div class="section section-memories" id="memoriesSection">
+    <div class="section section-gallery" id="gallerySection">
         <div class="container">
             <div class="cd-section">
                 <div class="title text-center">
-                    <h2 class="">Memories</h2>
+                    <h2 class="">Gallery</h2>
                 </div>
                 {{-- <div class="row">
                     <div class="col-md-4 mx-auto">
@@ -372,7 +414,7 @@ The above copyright notice and this permission notice shall be included in all c
   <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
   <script src="{{ asset('js/plugins/bootstrap-datetimepicker.js') }}" defer></script>
   <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-  <script src="{{ asset('js/plugins/nouislider.min.js') }}" defer></script>}
+  <script src="{{ asset('js/plugins/nouislider.min.js') }}" defer></script>
   <!--  Google Maps Plugin    -->
   <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('js/material-kit.js') }}" defer></script>
@@ -401,18 +443,10 @@ The above copyright notice and this permission notice shall be included in all c
       }
     };
 
-    function scrollToService() {
-      if ($('.section-whyus').length != 0) {
+    function scrollToGallery() {
+      if ($('.section-gallery').length != 0) {
         $("html, body").animate({
-          scrollTop: $('.section-whyus').offset().top
-        }, 1000);
-      }
-    };
-
-    function scrollToMemories() {
-      if ($('.section-memories').length != 0) {
-        $("html, body").animate({
-          scrollTop: $('.section-memories').offset().top
+          scrollTop: $('.section-gallery').offset().top
         }, 1000);
       }
     };

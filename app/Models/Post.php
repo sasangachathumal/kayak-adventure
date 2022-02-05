@@ -33,7 +33,7 @@ class Post extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'content', 'trip_date', 'type', 'image_url_1', 'image_url_2', 'image_url_3', 'image_url_4', 'image_url_5', 'video_url', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id', 'image_url', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

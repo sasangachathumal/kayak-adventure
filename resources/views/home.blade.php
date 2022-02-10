@@ -1,24 +1,27 @@
-<!--
-=========================================================
-Material Kit - v2.0.7
-=========================================================
-
-Product Page: https://www.creative-tim.com/product/material-kit
-Copyright 2020 Creative Tim (https://www.creative-tim.com/)
-
-Coded by Creative Tim
-
-=========================================================
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+<?php use \App\Http\Controllers\HomeController; ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="./assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  {{-- favicons --}}
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./assets/favicon.png">
+    <link rel="icon" sizes="57x57" href="./assets/favicon-32x32.png">
+    <link rel="icon" sizes="57x57" href="./assets/favicon-57x57.png">
+    <link rel="icon" sizes="72x72" href="./assets/favicon-72x72.png">
+    <link rel="icon" sizes="76x76" href="./assets/favicon-76x76.png">
+    <link rel="icon" sizes="114x114" href="./assets/favicon-114x114.png">
+    <link rel="icon" sizes="120x120" href="./assets/favicon-120x120.png">
+    <link rel="icon" sizes="144x144" href="./assets/favicon-144x144.png">
+    <link rel="icon" sizes="152x152" href="./assets/favicon-152x152.png">
+
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="./assets/favicon-144x144.png">
+    <meta name="application-name" content="Website Title">
+
   <title>
     KAYAK Adventure
   </title>
@@ -36,7 +39,8 @@ The above copyright notice and this permission notice shall be included in all c
     <div class="container">
       <div class="navbar-translate">
         <a class="navbar-brand" href="http://kayakadventure.lk">
-          KAYAK Adventure</a>
+            <img src="./assets/img/logo-text-w.svg" width="100%" height="100%" alt="logo">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="sr-only">Toggle navigation</span>
           <span class="navbar-toggler-icon"></span>
@@ -87,7 +91,8 @@ The above copyright notice and this permission notice shall be included in all c
       <div class="row">
         <div class="col-md-8 ml-auto mr-auto text-center">
           <div class="brand">
-            <h1 class="text-bold">KAYAK ADVENTURE</h1>
+            {{-- <h1 class="text-bold">KAYAK ADVENTURE</h1> --}}
+            <img src="./assets/img/w-logo-with-text.svg" width="70%" height="70%" alt="logo">
             <h3>It is now time for some adventure and feel the beauty of the nature</h3>
             <a class="btn btn-info btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToAbout()">LEARN MORE</a>
           </div>
@@ -243,117 +248,14 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="title text-center">
                     <h2 class="">Gallery</h2>
                 </div>
-                {{-- <div class="row">
-                    <div class="col-md-4 mx-auto">
-                        <div class="card bg-dark text-white memory-card">
-                            <img class="card-img" alt="" src="{{ asset('./assets/img/bg.jpg') }}">
-                            <div class="card-img-overlay">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
+                <div class="gallery">
+                <?php $postList = HomeController::getPost(); ?>
+                @foreach ($postList as $post)
+                    <div class="gallery-item">
+                            <img class="gallery-image" src="{{ asset('/images/').'/'.$post->image_url }}" alt="Card image">
                         </div>
-                    </div>
-                    <div class="col-md-4 mx-auto">
-                        <div class="card bg-dark text-white memory-card">
-                            <img class="card-img" alt="" src="{{ asset('./assets/img/bg2.jpg') }}">
-                            <div class="card-img-overlay">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mx-auto">
-                        <div class="card bg-dark text-white memory-card">
-                            <img class="card-img" alt="" src="{{ asset('./assets/img/bg7.jpg') }}">
-                            <div class="card-img-overlay">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mx-auto">
-                        <div class="card bg-dark text-white memory-card">
-                            <img class="card-img" alt="" src="{{ asset('./assets/img/bg3.jpg') }}">
-                            <div class="card-img-overlay">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mx-auto">
-                        <div class="card bg-dark text-white memory-card">
-                            <img class="card-img" alt="" src="{{ asset('./assets/img/bg.jpg') }}">
-                            <div class="card-img-overlay">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mx-auto">
-                        <div class="card bg-dark text-white memory-card">
-                            <img class="card-img" alt="" src="{{ asset('./assets/img/bg2.jpg') }}">
-                            <div class="card-img-overlay">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="card-columns">
-                    <div class="card memory-card single-img-post">
-                      <img class="card-img-top" src="{{ asset('./assets/img/bg.jpg') }}" alt="Card image cap">
-                      <div class="card-body">
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                      </div>
-                    </div>
-                    <div class="card p-3 memory-card content-post">
-                      <blockquote class="blockquote mb-0 card-body">
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                      </blockquote>
-                    </div>
-                    <div class="card memory-card multi-img-post">
-                      <img class="card-img-top" src="{{ asset('./assets/img/bg2.jpg') }}" alt="Card image cap">
-                      <div class="card-body">
-                        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                      </div>
-                    </div>
-                    <div class="card memory-card video-post">
-                        <img class="card-img" src="{{ asset('./assets/img/bg7.jpg') }}" alt="Card image">
-                    </div>
-                    <div class="card text-center memory-card">
-                      <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                      </div>
-                    </div>
-                    <div class="card p-3 text-right memory-card">
-                      <blockquote class="blockquote mb-0">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                        <footer class="blockquote-footer">
-                          <small class="text-muted">
-                            Someone famous in <cite title="Source Title">Source Title</cite>
-                          </small>
-                        </footer>
-                      </blockquote>
-                    </div>
-                    <div class="card memory-card">
-                      <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                      </div>
-                    </div>
-                    <div class="card memory-card video-post">
-                        <img class="card-img" src="{{ asset('./assets/img/bg7.jpg') }}" alt="Card image">
-                    </div>
-                    <div class="card memory-card video-post">
-                        <img class="card-img" src="{{ asset('./assets/img/bg3.jpg') }}" alt="Card image">
-                    </div>
-                  </div>
+                @endforeach
+                </div>
             </div>
         </div>
     </div>

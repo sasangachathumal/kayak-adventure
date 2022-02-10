@@ -26,4 +26,9 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public static function getPost()
+    {
+        return Post::orderBy('id', 'DESC')->get();
+    }
 }

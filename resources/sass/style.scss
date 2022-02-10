@@ -412,44 +412,6 @@
     margin-top: 10px;
 }
 
-// .uploaded-file__info::before,
-// .uploaded-file__info::after {
-//     content: "";
-//     position: absolute;
-//     bottom: -0.9375rem;
-//     width: 0;
-//     height: 0.5rem;
-//     background-color: #ebf2ff;
-//     border-radius: 0.625rem;
-// }
-
-// .uploaded-file__info::before {
-//     width: 100%;
-// }
-
-// .uploaded-file__info::after {
-//     width: 100%;
-//     background-color: var(--clr-blue);
-// }
-
-// /* Progress Animation */
-// .uploaded-file__info--active::after {
-//     animation: progressMove 800ms ease-in-out;
-//     animation-delay: 300ms;
-// }
-
-// @keyframes progressMove {
-//     from {
-//         width: 0%;
-//         background-color: transparent;
-//     }
-
-//     to {
-//         width: 100%;
-//         background-color: var(--clr-blue);
-//     }
-// }
-
 .uploaded-file__name {
     width: 100%;
     // max-width: 6.25rem; /* 100px */
@@ -463,4 +425,59 @@
 .uploaded-file__counter {
     font-size: 1rem;
     color: var(--clr-black);
+}
+
+
+/**
+* Styles for gallery
+**/
+
+.gallery {
+	display: flex;
+	flex-wrap: wrap;
+	/* Compensate for excess margin on outer gallery flex items */
+	margin: -1rem -1rem;
+}
+
+.gallery-item {
+	/* Minimum width of 24rem and grow to fit available space */
+	flex: 1 0 24rem;
+	/* Margin value should be half of grid-gap value as margins on flex items don't collapse */
+	margin: 1rem;
+    box-shadow: 0.3rem 0.4rem 5rem rgb(0 0 0 / 10%);
+	overflow: hidden;
+    border-radius: 15px;
+}
+
+.gallery-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 400ms ease-out;
+}
+
+.gallery-image:hover {
+	transform: scale(1.1);
+}
+
+/*
+
+The following rule will only run if your browser supports CSS grid.
+
+Remove or comment-out the code block below to see how the browser will fall-back to flexbox styling.
+
+*/
+
+@supports (display: grid) {
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+		grid-gap: 2rem;
+	}
+
+	.gallery,
+	.gallery-item {
+		margin: 0;
+	}
 }

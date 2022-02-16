@@ -49,6 +49,6 @@ class AdminController extends Controller
             }
          }
 
-        return back()->with('success', 'Your images has been successfully');
+        return back()->with('success', 'Images has been successfully uploaded');
     }
 }

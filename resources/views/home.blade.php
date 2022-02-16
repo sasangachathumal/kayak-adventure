@@ -26,11 +26,16 @@
     KAYAK Adventure
   </title>
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Material+Icons+Outlined|Material+Icons+Round" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
 </head>
 
 <body class="sidebar-collapse">
@@ -68,12 +73,12 @@
                 <div class="ripple-container"></div>
             </a>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="scrollToContact()">
                 Contact
                 <div class="ripple-container"></div>
             </a>
-          </li>
+          </li> --}}
           <li class="nav-item">
             <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/KAYAK-Adventure-Rathgama-LAKE-100909892311542" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
               <i class="fa fa-facebook-square"></i>
@@ -93,7 +98,7 @@
           <div class="brand">
             {{-- <h1 class="text-bold">KAYAK ADVENTURE</h1> --}}
             <img src="./assets/img/w-logo-with-text.svg" width="70%" height="70%" alt="logo">
-            <h3>It is now time for some adventure and feel the beauty of the nature</h3>
+            <h3>It is now time for some adventure and admire beauty of the nature</h3>
             <a class="btn btn-info btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToAbout()">LEARN MORE</a>
           </div>
         </div>
@@ -114,7 +119,11 @@
                         </div>
                         <div class="note">
                             <p class="">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                                <strong>Kayak adventure</strong> is one of the few places you can get <strong>best kayaking experience in Sri Lanka.</strong>
+                                We are located in katudampe, rathgama, southern province, facing beautiful rathgama lake.
+                                With kayak adventure, you are not just kayaking around the lake, You can explore and experience wild life around the lake and can enjoy sunset.
+                                Also we have we'll experienced instructors for taking you around the lake. Also we constantly improving ourself to provide you better experience and make your trip memorable.
+                                Contact us through <strong>Facebook or through contact number</strong> and book you’r kayaking experience.
                             </p>
                         </div>
                     </div>
@@ -260,39 +269,39 @@
         </div>
     </div>
 
-    <div class="section section-contact" id="contactSection">
+    {{-- <div class="section section-contact" id="contactSection">
         <div class="container">
             <div class="cd-section">
                 <div class="title text-center">
                     <h2 class="">Get In Touch</h2>
                 </div>
-                {{-- <div class="discription">
+                <div class="discription">
                     <p class="bmd-help">We'll never share your details with anyone else.</p>
-                </div> --}}
+                </div>
+
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
-                        <form>
-                            <div class="form-group">
-                                <label for="nameInput" class="bmd-label-floating">Name</label>
-                                <input type="text" class="form-control" id="nameInput">
-                            </div>
-                            <div class="form-group">
-                                <label for="emailInput" class="bmd-label-floating">Email</label>
-                                <input type="email" class="form-control" id="emailInput">
-                            </div>
-                            <div class="form-group">
-                                <label for="messageInput" class="bmd-label-floating">Message</label>
-                                <textarea class="form-control" name="message" id="messageInput" cols="30" rows="4"></textarea>
-                            </div>
-                            <div class="text-center">
-                                <button class="btn btn-info btn-lg btn-round">Send</button>
-                            </div>
-                        </form>
+                        <form name="ajax-contact-form" id="ajax-contact-form" method="post" action="javascript:void(0)">
+                            @csrf
+                             <div class="form-group">
+                               <label for="exampleInputEmail1" class="bmd-label-floating">Name</label>
+                               <input type="text" id="name" name="name" class="form-control">
+                             </div>
+                              <div class="form-group">
+                               <label for="exampleInputEmail1" class="bmd-label-floating">Email</label>
+                               <input type="email" id="email" name="email" class="form-control">
+                             </div>
+                             <div class="form-group">
+                               <label for="exampleInputEmail1" class="bmd-label-floating">Description</label>
+                               <textarea name="description" id="description" class="form-control"></textarea>
+                             </div>
+                             <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                           </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
   </div>
 
   <footer class="footer" data-background-color="black">
@@ -310,6 +319,7 @@
 
   <!--   Core JS Files   -->
   <script src="{{ asset('js/core/jquery.min.js') }}" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
   <script src="{{ asset('js/core/popper.min.js') }}" defer></script>
   <script src="{{ asset('js/core/bootstrap-material-design.min.js') }}" defer></script>
   <script src="{{ asset('js/plugins/moment.min.js') }}" defer></script>
@@ -361,6 +371,70 @@
       }
     };
   </script>
+  <script>
+    if ($("#ajax-contact-form").length > 0) {
+    $("#ajax-contact-form").validate({
+      rules: {
+        name: {
+        required: true,
+        maxlength: 50
+      },
+      email: {
+        required: true,
+        maxlength: 50,
+        email: true,
+      },
+      description: {
+        required: true,
+        maxlength: 300
+      },
+      },
+      messages: {
+      name: {
+        required: "Please enter name",
+        maxlength: "Your name maxlength should be 50 characters long."
+      },
+      email: {
+        required: "Please enter valid email",
+        email: "Please enter valid email",
+        maxlength: "The email name should less than or equal to 50 characters",
+      },
+      description: {
+        required: "Please enter description",
+        maxlength: "Your description name maxlength should be 300 characters long."
+      },
+      },
+      submitHandler: function(form) {
+      $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $('#submit').html('Please Wait...');
+      $("#submit"). attr("disabled", true);
+
+      var nameInput = $('#name').val();
+      var emailInput = $('#email').val();
+      var descriptionInput = $('#description').val();
+
+      console.log(nameInput, emailInput, descriptionInput);
+
+      $.ajax({
+        url: "{{url('sendEmail')}}",
+        type: "POST",
+        data: {name: nameInput, email: emailInput, message: descriptionInput},
+        success: function( response ) {
+          $('#submit').html('Submit');
+          $("#submit"). attr("disabled", false);
+          alert('Ajax form has been submitted successfully');
+          document.getElementById("ajax-contact-form").reset();
+        }
+       });
+      }
+      })
+    }
+    </script>
 </body>
 
 </html>

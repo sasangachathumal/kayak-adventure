@@ -15938,6 +15938,16 @@ footer .pull-center {
 .section-about .cd-section {
   margin-top: 50px;
 }
+.section-about .note p {
+  line-height: 1.625;
+  font-weight: 300;
+  font-size: 1rem;
+  color: #7b809a;
+}
+.section-about .title h2 {
+  font-weight: 600;
+  color: #344767;
+}
 
 .section-whyus {
   padding-top: 35px;
@@ -16016,17 +16026,28 @@ footer .pull-center {
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 .section-whyus .full-feature-list .feature .icon-col img {
   width: 22px;
   height: 22px;
 }
 .section-whyus .full-feature-list .feature .text-col {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: flex-start;
+}
+.section-whyus .full-feature-list .feature .text-col h5 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #344767;
 }
 
 .section-post .row .col-md-4 {
@@ -16347,7 +16368,7 @@ footer .pull-center {
 
 .gallery-item {
   /* Minimum width of 24rem and grow to fit available space */
-  flex: 1 0 24rem;
+  flex: 1 0 20rem;
   /* Margin value should be half of grid-gap value as margins on flex items don't collapse */
   margin: 1rem;
   box-shadow: 0.3rem 0.4rem 5rem rgba(0, 0, 0, 0.1);
@@ -16375,15 +16396,6 @@ The following rule will only run if your browser supports CSS grid.
 Remove or comment-out the code block below to see how the browser will fall-back to flexbox styling.
 
 */
-@supports (display: grid) {
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
-    grid-gap: 2rem;
-  }
-
-  .gallery,
-.gallery-item {
-    margin: 0;
-  }
+.error {
+  color: #ff0000;
 }

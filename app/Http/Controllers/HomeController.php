@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Mail;
 
 class HomeController extends Controller
 {
@@ -30,5 +31,25 @@ class HomeController extends Controller
     public static function getPost()
     {
         return Post::orderBy('id', 'DESC')->get();
+    }
+
+    public function sendEmail(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'message' => 'required'
+        ]);
+
+        $data=['name'=>$request->name, 'email'=>$request->email, 'message'=>$request->message];
+        $user['to']='contact@kayakadventure.lk';
+        $user['subject']='Kayak Adventure Contact';
+
+        Mail::send('contactMail',$data,function($messages) use ($user) {
+            $messages->to($user['to']);
+            $messages->subject($user['subject']);
+        });
+
+        return response()->json(['success' => true]);
     }
 }

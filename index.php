@@ -24,23 +24,25 @@
         KAYAK Adventure
     </title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Material+Icons+Outlined|Material+Icons+Round" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
     <!-- CSS Files -->
     <link href="./css/material-kit.css" rel="stylesheet">
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
 </head>
 
 <body class="sidebar-collapse">
-    <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg main-navbar" color-on-scroll="100" id="sectionsNav">
+    <nav class="navbar navbar-default fixed-top navbar-expand-lg main-navbar" color-on-scroll="100" id="sectionsNav">
         <div class="container">
             <div class="navbar-translate">
                 <a class="navbar-brand" href="http://kayakadventure.lk">
-                    <img src="./assets/img/logo-text-w.svg" width="100%" height="100%" alt="logo">
+                    <img src="./assets/img/text-logo-B.png" width="100%" height="100%" alt="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="sr-only">Toggle navigation</span>
@@ -52,31 +54,19 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToTop()">
+                        <a class="nav-link" href="./index.php">
                             Home
                             <div class="ripple-container"></div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToAbout()">
-                            About
-                            <div class="ripple-container"></div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToGallery()">
+                        <a class="nav-link" href="./gallery.php">
                             Gallery
                             <div class="ripple-container"></div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToContact()">
-                            Contact
-                            <div class="ripple-container"></div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/share/15Tf7YNeJC/" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
+                        <a class="btn btn-info btn-raised btn-round" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/share/15Tf7YNeJC/" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
                             <i class="fa fa-facebook-square"></i>
                             Facebook
                             <div class="ripple-container"></div>
@@ -86,24 +76,81 @@
             </div>
         </div>
     </nav>
-    <div class="page-header header-filter" data-parallax="true" style="background-image: url('./assets/img/bg/bg1.jpeg');">
+    <div class="page-header" data-parallax="true" style="background: white; background-image: url('./assets/img/bg/main-bg-1.png'); background-size:cover;">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 ml-auto mr-auto text-center">
-                    <div class="brand">
+                <div class="col-12 col-sm-12 col-lg-6 ml-auto mr-auto d-flex justify-content-center align-items-center banner-info-container">
+                    <div class="info-container">
                         <!-- <h1 class="text-bold">KAYAK ADVENTURE</h1> -->
-                        <img src="./assets/img/w-logo-with-text.svg" width="70%" height="70%" alt="logo">
-                        <h3>It is now time for some adventure and admire beauty of the nature</h3>
-                        <a class="btn btn-info btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToAbout()">LEARN MORE</a>
+                        <p class="badge badge-pill badge-info badge-1">Explore the nature <span class="material-symbols-outlined mx-2">globe_asia</span></p>
+                        <h1>Enjoy your <span>vacation</span> with <span>adventuries</span> in <span>nature</span>.</h1>
+                        <a class="btn btn-info btn-round btn-leran-more" href="javascript:void(0)" onclick="scrollToFeatured()">LEARN MORE</a>
                     </div>
+                    <div class="logo-badge-container p-2">
+                        <img src="./assets/img/color-logo-with-text.svg" alt="logo">
+                    </div>
+                </div>
+                <div class="col-md-7 col-lg-6 ml-auto mr-auto d-flex align-items-stretch flex-row banner-img-container">
+                    <div class="d-flex align-items-stretch flex-column align-content-stretch first">
+                        <div class="d-flex p-2 justify-content-center align-items-center img-container">
+                            <img class="m-auto" src="./gallery-images/img29.jpeg">
+                        </div>
+                        <div class="d-flex p-2 justify-content-center align-items-center img-container">
+                            <img class="m-auto" src="./gallery-images/img40.jpeg">
+                        </div>
+                    </div>
+                    <div class="d-flex p-2 justify-content-center align-items-center second">
+                        <img src="./gallery-images/img67.jpeg">
+                    </div>
+                    <p class="badge badge-pill badge-info badge-2">Best in the country <span class="material-symbols-outlined mx-2">kayaking</span></p>
                 </div>
             </div>
         </div>
     </div>
     <div class="main">
-        <div class="section section-about" id="aboutSection">
+        <div class="section section-featured" id="featuredSection">
             <div class="container">
                 <div class="cd-section">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12">
+                            <div class="row justify-content-center">
+                                <div class="col-md-3 featured text-center p-2">
+                                    <div class="p-3 content">
+                                        <i class="material-symbols-outlined text-gradient text-info">health_and_safety</i>
+                                        <h3>Safety</h3>
+                                        <p>Our first priority is you safety, we always want you to be safe during the trip and before and after </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 featured text-center p-2">
+                                    <div class="p-3 content">
+                                        <i class="material-symbols-outlined text-gradient text-info">support</i>
+                                        <h3>Support</h3>
+                                        <p>We have well experienced and amazing team to support you, while providing the things you need</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 featured text-center p-2">
+                                    <div class="p-3 content">
+                                        <i class="material-symbols-outlined text-gradient text-info">route</i>
+                                        <h3>Custom Routes</h3>
+                                        <p>We didn't have fixed routes and we always open to what you requests. If you want custom route we can provide</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 featured text-center p-2">
+                                    <div class="p-3 content">
+                                        <i class="material-symbols-outlined text-gradient text-info">kayaking</i>
+                                        <h3>Best in the Country</h3>
+                                        <p>We are one of the best company in the country that provide amazing and memarable kayaking experience</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section section-about" id="aboutSection">
+            <div class="container">
+                <div class="">
                     <div class="row">
                         <div class="col-md-5 mx-auto">
                             <img src="./assets/img/about.jpeg" alt="Raised Image" class="img-raised rounded img-fluid">
@@ -114,11 +161,11 @@
                             </div>
                             <div class="note">
                                 <p class="">
-                                    <strong>Kayak adventure</strong> is one of the few places you can get <strong>best kayaking experience in Sri Lanka.</strong>
+                                    <strong>Kayak adventure</strong> is one of the best place you can get <strong>best kayaking experience in Sri Lanka.</strong>
                                     We are located in katudampe, rathgama, southern province, facing beautiful rathgama lake.
                                     With kayak adventure, you are not just kayaking around the lake, You can explore and experience wild life around the lake and can enjoy sunset.
                                     Also we have we'll experienced instructors for taking you around the lake. Also we constantly improving ourself to provide you better experience and make your trip memorable.
-                                    Contact us through <strong>Facebook or through contact number</strong> and book you’r kayaking experience.
+                                    Contact us through <strong>Facebook</strong> or through <strong>contact number</strong> and book you’r kayaking experience.
                                 </p>
                             </div>
                         </div>
@@ -127,161 +174,96 @@
             </div>
         </div>
 
-        <div class="section section-whyus" id="whyusSection">
+        <div class="" id="whyusSection">
             <div class="container">
-                <div class="cd-section">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6">
-                            <div class="row justify-content-start">
-                                <div class="col-md-6 feature">
-                                    <div class="info">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">health_and_safety</i>
-                                        <h5>Safety</h5>
-                                        <p>Our first priority is you safety, we always want you to be safe during the trip and before and after </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 feature">
-                                    <div class="info">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">support</i>
-                                        <h5>Support</h5>
-                                        <p>We have well experienced and amazing team to support you, while providing the things you need</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-start mt-4">
-                                <div class="col-md-6 feature">
-                                    <div class="info">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">route</i>
-                                        <h5>Custom Routes</h5>
-                                        <p>We didn't have fixed routes and we always open to what customer requests. If you want custom route we can provide it</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 feature">
-                                    <div class="info">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">kayaking</i>
-                                        <h5>Best in the Country</h5>
-                                        <p>We are one of the best company in the country that provide amazing and memarable kayaking experience</p>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="d-flex flex-row flex-wrap justify-content-center">
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/cocktails.png" alt="life-jacket">
                         </div>
-                        <div class="col-lg-6 full-feature-list">
-                            <div class="feature-container">
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">local_bar</i>
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Welcome Drink</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">local_parking</i>
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Car Parking</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">checkroom</i>
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Changing Facilities</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <i class="material-icons text-3xl text-gradient text-info mb-3">shower</i>
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Bathroom</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <img src="./assets/img/life-jacket.png" alt="life-jacket">
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Life Jacket</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <img src="./assets/img/sunset.png" alt="sun-set">
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Watch Sunset</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <img src="./assets/img/bird.png" alt="bird-watching">
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Bird Watching</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <img src="./assets/img/harbour.png" alt="harbour access">
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Visit Dodanduwa Harbour</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <img src="./assets/img/waterproof.png" alt="waterproof case">
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Waterproof Phone Cover</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-start feature">
-                                    <div class="col-md-1 icon-col">
-                                        <img src="./assets/img/dry-bag.png" alt="dry bag">
-                                    </div>
-                                    <div class="col-md-10 text-col">
-                                        <h5>Waterproof Bag</h5>
-                                    </div>
-                                </div>
-                            </div>
+                        <h5>Welcome Drink</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/parking.png" alt="life-jacket">
                         </div>
+                        <h5>Car Parking</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/changing-room.png" alt="life-jacket">
+                        </div>
+                        <h5>Changing Facilities</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/bathroom.png" alt="life-jacket">
+                        </div>
+                        <h5>Bathroom</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/life-jacket.png" alt="life-jacket">
+                        </div>
+                        <h5>WLife Jacket</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/sunset.png" alt="sun-set">
+                        </div>
+                        <h5>Watch Sunset</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/bird.png" alt="bird-watching">
+                        </div>
+                        <h5>Bird Watching</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/harbour.png" alt="harbour access">
+                        </div>
+                        <h5>Visit Harbour</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/waterproof.png" alt="waterproof case">
+                        </div>
+                        <h5>Waterproof Phone Cover</h5>
+                    </div>
+                    <div class="service-container text-center d-flex justify-content-center">
+                        <div class="p-4 icon-col">
+                            <img src="./assets/img/dry-bag.png" alt="dry bag">
+                        </div>
+                        <h5>Waterproof Bag</h5>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="section section-gallery" id="gallerySection">
+        <div class="section home-gallery" id="gallerySection">
             <div class="container">
-                <div class="cd-section">
-                    <div class="title text-center">
-                        <h2 class="">Gallery</h2>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 p-0 pb-3 d-flex justify-content-center">
+                        <a class="btn btn-info btn-round btn-block" href="./gallery.php">
+                            Explore the Adventures gallery
+                        </a>
                     </div>
-                    <div class="gallery">
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mr-auto ml-auto masonry-container">
                         <?php
-
                         $imageFolder = 'gallery-images/';
-                        $images = glob($imageFolder . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+                        $images = glob($imageFolder . '*.{jpg,jpeg,png}', GLOB_BRACE);
                         natsort($images);
                         $images = array_values($images);
                         $images = array_reverse($images);
+                        $images = array_slice($images, 0, 20);
                         if (!empty($images)) {
                             foreach ($images as $image) {
                         ?>
-                                <div class="gallery-item">
-                                    <img class="gallery-image" src="<?php echo $image ?>" alt="Card image">
+                                <div class="masonry-item pt-1 pb-1">
+                                    <img class="" src="<?php echo $image ?>" alt="Card image">
                                 </div>
                         <?php
                             }
@@ -289,82 +271,75 @@
                         ?>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- <div class="section section-contact" id="contactSection">
-            <div class="container">
-                <div class="cd-section">
-                    <div class="title text-center">
-                        <h2 class="">Get In Touch</h2>
-                    </div>
-                    <div class="discription">
-                        <p class="bmd-help">We'll never share your details with anyone else.</p>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <form name="ajax-contact-form" id="ajax-contact-form" method="post" action="javascript:void(0)">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" class="bmd-label-floating">Name</label>
-                                    <input type="text" id="name" name="name" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" class="bmd-label-floating">Email</label>
-                                    <input type="email" id="email" name="email" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" class="bmd-label-floating">Description</label>
-                                    <textarea name="description" id="description" class="form-control"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary" id="submit">Submit</button>
-                            </form>
-                        </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 p-0 pb-3 d-flex justify-content-center">
+                        <a class="btn btn-info btn-round btn-block" href="./gallery.php">
+                            Explore the Adventures gallery
+                        </a>
                     </div>
                 </div>
             </div>
-        </div> -->
-    </div>
-
-    <footer class="footer" data-background-color="black">
-        <div class="container">
-            <div class="copyright">
-                build by SMSC
-                &copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script>
-                KAYAK Adventure
-            </div>
         </div>
-    </footer>
-
+        <footer class="footer">
+            <div class="container">
+                <div class="copyright">
+                    build by SMSC
+                    &copy;
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script>
+                    KAYAK Adventure
+                </div>
+            </div>
+        </footer>
+    </div>
     <!--   Core JS Files   -->
     <script src="./js/core/jquery.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
     <script src="./js/core/popper.min.js" defer></script>
     <script src="./js/core/bootstrap-material-design.min.js" defer></script>
-    <script src="./js/plugins/moment.min.js" defer></script>
-    <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-    <script src="./js/plugins/bootstrap-datetimepicker.js" defer></script>
-    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-    <script src="./js/plugins/nouislider.min.js" defer></script>
-    <!--  Google Maps Plugin    -->
     <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
     <script src="./js/material-kit.js" defer></script>
     <script>
-        $(document).ready(function() {
-            //init DateTimePickers
-            materialKit.initFormExtendedDatetimepickers();
-
-            // Sliders Init
-            materialKit.initSliders();
+        document.addEventListener("contextmenu", (event) => {
+            event.preventDefault(); // Prevent the context menu from appearing
         });
-
+        document.addEventListener("keydown", (e) => {
+            // Ctrl+Shift+I 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+                disabledEvent(e);
+            }
+            // Ctrl+Shift+J 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+                disabledEvent(e);
+            }
+            // Ctrl+S 
+            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                disabledEvent(e);
+            }
+            // Ctrl + U 
+            if (e.ctrlKey && e.keyCode == 85) {
+                disabledEvent(e);
+            }
+            // F12
+            if (event.keyCode == 123) {
+                disabledEvent(e);
+            }
+        });
+    </script>
+    <script>
         function scrollToTop() {
             if ($('.page-header').length != 0) {
                 $("html, body").animate({
                     scrollTop: 0
+                }, 1000);
+            }
+        };
+
+        function scrollToFeatured() {
+            if ($('.section-featured').length != 0) {
+                $("html, body").animate({
+                    scrollTop: $('.section-featured').offset().top
                 }, 1000);
             }
         };
@@ -392,74 +367,6 @@
                 }, 1000);
             }
         };
-    </script>
-    <script>
-        if ($("#ajax-contact-form").length > 0) {
-            $("#ajax-contact-form").validate({
-                rules: {
-                    name: {
-                        required: true,
-                        maxlength: 50
-                    },
-                    email: {
-                        required: true,
-                        maxlength: 50,
-                        email: true,
-                    },
-                    description: {
-                        required: true,
-                        maxlength: 300
-                    },
-                },
-                messages: {
-                    name: {
-                        required: "Please enter name",
-                        maxlength: "Your name maxlength should be 50 characters long."
-                    },
-                    email: {
-                        required: "Please enter valid email",
-                        email: "Please enter valid email",
-                        maxlength: "The email name should less than or equal to 50 characters",
-                    },
-                    description: {
-                        required: "Please enter description",
-                        maxlength: "Your description name maxlength should be 300 characters long."
-                    },
-                },
-                submitHandler: function(form) {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $('#submit').html('Please Wait...');
-                    $("#submit").attr("disabled", true);
-
-                    var nameInput = $('#name').val();
-                    var emailInput = $('#email').val();
-                    var descriptionInput = $('#description').val();
-
-                    console.log(nameInput, emailInput, descriptionInput);
-
-                    $.ajax({
-                        url: "{{url('sendEmail')}}",
-                        type: "POST",
-                        data: {
-                            name: nameInput,
-                            email: emailInput,
-                            message: descriptionInput
-                        },
-                        success: function(response) {
-                            $('#submit').html('Submit');
-                            $("#submit").attr("disabled", false);
-                            alert('Ajax form has been submitted successfully');
-                            document.getElementById("ajax-contact-form").reset();
-                        }
-                    });
-                }
-            })
-        }
     </script>
 </body>
 

@@ -19956,10 +19956,29 @@ Remove or comment-out the code block below to see how the browser will fall-back
   border-radius: 32px !important;
 }
 
-.section-about p strong {
+.section-about p strong a {
+  text-decoration: none;
+}
+
+.section-about p strong .face {
+  text-decoration: none;
   color: #00bcd4;
+}
+
+.section-about p strong .what {
+  text-decoration: none;
+  color: #4baf51;
+}
+
+.section-about p strong .contact {
+  text-decoration: none;
+  color: #585666;
+}
+
+.section-about p strong {
+  color: #8e8c9e;
   font-weight: 900;
-  text-shadow: 2px 3px 4px rgba(0, 188, 212, 0.5);
+  /* text-shadow: 2px 3px 4px rgba(0, 188, 212, 0.5); */
 }
 
 /* .home-gallery {

@@ -65,11 +65,16 @@
                             <div class="ripple-container"></div>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-info btn-raised btn-round" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/share/15Tf7YNeJC/" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
-                            <i class="fa fa-facebook-square"></i>
+                    <li class="nav-item mx-1">
+                        <a class="btn btn-success btn-raised btn-round btn-block" rel="tooltip" title="" data-placement="bottom" href="https://wa.me/94761122261" target="_blank" data-original-title="Contact us on Whatsapp" rel="nofollow">
+                            <i class="fa fa-whatsapp mr-2"></i>
+                            Whatsapp
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="btn btn-info btn-raised btn-round btn-block" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/share/15Tf7YNeJC/" target="_blank" data-original-title="Like us on Facebook" rel="nofollow">
+                            <i class="fa fa-facebook-square mr-2"></i>
                             Facebook
-                            <div class="ripple-container"></div>
                         </a>
                     </li>
                 </ul>
@@ -165,7 +170,10 @@
                                     We are located in katudampe, rathgama, southern province, facing beautiful rathgama lake.
                                     With kayak adventure, you are not just kayaking around the lake, You can explore and experience wild life around the lake and can enjoy sunset.
                                     Also we have we'll experienced instructors for taking you around the lake. Also we constantly improving ourself to provide you better experience and make your trip memorable.
-                                    Contact us through <strong>Facebook</strong> or through <strong>contact number</strong> and book you’r kayaking experience.
+                                    Contact us through 
+                                    <strong><a class="face mx-3" href="https://www.facebook.com/share/15Tf7YNeJC/" target="_blank"><i class="fa fa-facebook-square mr-1"></i>Facebook</a></strong> or 
+                                    <strong><a class="what mx-3" href="https://wa.me/94761122261" target="_blank"><i class="fa fa-whatsapp mr-1"></i>Whatsapp</a></strong> or 
+                                    <strong><a class="contact mx-3" href="tel:+94761122261"><i class="fa fa-phone-square mr-1"></i> Contact Number</a></strong> and book you’r kayaking experience.
                                 </p>
                             </div>
                         </div>
@@ -205,7 +213,7 @@
                         <div class="p-4 icon-col">
                             <img src="./assets/img/life-jacket.png" alt="life-jacket">
                         </div>
-                        <h5>WLife Jacket</h5>
+                        <h5>Life Jacket</h5>
                     </div>
                     <div class="service-container text-center d-flex justify-content-center">
                         <div class="p-4 icon-col">

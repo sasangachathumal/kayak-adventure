@@ -71,22 +71,9 @@ export default function About() {
 
         {/* Right Side: Trust & Showcase Grid */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg lg:max-w-none mx-auto">
-          {/* Card 1: Showcase Image (1:1 aspect ratio card) */}
-          <div className="relative aspect-square rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white flex items-center justify-center">
-            <Image
-              src="/about-image.png"
-              alt="Kayaking through tropical mangrove forest lagoon"
-              fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              priority
-              className="object-cover pointer-events-none select-none opacity-40"
-            />
-            
-            {/* Spotlight Glow Behind Logo */}
-            <div className="absolute size-32 sm:size-40 bg-white rounded-full blur-2xl opacity-95 pointer-events-none" />
-
-            {/* Center Logo Overlay */}
-            <div className="relative z-10 size-24 sm:size-32 drop-shadow-md select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
+          {/* Card 1: Brand Logo Card (1:1 aspect ratio card) */}
+          <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square">
+            <div className="relative size-24 sm:size-32 select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
               <Image
                 src="/logo-with-no-text.svg"
                 alt="Brand Logo Emblem"
@@ -109,10 +96,10 @@ export default function About() {
               />
             </div>
             <div className="flex flex-col items-center gap-0.5 sm:gap-1.5">
-              <span className="font-sans text-[13px] sm:text-[18px] font-bold text-zinc-900 leading-tight">
+              <span className="font-serif text-[15px] sm:text-[20px] font-semibold text-zinc-900 leading-snug tracking-wide">
                 Insured Tours
               </span>
-              <span className="font-sans text-[9.5px] sm:text-[12.5px] text-zinc-500 leading-tight max-w-[110px] sm:max-w-[160px]">
+              <span className="font-sans text-[10.5px] sm:text-[13px] text-zinc-500 leading-normal tracking-wide max-w-[110px] sm:max-w-[160px]">
                 Full coverage under SLIC policy
               </span>
             </div>
@@ -124,10 +111,10 @@ export default function About() {
               <Leaf className="size-5 sm:size-8" />
             </div>
             <div className="flex flex-col items-center gap-0.5 sm:gap-1.5">
-              <span className="font-sans text-[13px] sm:text-[18px] font-bold text-zinc-900 leading-tight">
+              <span className="font-serif text-[15px] sm:text-[20px] font-semibold text-zinc-900 leading-snug tracking-wide">
                 Eco Conscious
               </span>
-              <span className="font-sans text-[9.5px] sm:text-[12.5px] text-zinc-500 leading-tight max-w-[110px] sm:max-w-[160px]">
+              <span className="font-sans text-[10.5px] sm:text-[13px] text-zinc-500 leading-normal tracking-wide max-w-[110px] sm:max-w-[160px]">
                 100% sustainable tours protecting our lagoons
               </span>
             </div>
@@ -139,10 +126,10 @@ export default function About() {
               <ShieldCheck className="size-5 sm:size-8" />
             </div>
             <div className="flex flex-col items-center gap-0.5 sm:gap-1.5">
-              <span className="font-sans text-[13px] sm:text-[18px] font-bold text-zinc-900 leading-tight">
+              <span className="font-serif text-[15px] sm:text-[20px] font-semibold text-zinc-900 leading-snug tracking-wide">
                 Safety Certified
               </span>
-              <span className="font-sans text-[9.5px] sm:text-[12.5px] text-zinc-500 leading-tight max-w-[110px] sm:max-w-[160px]">
+              <span className="font-sans text-[10.5px] sm:text-[13px] text-zinc-500 leading-normal tracking-wide max-w-[110px] sm:max-w-[160px]">
                 First Aid & Lifeguard Trained
               </span>
             </div>
@@ -152,7 +139,7 @@ export default function About() {
 
       {/* Tier 2: Amenities Grid */}
       <div className="pt-8 border-t border-zinc-200">
-        <span className="block text-zinc-500 text-sm font-semibold tracking-wide mb-8 text-left">
+        <span className="block text-zinc-400 text-[11px] sm:text-xs font-bold tracking-[0.2em] mb-8 text-left">
           Amenities & Conveniences Included:
         </span>
 

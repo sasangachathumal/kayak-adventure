@@ -72,7 +72,7 @@ export default function About() {
         {/* Right Side: Trust & Showcase Grid */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg lg:max-w-none mx-auto">
           {/* Card 1: Showcase Image (1:1 aspect ratio card) */}
-          <div className="relative aspect-square rounded-[24px] overflow-hidden border border-zinc-200/40 shadow-sm hover:shadow-md transition-all duration-300 bg-white flex items-center justify-center">
+          <div className="relative aspect-square rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white flex items-center justify-center">
             <Image
               src="/about-image.png"
               alt="Kayaking through tropical mangrove forest lagoon"
@@ -82,13 +82,16 @@ export default function About() {
               className="object-cover pointer-events-none select-none opacity-40"
             />
             
+            {/* Spotlight Glow Behind Logo */}
+            <div className="absolute size-32 sm:size-40 bg-white rounded-full blur-2xl opacity-95 pointer-events-none" />
+
             {/* Center Logo Overlay */}
-            <div className="relative z-10 size-16 sm:size-20 drop-shadow-md select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
+            <div className="relative z-10 size-24 sm:size-32 drop-shadow-md select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
               <Image
                 src="/logo-with-no-text.svg"
                 alt="Brand Logo Emblem"
                 fill
-                sizes="80px"
+                sizes="128px"
                 className="object-contain"
               />
             </div>

@@ -139,7 +139,7 @@ export default function About() {
 
       {/* Tier 2: Amenities Grid */}
       <div className="pt-8 border-t border-zinc-200">
-        <span className="block text-zinc-400 text-[11px] sm:text-xs font-bold tracking-[0.2em] mb-8 text-left">
+        <span className="block text-zinc-400 text-[11px] sm:text-xs font-semibold tracking-[0.2em] mb-8 text-left">
           Amenities & Conveniences Included:
         </span>
 

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Section from "./Section";
-import { LifeBuoy, GlassWater, Lock, Car, Users, Droplet, Backpack, Camera, HeartPulse, Wifi, Award, ShieldCheck, Compass, Leaf } from "lucide-react";
+import { LifeBuoy, GlassWater, Lock, Car, Users, Droplet, Backpack, Camera, HeartPulse, Wifi, ShieldCheck, Leaf } from "lucide-react";
 
 export default function About() {
   return (
@@ -56,7 +56,7 @@ export default function About() {
           </p>
 
           <p className="font-sans text-[14.5px] sm:text-[15px] text-zinc-500 leading-[1.75] mb-8 font-normal tracking-wide max-w-xl">
-            Nestled by the quiet waters of Rathgama Lagoon in Hikkaduwa, Sri Lanka, our guided excursions balance safety, local storytelling, and ecological mindfulness. We guide you through untouched mangrove tunnels, showcasing Sri Lanka's rich coastal biodiversity.
+            Nestled by the quiet waters of Rathgama Lagoon in Hikkaduwa, Sri Lanka, our guided excursions balance safety, local storytelling, and ecological mindfulness. We guide you through untouched mangrove tunnels, showcasing Sri Lanka&apos;s rich coastal biodiversity.
           </p>
 
           {/* CTA Button */}

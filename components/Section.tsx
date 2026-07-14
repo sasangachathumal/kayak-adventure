@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
+import { ElementType, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface SectionProps {
+  as?: ElementType;
   id?: string;
   className?: string;
   containerClassName?: string;
@@ -10,6 +11,7 @@ interface SectionProps {
 }
 
 export default function Section({
+  as: Tag = "section",
   id,
   className,
   containerClassName,
@@ -17,7 +19,7 @@ export default function Section({
   background,
 }: SectionProps) {
   return (
-    <section
+    <Tag
       id={id}
       className={cn(
         "relative w-full overflow-hidden text-zinc-950 font-sans",
@@ -27,12 +29,12 @@ export default function Section({
       {background}
       <div
         className={cn(
-          "relative z-10 max-w-[1440px] w-full mx-auto px-6 md:px-10",
+          "relative z-10 max-w-[1440px] w-full mx-auto px-8 md:px-16",
           containerClassName
         )}
       >
         {children}
       </div>
-    </section>
+    </Tag>
   );
 }

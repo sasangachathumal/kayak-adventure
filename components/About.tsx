@@ -18,7 +18,7 @@ export default function About() {
         {/* Left Side: Content */}
         <div className="flex flex-col text-left">
           {/* Section Tag */}
-          <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
+          <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-brand uppercase">
             About Us
           </span>
 

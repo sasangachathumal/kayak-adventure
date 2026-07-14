@@ -72,15 +72,26 @@ export default function About() {
         {/* Right Side: Trust & Showcase Grid */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg lg:max-w-none mx-auto">
           {/* Card 1: Showcase Image (1:1 aspect ratio card) */}
-          <div className="relative aspect-square rounded-[24px] overflow-hidden border border-zinc-200/40 shadow-sm hover:shadow-md transition-all duration-300">
+          <div className="relative aspect-square rounded-[24px] overflow-hidden border border-zinc-200/40 shadow-sm hover:shadow-md transition-all duration-300 bg-zinc-900 flex items-center justify-center">
             <Image
               src="/about-image.png"
               alt="Kayaking through tropical mangrove forest lagoon"
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
               priority
-              className="object-cover pointer-events-none select-none"
+              className="object-cover pointer-events-none select-none opacity-65"
             />
+            
+            {/* Center Logo Overlay */}
+            <div className="relative z-10 size-16 sm:size-20 drop-shadow-md select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
+              <Image
+                src="/logo-with-no-text.svg"
+                alt="Brand Logo Emblem"
+                fill
+                sizes="80px"
+                className="object-contain"
+              />
+            </div>
           </div>
 
           {/* Card 2: SLIC Insurance */}

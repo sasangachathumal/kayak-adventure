@@ -118,6 +118,35 @@
                 <div class="cd-section">
                     <div class="row align-items-center">
                         <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12 featured p-2">
+                                    <div class="p-3 content" style="min-height: 0;">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <i class="material-symbols-outlined text-gradient text-info">shield</i>
+                                                    </div>
+                                                    <div class="col-md-10 text-left align-content-center">
+                                                        <h3>Passenger Liability Insurance</h3>
+                                                    </div>
+                                                </div>
+                                                <p>All passengers joining <strong style="font-weight: 800;">Kayak Adventure Rathgama Lake</strong>
+                                                    are protected under
+                                                    a <strong style="font-weight: 800;">Passenger Liability Insurance</strong> policy provided by
+                                                    <strong style="font-weight: 800;">Sri Lanka Insurance Corporation General Ltd</strong>.
+                                                    (Policy No. PL/014/2025/10). This policy offers coverage of up to Rs. 7,200,000, with a limit of
+                                                    Rs. 300,000 per person per event, ensuring the safety and security of every guest throughout the
+                                                    experience
+                                                </p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <img style="width: 100%; height: 100%; object-fit:cover;" src="./assets/img/slic-general.png" alt="logo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row justify-content-center">
                                 <div class="col-md-3 featured text-center p-2">
                                     <div class="p-3 content">
@@ -170,9 +199,9 @@
                                     We are located in katudampe, rathgama, southern province, facing beautiful rathgama lake.
                                     With kayak adventure, you are not just kayaking around the lake, You can explore and experience wild life around the lake and can enjoy sunset.
                                     Also we have we'll experienced instructors for taking you around the lake. Also we constantly improving ourself to provide you better experience and make your trip memorable.
-                                    Contact us through 
-                                    <strong><a class="face mx-3" href="https://www.facebook.com/share/15Tf7YNeJC/" target="_blank"><i class="fa fa-facebook-square mr-1"></i>Facebook</a></strong> or 
-                                    <strong><a class="what mx-3" href="https://wa.me/94761122261" target="_blank"><i class="fa fa-whatsapp mr-1"></i>Whatsapp</a></strong> or 
+                                    Contact us through
+                                    <strong><a class="face mx-3" href="https://www.facebook.com/share/15Tf7YNeJC/" target="_blank"><i class="fa fa-facebook-square mr-1"></i>Facebook</a></strong> or
+                                    <strong><a class="what mx-3" href="https://wa.me/94761122261" target="_blank"><i class="fa fa-whatsapp mr-1"></i>Whatsapp</a></strong> or
                                     <strong><a class="contact mx-3" href="tel:+94761122261"><i class="fa fa-phone-square mr-1"></i> Contact Number</a></strong> and book you’r kayaking experience.
                                 </p>
                             </div>

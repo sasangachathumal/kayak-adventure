@@ -145,7 +145,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3.5 select-none group relative z-50">
           <div className="relative w-12 h-12 flex-shrink-0">
-            <Image src="/kayak-logo.svg" alt="Kayak Adventure Logo Icon" fill sizes="48px" className="object-contain" />
+            <Image src="/logo-with-no-text.svg" alt="Kayak Adventure Logo Icon" fill sizes="48px" className="object-contain" />
           </div>
           <div className="flex flex-col justify-center -space-y-0.5">
             <span className="font-logo text-[32px] leading-none tracking-normal text-zinc-900 transition-colors duration-300">
@@ -159,6 +159,36 @@ export default function Navbar() {
 
         {/* Action button & menu toggle grouped on the right */}
         <div className="flex items-center gap-5 md:gap-6">
+          {/* Desktop-only Social Pill */}
+          <div 
+            className={`
+              hidden md:flex items-center h-[46px] px-[5px] gap-1.5 rounded-full border border-zinc-200/60 bg-white shadow-md select-none transition-all duration-300
+              ${isOpen || isOpening ? "opacity-0 scale-95 pointer-events-none" : "opacity-100 scale-100"}
+            `}
+          >
+            <Link
+              href="https://wa.me/94761122261"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-600 hover:bg-zinc-100 hover:text-[#00b2d6] transition-all duration-300 cursor-pointer"
+              aria-label="WhatsApp"
+            >
+              <WhatsAppIcon className="size-4" />
+            </Link>
+
+            <div className="w-[1px] h-[18px] bg-zinc-200" />
+
+            <Link
+              href="https://www.facebook.com/profile.php?id=61565539648872&rdid=rmGEVPBEUmBlSJyv&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F15Tf7YNeJC%2F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-600 hover:bg-zinc-100 hover:text-[#00b2d6] transition-all duration-300 cursor-pointer"
+              aria-label="Facebook"
+            >
+              <FacebookIcon className="size-4" />
+            </Link>
+          </div>
+
           <button
             onClick={isOpen || isOpening ? handleClose : handleOpen}
             className="relative z-50 flex items-center justify-center size-[46px] rounded-full bg-[#00b2d6] hover:bg-[#0099b8] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none group cursor-pointer shadow-md"
@@ -245,7 +275,7 @@ export default function Navbar() {
               </Link>
               <div className="w-[1px] h-[18px] bg-zinc-200" />
               <Link
-                href="https://www.facebook.com/share/15Tf7YNeJC/"
+                href="https://www.facebook.com/profile.php?id=61565539648872&rdid=rmGEVPBEUmBlSJyv&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F15Tf7YNeJC%2F"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={handleClose}

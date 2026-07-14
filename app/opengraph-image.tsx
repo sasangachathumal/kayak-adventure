@@ -1,141 +1,123 @@
 import { ImageResponse } from "next/og";
+import fs from "fs";
+import path from "path";
 
-// Route segment config
-export const runtime = "edge";
+// Route segment config - use nodejs runtime to allow fs reads
+export const runtime = "nodejs";
 
 // Image dimensions
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/**
- * Dynamically generated Open Graph image served at /opengraph-image.png
- * This replaces any static /public/og-image.png and keeps the OG image
- * in sync with brand changes automatically.
- */
-export default function Image() {
+export default async function Image() {
+  // Read herobg1.png and convert to base64
+  const imagePath = path.join(process.cwd(), "public", "herobg1.png");
+  const imageBuffer = fs.readFileSync(imagePath);
+  const base64Image = imageBuffer.toString("base64");
+  const bgDataUri = `data:image/png;base64,${base64Image}`;
+
+  // Read logo-with-no-text.svg and convert to base64
+  const logoPath = path.join(process.cwd(), "public", "logo-with-no-text.svg");
+  const logoContent = fs.readFileSync(logoPath, "utf8");
+  const base64Logo = Buffer.from(logoContent).toString("base64");
+  const logoDataUri = `data:image/svg+xml;base64,${base64Logo}`;
+
   return new ImageResponse(
     (
       <div
         style={{
-          background: "linear-gradient(135deg, #001f2e 0%, #003a52 60%, #00b2d6 100%)",
+          backgroundImage: `linear-gradient(135deg, rgba(0, 31, 46, 0.85) 0%, rgba(0, 58, 82, 0.9) 60%, rgba(0, 178, 214, 0.45) 100%), url(${bgDataUri})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          justifyContent: "flex-end",
-          padding: "64px 72px",
-          fontFamily: "Georgia, serif",
+          justifyContent: "space-between",
+          padding: "80px",
           position: "relative",
         }}
       >
-        {/* Subtle wave decoration */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: "520px",
-            height: "520px",
-            borderRadius: "50%",
-            background: "rgba(0,178,214,0.12)",
-            transform: "translate(160px, -160px)",
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            right: "120px",
-            width: "300px",
-            height: "300px",
-            borderRadius: "50%",
-            background: "rgba(0,178,214,0.08)",
-            transform: "translateY(100px)",
-            display: "flex",
-          }}
-        />
-
-        {/* Brand accent line */}
-        <div
-          style={{
-            width: "60px",
-            height: "3px",
-            background: "#00b2d6",
-            marginBottom: "24px",
-            borderRadius: "2px",
-            display: "flex",
-          }}
-        />
-
-        {/* Headline */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "72px",
-            fontWeight: "600",
-            color: "#ffffff",
-            lineHeight: "1.05",
-            letterSpacing: "-0.5px",
-            marginBottom: "20px",
-            maxWidth: "800px",
-          }}
-        >
-          <span>Nature.</span>
-          <span style={{ fontStyle: "italic", color: "#38d1eb" }}>
-            Your Adventure.
-          </span>
-        </div>
-
-        {/* Description */}
-        <div
-          style={{
-            display: "flex",
-            fontSize: "22px",
-            color: "rgba(255,255,255,0.75)",
-            marginBottom: "40px",
-            maxWidth: "640px",
-            lineHeight: "1.5",
-            fontFamily: "sans-serif",
-            letterSpacing: "0.02em",
-          }}
-        >
-          Guided kayak tours through Sri Lanka's most breathtaking waterways.
-        </div>
-
-        {/* Domain badge */}
+        {/* Header Row (Logo + Domain) */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
-            background: "rgba(255,255,255,0.12)",
-            borderRadius: "100px",
-            padding: "10px 24px",
-            border: "1px solid rgba(255,255,255,0.2)",
+            justifyContent: "space-between",
+            width: "100%",
           }}
         >
+          {/* Logo Brand group */}
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <img
+              src={logoDataUri}
+              alt="Kayak Logo"
+              style={{
+                width: "64px",
+                height: "64px",
+              }}
+            />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span style={{ fontSize: "36px", fontWeight: "bold", color: "#ffffff", letterSpacing: "1px", fontFamily: "sans-serif" }}>
+                KAYAK
+              </span>
+              <span style={{ fontSize: "11px", fontWeight: "900", color: "#00b2d6", letterSpacing: "5px", fontFamily: "sans-serif", marginTop: "2px" }}>
+                ADVENTURE
+              </span>
+            </div>
+          </div>
+
+          {/* Domain tag */}
           <div
             style={{
-              width: "8px",
-              height: "8px",
-              borderRadius: "50%",
-              background: "#00b2d6",
               display: "flex",
-            }}
-          />
-          <span
-            style={{
-              fontSize: "16px",
-              color: "rgba(255,255,255,0.85)",
-              fontFamily: "sans-serif",
-              letterSpacing: "0.05em",
+              alignItems: "center",
+              gap: "8px",
+              background: "rgba(255,255,255,0.12)",
+              borderRadius: "100px",
+              padding: "10px 24px",
+              border: "1px solid rgba(255,255,255,0.2)",
             }}
           >
-            kayakadventure.lk
-          </span>
+            <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#00b2d6" }} />
+            <span style={{ fontSize: "16px", color: "#ffffff", fontWeight: "600", fontFamily: "sans-serif" }}>
+              kayakadventure.lk
+            </span>
+          </div>
+        </div>
+
+        {/* Content Block */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {/* Accent bar */}
+          <div style={{ width: "80px", height: "4px", background: "#00b2d6", borderRadius: "2px" }} />
+
+          {/* Title */}
+          <div
+            style={{
+              fontSize: "68px",
+              fontWeight: "bold",
+              color: "#ffffff",
+              lineHeight: "1.1",
+              maxWidth: "900px",
+              fontFamily: "sans-serif",
+            }}
+          >
+            Nature. Your Adventure.
+          </div>
+
+          {/* Description */}
+          <div
+            style={{
+              fontSize: "24px",
+              color: "rgba(255, 255, 255, 0.8)",
+              maxWidth: "720px",
+              lineHeight: "1.5",
+              fontFamily: "sans-serif",
+            }}
+          >
+            Guided kayak tours through Sri Lanka&apos;s serene Rathgama lagoon and hidden mangrove paths.
+          </div>
         </div>
       </div>
     ),

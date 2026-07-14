@@ -8,6 +8,22 @@ export const SITE_LOCALE = "en_US";
 export const DEFAULT_SEO: Metadata = {
   metadataBase: new URL(SITE_URL),
 
+  // ── Favicons & Icons ───────────────────────────────────────────────────
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon/favicon.ico", sizes: "any" }
+    ],
+    apple: [
+      { url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }
+    ],
+    other: [
+      { rel: "manifest", url: "/favicon/site.webmanifest" }
+    ]
+  },
+
   // ── Titles ──────────────────────────────────────────────────────────────
   title: "KAYAK Adventure",
 
@@ -48,7 +64,7 @@ export const DEFAULT_SEO: Metadata = {
       "Book your unforgettable paddle adventure today.",
     images: [
       {
-        url: "/og-image.png",         // place a 1200×630 image in /public
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "Kayak Adventure",
@@ -62,7 +78,7 @@ export const DEFAULT_SEO: Metadata = {
     title: "Kayak Adventure",
     description:
       "Guided kayak tours through Sri Lanka's most stunning waterways.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image.png"],
     // creator: "@yourhandle",   // uncomment when you have a Twitter/X handle
   },
 

@@ -36,7 +36,7 @@ export default function Footer() {
           <Link href="/" className="flex items-center gap-3.5 group mb-8 self-start">
             <div className="relative w-11 h-11 flex-shrink-0">
               <Image
-                src="/kayak-logo.svg"
+                src="/logo-with-no-text.svg"
                 alt="Kayak Adventure Logo Icon"
                 fill
                 sizes="44px"
@@ -63,7 +63,7 @@ export default function Footer() {
           {/* Address Row */}
           <div className="flex items-start gap-2.5 text-zinc-600 text-[14px] mb-10 md:mb-0">
             <MapPin className="size-4 text-brand shrink-0 mt-0.5" />
-            <span className="break-words">Rathgama Lake, Rathgama,<br className="md:hidden" />Southern Province, Sri Lanka</span>
+            <span className="wrap-break-word">Kayak Adventure Rathgama Lake,<br className="md:hidden" />Katudampa Road,<br className="hidden md:block" />Rathgama,<br className="md:hidden" />Southern Province, Sri Lanka.</span>
           </div>
         </div>
 
@@ -102,7 +102,7 @@ export default function Footer() {
             <div className="w-[1px] h-[20px] bg-zinc-100" />
 
             <Link
-              href="https://www.facebook.com/kayakadventure.lk"
+              href="https://www.facebook.com/profile.php?id=61565539648872&rdid=rmGEVPBEUmBlSJyv&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F15Tf7YNeJC%2F"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"

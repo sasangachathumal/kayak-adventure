@@ -39,7 +39,7 @@ export default function Gallery() {
   }, [api]);
 
   return (
-    <Section id="gallery" className="bg-[#f0efeb] pt-24 sm:pt-32 pb-20 lg:pb-28">
+    <Section id="gallery" className="bg-[#f0efeb] pt-12 sm:pt-16 pb-12 lg:pb-16">
       
       {/* Top Part: Content and Featured Header Image */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-16">

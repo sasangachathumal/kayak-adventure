@@ -11,10 +11,10 @@ export default function About() {
   return (
     <Section
       id="about"
-      className="bg-[#f0efeb] py-24 sm:py-32"
+      className="bg-[#f0efeb] pt-24 pb-12 sm:pt-32 sm:pb-16"
       containerClassName="flex flex-col gap-10 sm:gap-12"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         
         {/* Left Side: Content */}
         <div className="flex flex-col text-left">

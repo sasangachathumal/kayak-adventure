@@ -70,7 +70,7 @@ export default function Testimonials() {
   }, [api]);
 
   return (
-    <Section id="testimonials" className="bg-[#f0efeb] pt-24 sm:pt-32 pb-20 lg:pb-28">
+    <Section id="testimonials" className="bg-[#f0efeb] pt-12 sm:pt-16 pb-20 lg:pb-28">
       
       {/* Top Part: Title */}
       <div className="flex flex-col text-left mb-16">

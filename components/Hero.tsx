@@ -91,7 +91,7 @@ export default function Hero() {
           <div className="flex select-none">
             <Link href="#featuredSection">
               <Button variant="cta" size="cta">
-                Contact Us
+                Contact U
               </Button>
             </Link>
           </div>

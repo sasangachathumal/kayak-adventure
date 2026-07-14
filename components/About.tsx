@@ -16,7 +16,7 @@ export default function About() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         
         {/* Left Side: Content */}
-        <div className="flex flex-col text-left order-2 lg:order-1">
+        <div className="flex flex-col text-left">
           {/* Section Tag */}
           <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
             About Us
@@ -70,7 +70,7 @@ export default function About() {
         </div>
 
         {/* Right Side: Trust & Showcase Grid */}
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 order-1 lg:order-2 w-full max-w-lg lg:max-w-none mx-auto">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg lg:max-w-none mx-auto">
           {/* Card 1: Showcase Image (1:1 aspect ratio card) */}
           <div className="relative aspect-square rounded-[24px] overflow-hidden border border-zinc-200/40 shadow-sm hover:shadow-md transition-all duration-300">
             <Image

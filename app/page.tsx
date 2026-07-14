@@ -5,10 +5,12 @@ import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export default function Home() {
   return (
     <main className="flex-1 flex flex-col">
+      <ScrollToTop />
       <Navbar />
       <Hero />
       <About />

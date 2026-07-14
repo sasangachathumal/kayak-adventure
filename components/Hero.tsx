@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Navbar from "./Navbar";
 
 import Section from "./Section";
 
@@ -22,6 +21,7 @@ export default function Hero() {
               alt="Kayak adventure mobile background"
               fill
               priority
+              sizes="(max-width: 767px) 100vw, 0px"
               className="object-cover object-bottom pointer-events-none select-none"
               quality={90}
             />
@@ -36,6 +36,7 @@ export default function Hero() {
               alt="Kayak adventure desktop background"
               fill
               priority
+              sizes="(min-width: 768px) 100vw, 0px"
               className="object-cover object-[center_35%] pointer-events-none select-none"
               quality={100}
             />
@@ -45,11 +46,8 @@ export default function Hero() {
         </>
       }
     >
-      {/* Header / Navbar */}
-      <Navbar />
-
-      {/* Hero Main Body Content */}
-      <div className="flex-1 flex flex-col justify-start pt-28 lg:pt-40 pb-20">
+      {/* Hero Main Body Content — pt accounts for the fixed navbar height */}
+      <div className="flex-1 flex flex-col justify-start pt-36 lg:pt-44 pb-20">
         <div className="max-w-2xl text-left flex flex-col">
           
           {/* Title */}
@@ -93,7 +91,7 @@ export default function Hero() {
           <div className="flex select-none">
             <Link href="#featuredSection">
               <Button variant="cta" size="cta">
-                Explore More
+                Contact Us
               </Button>
             </Link>
           </div>

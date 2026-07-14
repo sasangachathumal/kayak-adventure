@@ -26,6 +26,7 @@ export default function Image() {
           justifyContent: "flex-end",
           padding: "64px 72px",
           fontFamily: "Georgia, serif",
+          position: "relative",
         }}
       >
         {/* Subtle wave decoration */}
@@ -39,6 +40,7 @@ export default function Image() {
             borderRadius: "50%",
             background: "rgba(0,178,214,0.12)",
             transform: "translate(160px, -160px)",
+            display: "flex",
           }}
         />
         <div
@@ -51,6 +53,7 @@ export default function Image() {
             borderRadius: "50%",
             background: "rgba(0,178,214,0.08)",
             transform: "translateY(100px)",
+            display: "flex",
           }}
         />
 
@@ -62,12 +65,15 @@ export default function Image() {
             background: "#00b2d6",
             marginBottom: "24px",
             borderRadius: "2px",
+            display: "flex",
           }}
         />
 
         {/* Headline */}
         <div
           style={{
+            display: "flex",
+            flexDirection: "column",
             fontSize: "72px",
             fontWeight: "600",
             color: "#ffffff",
@@ -77,7 +83,7 @@ export default function Image() {
             maxWidth: "800px",
           }}
         >
-          Nature.{"\n"}
+          <span>Nature.</span>
           <span style={{ fontStyle: "italic", color: "#38d1eb" }}>
             Your Adventure.
           </span>
@@ -86,6 +92,7 @@ export default function Image() {
         {/* Description */}
         <div
           style={{
+            display: "flex",
             fontSize: "22px",
             color: "rgba(255,255,255,0.75)",
             marginBottom: "40px",
@@ -116,6 +123,7 @@ export default function Image() {
               height: "8px",
               borderRadius: "50%",
               background: "#00b2d6",
+              display: "flex",
             }}
           />
           <span

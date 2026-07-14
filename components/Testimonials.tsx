@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Section from "./Section";
+import Reveal from "./Reveal";
 import {
   Carousel,
   CarouselContent,
@@ -74,131 +75,108 @@ export default function Testimonials() {
       {/* Top Part: Title */}
       <div className="flex flex-col text-left mb-16">
         {/* Section Tag */}
-        <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
-          Testimonials
-        </span>
+        <Reveal variant="fade-left" duration={600}>
+          <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
+            Testimonials
+          </span>
+        </Reveal>
 
         {/* Decorative Tapered Brand Line */}
-        <svg
-          width="72"
-          height="4"
-          viewBox="0 0 72 4"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="mt-4 mb-8"
-        >
-          <defs>
-            <linearGradient id="testimonials-brand-fade-gradient" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#00b2d6" />
-              <stop offset="60%" stopColor="#00b2d6" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#00b2d6" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M 0 0.5 C 20 0.5, 50 1.2, 72 2 C 50 2.8, 20 3.5, 0 3.5 Z"
-            fill="url(#testimonials-brand-fade-gradient)"
-          />
-        </svg>
+        <Reveal variant="fade-left" delay={100} duration={600}>
+          <svg
+            width="72"
+            height="4"
+            viewBox="0 0 72 4"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="mt-4 mb-8"
+          >
+            <defs>
+              <linearGradient id="testimonials-brand-fade-gradient" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#00b2d6" />
+                <stop offset="60%" stopColor="#00b2d6" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#00b2d6" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M 0 0.5 C 20 0.5, 50 1.2, 72 2 C 50 2.8, 20 3.5, 0 3.5 Z"
+              fill="url(#testimonials-brand-fade-gradient)"
+            />
+          </svg>
+        </Reveal>
 
         {/* Headline */}
-        <h2 className="font-serif text-[40px] sm:text-5xl md:text-[54px] text-zinc-900 font-medium leading-[1.1] tracking-wide max-w-[500px]">
-          Hear it from <br />
-          our <span className="italic font-medium">explorers.</span>
-        </h2>
+        <Reveal variant="clip-up" delay={150} duration={900}>
+          <h2 className="font-serif text-[40px] sm:text-5xl md:text-[54px] text-zinc-900 font-medium leading-[1.1] tracking-wide max-w-[500px]">
+            Hear it from <br />
+            our <span className="italic font-medium">explorers.</span>
+          </h2>
+        </Reveal>
       </div>
 
       {/* Embla Carousel Container */}
-      <div className="w-full relative">
-        <Carousel setApi={setApi} opts={{ align: "start", loop: false, watchDrag: true }} className="w-full" style={{ touchAction: "pan-y" }}>
-          <CarouselContent className="-ml-6">
-            
-            {testimonials.map((t, index) => (
-              <CarouselItem key={index} className="pl-6 basis-full sm:basis-1/2 lg:basis-1/3">
-                <div className="flex flex-col text-left h-full min-h-[250px] lg:min-h-[310px] bg-white border border-zinc-200/50 p-8 rounded-[24px] shadow-sm hover:shadow-md hover:border-zinc-200/80 transition-all duration-300">
-                  
-                  {/* Large Stylized Cyan Quote Mark */}
-                  <span className="font-serif text-[64px] text-[#00b2d6] leading-[1] select-none h-10 -mt-2 block">
-                    “
-                  </span>
+      <Reveal variant="fade-up" delay={200} duration={800}>
+        <div className="w-full relative">
+          <Carousel setApi={setApi} opts={{ align: "start", loop: false, watchDrag: true }} className="w-full" style={{ touchAction: "pan-y" }}>
+            <CarouselContent className="-ml-6">
+              
+              {testimonials.map((t, index) => (
+                <CarouselItem key={index} className="pl-6 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <div className="flex flex-col text-left h-full min-h-[250px] lg:min-h-[310px] bg-white border border-zinc-200/50 p-8 rounded-[24px] shadow-sm hover:shadow-md hover:border-zinc-200/80 transition-all duration-300">
+                    
+                    {/* Large Stylized Cyan Quote Mark */}
+                    <span className="font-serif text-[64px] text-[#00b2d6] leading-[1] select-none h-10 -mt-2 block">
+                      &ldquo;
+                    </span>
 
-                  {/* Testimonial text */}
-                  <p className="font-sans text-[15px] sm:text-[16px] text-zinc-700 leading-relaxed font-normal tracking-wide mb-6 flex-1">
-                    {t.quote}
-                  </p>
+                    {/* Testimonial text */}
+                    <p className="font-sans text-[15px] sm:text-[16px] text-zinc-700 leading-relaxed font-normal tracking-wide mb-6 flex-1">
+                      {t.quote}
+                    </p>
 
-                  {/* Subtle Separator */}
-                  <div className="w-12 h-[1px] bg-zinc-200 mb-6" />
+                    {/* Subtle Separator */}
+                    <div className="w-12 h-[1px] bg-zinc-200 mb-6" />
 
-                  {/* Author Meta */}
-                  <div className="flex items-center gap-3">
-                    {/* Rounded Image */}
-                    <div className="relative size-11 rounded-full overflow-hidden border border-zinc-200 bg-zinc-100 shadow-inner">
-                      <Image
-                        src={t.image}
-                        alt={t.author}
-                        fill
-                        sizes="44px"
-                        className="object-cover pointer-events-none select-none"
-                      />
+                    {/* Author Meta */}
+                    <div className="flex items-center gap-3">
+                      {/* Rounded Image */}
+                      <div className="relative size-11 rounded-full overflow-hidden border border-zinc-200 bg-zinc-100 shadow-inner">
+                        <Image
+                          src={t.image}
+                          alt={t.author}
+                          fill
+                          sizes="44px"
+                          className="object-cover pointer-events-none select-none"
+                        />
+                      </div>
+
+                      <div className="flex flex-col">
+                        <span className="font-sans text-[13px] sm:text-[14px] font-semibold text-zinc-900 leading-tight">
+                          {t.author}
+                        </span>
+                        <span className="font-sans text-[11px] text-zinc-400 mt-0.5">
+                          {t.location}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="flex flex-col">
-                      <span className="font-sans text-[13px] sm:text-[14px] font-semibold text-zinc-900 leading-tight">
-                        {t.author}
-                      </span>
-                      <span className="font-sans text-[11px] text-zinc-400 mt-0.5">
-                        {t.location}
-                      </span>
-                    </div>
                   </div>
+                </CarouselItem>
+              ))}
 
-                </div>
-              </CarouselItem>
-            ))}
+            </CarouselContent>
+          </Carousel>
 
-          </CarouselContent>
-        </Carousel>
-
-        {/* Carousel Controls (Mobile: Dots only; Desktop: Floating White Capsule Wrapper) */}
-        <div className="flex items-center justify-center mt-16">
-          {/* Mobile version (dots only) */}
-          <div className="flex sm:hidden items-center justify-center gap-2.5">
-            {Array.from({ length: count }).map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => api?.scrollTo(idx)}
-                className={cn(
-                  "size-2 rounded-full transition-all duration-300",
-                  current === idx ? "bg-[#00b2d6] w-2" : "bg-zinc-200"
-                )}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Desktop version (Floating White Capsule Wrapper with arrows + dots) */}
-          <div className="hidden sm:flex items-center h-[46px] px-[5px] gap-4 bg-white rounded-full shadow-sm border border-zinc-200/50 select-none">
-            {/* Prev Button */}
-            <button
-              onClick={() => api?.scrollPrev()}
-              disabled={!api?.canScrollPrev()}
-              className="relative overflow-hidden size-9 rounded-full bg-[#00b2d6] text-white flex items-center justify-center hover:bg-zinc-950 transition-all duration-300 disabled:opacity-40 disabled:hover:bg-[#00b2d6] cursor-pointer group/prev"
-              aria-label="Previous slide"
-            >
-              {/* Arrow 1: Slides out to the left */}
-              <ArrowLeft className="size-4 stroke-[2.5] transition-all duration-500 ease-in-out transform group-hover/prev:-translate-x-6 group-hover/prev:opacity-0" />
-              {/* Arrow 2: Slides in from the right */}
-              <ArrowLeft className="absolute size-4 stroke-[2.5] translate-x-6 opacity-0 transition-all duration-500 ease-in-out transform group-hover/prev:translate-x-0 group-hover/prev:opacity-100" />
-            </button>
-
-            {/* Pagination Indicators */}
-            <div className="flex items-center gap-2.5">
+          {/* Carousel Controls (Mobile: Dots only; Desktop: Floating White Capsule Wrapper) */}
+          <div className="flex items-center justify-center mt-16">
+            {/* Mobile version (dots only) */}
+            <div className="flex sm:hidden items-center justify-center gap-2.5">
               {Array.from({ length: count }).map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => api?.scrollTo(idx)}
                   className={cn(
-                    "size-2 rounded-full transition-all duration-300 cursor-pointer",
+                    "size-2 rounded-full transition-all duration-300",
                     current === idx ? "bg-[#00b2d6] w-2" : "bg-zinc-200"
                   )}
                   aria-label={`Go to slide ${idx + 1}`}
@@ -206,22 +184,53 @@ export default function Testimonials() {
               ))}
             </div>
 
-            {/* Next Button */}
-            <button
-              onClick={() => api?.scrollNext()}
-              disabled={!api?.canScrollNext()}
-              className="relative overflow-hidden size-9 rounded-full bg-[#00b2d6] text-white flex items-center justify-center hover:bg-zinc-950 transition-all duration-300 disabled:opacity-40 disabled:hover:bg-[#00b2d6] cursor-pointer group/next"
-              aria-label="Next slide"
-            >
-              {/* Arrow 1: Slides out to the right */}
-              <ArrowRight className="size-4 stroke-[2.5] transition-all duration-500 ease-in-out transform group-hover/next:translate-x-6 group-hover/next:opacity-0" />
-              {/* Arrow 2: Slides in from the left */}
-              <ArrowRight className="absolute size-4 stroke-[2.5] -translate-x-6 opacity-0 transition-all duration-500 ease-in-out transform group-hover/next:translate-x-0 group-hover/next:opacity-100" />
-            </button>
-          </div>
-        </div>
+            {/* Desktop version (Floating White Capsule Wrapper with arrows + dots) */}
+            <div className="hidden sm:flex items-center h-[46px] px-[5px] gap-4 bg-white rounded-full shadow-sm border border-zinc-200/50 select-none">
+              {/* Prev Button */}
+              <button
+                onClick={() => api?.scrollPrev()}
+                disabled={!api?.canScrollPrev()}
+                className="relative overflow-hidden size-9 rounded-full bg-[#00b2d6] text-white flex items-center justify-center hover:bg-zinc-950 transition-all duration-300 disabled:opacity-40 disabled:hover:bg-[#00b2d6] cursor-pointer group/prev"
+                aria-label="Previous slide"
+              >
+                {/* Arrow 1: Slides out to the left */}
+                <ArrowLeft className="size-4 stroke-[2.5] transition-all duration-500 ease-in-out transform group-hover/prev:-translate-x-6 group-hover/prev:opacity-0" />
+                {/* Arrow 2: Slides in from the right */}
+                <ArrowLeft className="absolute size-4 stroke-[2.5] translate-x-6 opacity-0 transition-all duration-500 ease-in-out transform group-hover/prev:translate-x-0 group-hover/prev:opacity-100" />
+              </button>
 
-      </div>
+              {/* Pagination Indicators */}
+              <div className="flex items-center gap-2.5">
+                {Array.from({ length: count }).map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => api?.scrollTo(idx)}
+                    className={cn(
+                      "size-2 rounded-full transition-all duration-300 cursor-pointer",
+                      current === idx ? "bg-[#00b2d6] w-2" : "bg-zinc-200"
+                    )}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() => api?.scrollNext()}
+                disabled={!api?.canScrollNext()}
+                className="relative overflow-hidden size-9 rounded-full bg-[#00b2d6] text-white flex items-center justify-center hover:bg-zinc-950 transition-all duration-300 disabled:opacity-40 disabled:hover:bg-[#00b2d6] cursor-pointer group/next"
+                aria-label="Next slide"
+              >
+                {/* Arrow 1: Slides out to the right */}
+                <ArrowRight className="size-4 stroke-[2.5] transition-all duration-500 ease-in-out transform group-hover/next:translate-x-6 group-hover/next:opacity-0" />
+                {/* Arrow 2: Slides in from the left */}
+                <ArrowRight className="absolute size-4 stroke-[2.5] -translate-x-6 opacity-0 transition-all duration-500 ease-in-out transform group-hover/next:translate-x-0 group-hover/next:opacity-100" />
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </Reveal>
 
     </Section>
   );

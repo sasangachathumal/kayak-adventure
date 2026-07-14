@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
 import Section from "./Section";
+import Reveal from "./Reveal";
 
 // WhatsApp Brand SVG Icon
 const WhatsAppIcon = ({ className = "size-5" }: { className?: string }) => (
@@ -33,84 +34,97 @@ export default function Footer() {
 
         {/* Logo & Description column */}
         <div className="col-span-12 md:col-span-7 flex flex-col items-start text-left">
-          <Link href="/" className="flex items-center gap-3.5 group mb-8 self-start">
-            <div className="relative w-11 h-11 flex-shrink-0">
-              <Image
-                src="/logo-with-no-text.svg"
-                alt="Kayak Adventure Logo Icon"
-                fill
-                sizes="44px"
-                className="object-contain"
-              />
-            </div>
-            <div className="flex flex-col justify-center -space-y-0.5 text-left">
-              <span className="font-logo text-[28px] leading-none tracking-normal text-zinc-900 group-hover:text-zinc-950 transition-colors">
-                KAYAK
-              </span>
-              <span className="font-sans text-[9px] font-bold tracking-[0.43em] text-zinc-600 leading-none group-hover:text-zinc-950 transition-colors mt-0.5">
-                ADVENTURE
-              </span>
-            </div>
-          </Link>
+          <Reveal variant="fade-up" duration={700}>
+            <Link href="/" className="flex items-center gap-3.5 group mb-8 self-start">
+              <div className="relative w-11 h-11 flex-shrink-0">
+                <Image
+                  src="/logo-with-no-text.svg"
+                  alt="Kayak Adventure Logo Icon"
+                  fill
+                  sizes="44px"
+                  className="object-contain"
+                />
+              </div>
+              <div className="flex flex-col justify-center -space-y-0.5 text-left">
+                <span className="font-logo text-[28px] leading-none tracking-normal text-zinc-900 group-hover:text-zinc-950 transition-colors">
+                  KAYAK
+                </span>
+                <span className="font-sans text-[9px] font-bold tracking-[0.43em] text-zinc-600 leading-none group-hover:text-zinc-950 transition-colors mt-0.5">
+                  ADVENTURE
+                </span>
+              </div>
+            </Link>
+          </Reveal>
 
-          <p className="font-sans text-[14px] leading-relaxed text-zinc-600 max-w-sm mb-6 text-left">
-            Experience guided kayaking tours through<br className="md:hidden" />
-            Sri Lanka&apos;s serene Rathgama lagoon and<br className="md:hidden" />
-            hidden mangrove paths. Reconnect with nature<br className="md:hidden" />
-            at its purest.
-          </p>
+          <Reveal variant="blur-in" delay={100} duration={800}>
+            <p className="font-sans text-[14px] leading-relaxed text-zinc-600 max-w-sm mb-6 text-left">
+              Experience guided kayaking tours through<br className="md:hidden" />
+              Sri Lanka&apos;s serene Rathgama lagoon and<br className="md:hidden" />
+              hidden mangrove paths. Reconnect with nature<br className="md:hidden" />
+              at its purest.
+            </p>
+          </Reveal>
 
           {/* Address Row */}
-          <div className="flex items-start gap-2.5 text-zinc-600 text-[14px] mb-10 md:mb-0">
-            <MapPin className="size-4 text-brand shrink-0 mt-0.5" />
-            <span className="wrap-break-word">Kayak Adventure Rathgama Lake,<br className="md:hidden" />Katudampa Road,<br className="hidden md:block" />Rathgama,<br className="md:hidden" />Southern Province, Sri Lanka.</span>
-          </div>
+          <Reveal variant="fade-up" delay={200} duration={700}>
+            <div className="flex items-start gap-2.5 text-zinc-600 text-[14px] mb-10 md:mb-0">
+              <MapPin className="size-4 text-brand shrink-0 mt-0.5" />
+              <span className="wrap-break-word">Kayak Adventure Rathgama Lake,<br className="md:hidden" />Katudampa Road,<br className="hidden md:block" />Rathgama,<br className="md:hidden" />Southern Province, Sri Lanka.</span>
+            </div>
+          </Reveal>
         </div>
 
         {/* Contact Details Column */}
         <div className="col-span-12 md:col-span-5 flex flex-col items-start text-left">
-          <span className="font-sans text-[10px] font-bold tracking-[0.35em] text-brand uppercase mb-8">
-            Contact Us
-          </span>
-          <ul className="space-y-5 font-sans text-[14px] w-full flex flex-col items-start mb-10">
-            <li className="flex flex-row items-center gap-3 text-zinc-600">
-              <Phone className="size-5 text-brand shrink-0" />
-              <Link href="tel:+94761122261" className="hover:text-brand transition-colors">
-                +94 76 112 2261
-              </Link>
-            </li>
-            <li className="flex flex-row items-center gap-3 text-zinc-600">
-              <Mail className="size-5 text-brand shrink-0" />
-              <Link href="mailto:hello@kayakadventure.lk" className="hover:text-brand transition-colors break-all">
-                hello@kayakadventure.lk
-              </Link>
-            </li>
-          </ul>
+          <Reveal variant="fade-left" duration={600}>
+            <span className="font-sans text-[10px] font-bold tracking-[0.35em] text-brand uppercase mb-8">
+              Contact Us
+            </span>
+          </Reveal>
+
+          <Reveal variant="fade-up" delay={100} duration={700}>
+            <ul className="space-y-5 font-sans text-[14px] w-full flex flex-col items-start mb-10">
+              <li className="flex flex-row items-center gap-3 text-zinc-600">
+                <Phone className="size-5 text-brand shrink-0" />
+                <Link href="tel:+94761122261" className="hover:text-brand transition-colors">
+                  +94 76 112 2261
+                </Link>
+              </li>
+              <li className="flex flex-row items-center gap-3 text-zinc-600">
+                <Mail className="size-5 text-brand shrink-0" />
+                <Link href="mailto:hello@kayakadventure.lk" className="hover:text-brand transition-colors break-all">
+                  hello@kayakadventure.lk
+                </Link>
+              </li>
+            </ul>
+          </Reveal>
 
           {/* Social Contact Buttons (Combined Pill) */}
-          <div className="flex items-center h-[46px] px-[5px] gap-1.5 bg-white rounded-full border border-zinc-200/50 shadow-sm">
-            <Link
-              href="https://wa.me/94761122261"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
-              aria-label="WhatsApp"
-            >
-              <WhatsAppIcon className="size-5" />
-            </Link>
+          <Reveal variant="scale-up" delay={200} duration={700}>
+            <div className="flex items-center h-[46px] px-[5px] gap-1.5 bg-white rounded-full border border-zinc-200/50 shadow-sm">
+              <Link
+                href="https://wa.me/94761122261"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+                aria-label="WhatsApp"
+              >
+                <WhatsAppIcon className="size-5" />
+              </Link>
 
-            <div className="w-[1px] h-[20px] bg-zinc-100" />
+              <div className="w-[1px] h-[20px] bg-zinc-100" />
 
-            <Link
-              href="https://www.facebook.com/profile.php?id=61565539648872&rdid=rmGEVPBEUmBlSJyv&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F15Tf7YNeJC%2F"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
-              aria-label="Facebook"
-            >
-              <FacebookIcon className="size-5" />
-            </Link>
-          </div>
+              <Link
+                href="https://www.facebook.com/profile.php?id=61565539648872&rdid=rmGEVPBEUmBlSJyv&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F15Tf7YNeJC%2F"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+                aria-label="Facebook"
+              >
+                <FacebookIcon className="size-5" />
+              </Link>
+            </div>
+          </Reveal>
         </div>
 
       </div>
@@ -119,22 +133,24 @@ export default function Footer() {
       <div className="h-px w-full bg-zinc-200/80 mb-10 md:mb-12" />
 
       {/* Bottom copyright area */}
-      <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-4 text-xs font-sans text-zinc-500 text-center md:text-left">
-        <span>
-          &copy; {currentYear} Kayak Adventure. All rights reserved.
-        </span>
-        <div>
-          Designed & Developed by{" "}
-          <Link
-            href="https://www.rusiru-salwathura.me"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-brand transition-colors font-medium underline underline-offset-2 decoration-zinc-300 hover:decoration-brand"
-          >
-            code by rusiru.
-          </Link>
+      <Reveal variant="fade-up" delay={100} duration={600}>
+        <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-4 text-xs font-sans text-zinc-500 text-center md:text-left">
+          <span>
+            &copy; {currentYear} Kayak Adventure. All rights reserved.
+          </span>
+          <div>
+            Designed & Developed by{" "}
+            <Link
+              href="https://www.rusiru-salwathura.me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-brand transition-colors font-medium underline underline-offset-2 decoration-zinc-300 hover:decoration-brand"
+            >
+              code by rusiru.
+            </Link>
+          </div>
         </div>
-      </div>
+      </Reveal>
 
     </Section>
   );

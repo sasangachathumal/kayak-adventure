@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Section from "./Section";
+import Reveal from "./Reveal";
 
 export default function CTA() {
   return (
@@ -28,46 +29,54 @@ export default function CTA() {
     >
       <div className="relative z-10 flex flex-col items-center">
         {/* Section Tag */}
-        <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-brand uppercase">
-          Let&apos;s Connect
-        </span>
+        <Reveal variant="fade-up" duration={600}>
+          <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-brand uppercase">
+            Let&apos;s Connect
+          </span>
+        </Reveal>
 
         {/* Decorative Tapered Brand Line */}
-        <svg
-          width="72"
-          height="4"
-          viewBox="0 0 72 4"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="mt-4 mb-8"
-        >
-          <defs>
-            <linearGradient id="cta-brand-fade-gradient" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#00b2d6" />
-              <stop offset="60%" stopColor="#00b2d6" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#00b2d6" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M 0 0.5 C 20 0.5, 50 1.2, 72 2 C 50 2.8, 20 3.5, 0 3.5 Z"
-            fill="url(#cta-brand-fade-gradient)"
-          />
-        </svg>
+        <Reveal variant="fade-up" delay={100} duration={600}>
+          <svg
+            width="72"
+            height="4"
+            viewBox="0 0 72 4"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="mt-4 mb-8"
+          >
+            <defs>
+              <linearGradient id="cta-brand-fade-gradient" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#00b2d6" />
+                <stop offset="60%" stopColor="#00b2d6" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#00b2d6" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M 0 0.5 C 20 0.5, 50 1.2, 72 2 C 50 2.8, 20 3.5, 0 3.5 Z"
+              fill="url(#cta-brand-fade-gradient)"
+            />
+          </svg>
+        </Reveal>
 
         {/* Headline */}
-        <h2 className="font-serif text-[42px] sm:text-5xl md:text-[64px] text-white font-medium leading-[1.1] tracking-wide mb-10 max-w-162.5">
-          Ready for your <br />
-          next <span className="italic font-medium">adventure?</span>
-        </h2>
+        <Reveal variant="clip-up" delay={200} duration={900}>
+          <h2 className="font-serif text-[42px] sm:text-5xl md:text-[64px] text-white font-medium leading-[1.1] tracking-wide mb-10 max-w-162.5">
+            Ready for your <br />
+            next <span className="italic font-medium">adventure?</span>
+          </h2>
+        </Reveal>
 
         {/* CTA Button using brand styles */}
-        <div className="flex select-none">
-          <Link href="https://wa.me/94761122261" target="_blank" rel="noopener noreferrer">
-            <Button variant="cta" size="cta">
-              Contact
-            </Button>
-          </Link>
-        </div>
+        <Reveal variant="scale-up" delay={400} duration={700}>
+          <div className="flex select-none">
+            <Link href="https://wa.me/94761122261" target="_blank" rel="noopener noreferrer">
+              <Button variant="cta" size="cta">
+                Contact
+              </Button>
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </Section>
   );

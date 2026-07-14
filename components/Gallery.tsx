@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Section from "./Section";
+import Reveal from "./Reveal";
 import {
   Carousel,
   CarouselContent,
@@ -46,54 +47,64 @@ export default function Gallery() {
         {/* Left Side: Content */}
         <div className="flex flex-col text-left">
           {/* Section Tag */}
-          <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
-            Gallery
-          </span>
+          <Reveal variant="fade-left" duration={600}>
+            <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
+              Gallery
+            </span>
+          </Reveal>
 
           {/* Decorative Tapered Brand Line */}
-          <svg
-            width="72"
-            height="4"
-            viewBox="0 0 72 4"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="mt-4 mb-8"
-          >
-            <defs>
-              <linearGradient id="gallery-brand-fade-gradient" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#00b2d6" />
-                <stop offset="60%" stopColor="#00b2d6" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="#00b2d6" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M 0 0.5 C 20 0.5, 50 1.2, 72 2 C 50 2.8, 20 3.5, 0 3.5 Z"
-              fill="url(#gallery-brand-fade-gradient)"
-            />
-          </svg>
+          <Reveal variant="fade-left" delay={100} duration={600}>
+            <svg
+              width="72"
+              height="4"
+              viewBox="0 0 72 4"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="mt-4 mb-8"
+            >
+              <defs>
+                <linearGradient id="gallery-brand-fade-gradient" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#00b2d6" />
+                  <stop offset="60%" stopColor="#00b2d6" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="#00b2d6" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M 0 0.5 C 20 0.5, 50 1.2, 72 2 C 50 2.8, 20 3.5, 0 3.5 Z"
+                fill="url(#gallery-brand-fade-gradient)"
+              />
+            </svg>
+          </Reveal>
 
           {/* Headline */}
-          <h2 className="font-serif text-[40px] sm:text-5xl md:text-[54px] text-zinc-900 font-medium leading-[1.1] tracking-wide mb-6">
-            Moments on <br />
-            the <span className="italic font-medium">water.</span>
-          </h2>
+          <Reveal variant="clip-up" delay={150} duration={900}>
+            <h2 className="font-serif text-[40px] sm:text-5xl md:text-[54px] text-zinc-900 font-medium leading-[1.1] tracking-wide mb-6">
+              Moments on <br />
+              the <span className="italic font-medium">water.</span>
+            </h2>
+          </Reveal>
 
           {/* Description Paragraph */}
-          <p className="font-sans text-[15px] sm:text-[16px] md:text-[17px] text-zinc-600 leading-[1.75] font-medium tracking-wide max-w-125">
-            Snapshots from our kayaking adventures through Rathgama&apos;s mangroves. Every paddle, every path, a story worth remembering.
-          </p>
+          <Reveal variant="blur-in" delay={300} duration={800}>
+            <p className="font-sans text-[15px] sm:text-[16px] md:text-[17px] text-zinc-600 leading-[1.75] font-medium tracking-wide max-w-125">
+              Snapshots from our kayaking adventures through Rathgama&apos;s mangroves. Every paddle, every path, a story worth remembering.
+            </p>
+          </Reveal>
         </div>
 
         {/* Right Side: Top Landscape Showcase */}
-        <div className="hidden lg:block w-full relative aspect-[1.8/1] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-md">
-          <Image
-            src="/gallery-image-1.png"
-            alt="Kayakers paddling at sunset"
-            fill
-            sizes="50vw"
-            className="object-cover pointer-events-none select-none"
-          />
-        </div>
+        <Reveal variant="scale-up" delay={200} duration={900} className="hidden lg:block">
+          <div className="w-full relative aspect-[1.8/1] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-md">
+            <Image
+              src="/gallery-image-1.png"
+              alt="Kayakers paddling at sunset"
+              fill
+              sizes="50vw"
+              className="object-cover pointer-events-none select-none"
+            />
+          </div>
+        </Reveal>
 
       </div>
 
@@ -101,77 +112,89 @@ export default function Gallery() {
       <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-4 gap-6">
         
         {/* Left Tall Column (Item 1) */}
-        <div className="relative md:row-span-2 aspect-3/4 md:aspect-auto rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
-          <Image
-            src="/gallery-image-2.png"
-            alt="Mangrove Archway"
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover pointer-events-none select-none"
-          />
-        </div>
+        <Reveal variant="fade-up" delay={0} duration={800} className="md:row-span-2">
+          <div className="relative aspect-3/4 md:aspect-auto md:h-full rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
+            <Image
+              src="/gallery-image-2.png"
+              alt="Mangrove Archway"
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover pointer-events-none select-none"
+            />
+          </div>
+        </Reveal>
 
         {/* Middle Columns: Row 1 */}
         {/* Top Middle Left (Item 2) */}
-        <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
-          <Image
-            src="/gallery-image-4.png"
-            alt="Aerial Lake View"
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover pointer-events-none select-none"
-          />
-        </div>
+        <Reveal variant="fade-up" delay={100} duration={800}>
+          <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
+            <Image
+              src="/gallery-image-4.png"
+              alt="Aerial Lake View"
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover pointer-events-none select-none"
+            />
+          </div>
+        </Reveal>
 
         {/* Top Middle Right (Item 3) */}
-        <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
-          <Image
-            src="/gallery-image-5.png"
-            alt="Canopy Tunnel Path"
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover pointer-events-none select-none"
-          />
-        </div>
+        <Reveal variant="fade-up" delay={200} duration={800}>
+          <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
+            <Image
+              src="/gallery-image-5.png"
+              alt="Canopy Tunnel Path"
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover pointer-events-none select-none"
+            />
+          </div>
+        </Reveal>
 
         {/* Right Tall Column (Item 4) */}
-        <div className="relative md:row-span-2 aspect-3/4 md:aspect-auto rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
-          <Image
-            src="/gallery-image-3.png"
-            alt="Golden Hour Waters"
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover pointer-events-none select-none"
-          />
-        </div>
+        <Reveal variant="fade-up" delay={300} duration={800} className="md:row-span-2">
+          <div className="relative aspect-3/4 md:aspect-auto md:h-full rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
+            <Image
+              src="/gallery-image-3.png"
+              alt="Golden Hour Waters"
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover pointer-events-none select-none"
+            />
+          </div>
+        </Reveal>
 
         {/* Middle Columns: Row 2 */}
         {/* Bottom Middle Left (Item 5) */}
-        <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
-          <Image
-            src="/gallery-image-7.png"
-            alt="Lagoon Reflections"
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover pointer-events-none select-none"
-          />
-        </div>
+        <Reveal variant="fade-up" delay={400} duration={800}>
+          <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
+            <Image
+              src="/gallery-image-7.png"
+              alt="Lagoon Reflections"
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover pointer-events-none select-none"
+            />
+          </div>
+        </Reveal>
 
         {/* Bottom Middle Right (Item 6) */}
-        <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
-          <Image
-            src="/gallery-image-6.png"
-            alt="Paddling Exploration"
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover pointer-events-none select-none"
-          />
-        </div>
+        <Reveal variant="fade-up" delay={500} duration={800}>
+          <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
+            <Image
+              src="/gallery-image-6.png"
+              alt="Paddling Exploration"
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover pointer-events-none select-none"
+            />
+          </div>
+        </Reveal>
 
       </div>
 
       {/* Mobile Carousel View */}
-      <div className="sm:hidden w-full select-none">
+      <Reveal variant="fade-up" delay={100} duration={700} className="sm:hidden w-full select-none">
         <Carousel setApi={setApi} opts={{ align: "start", loop: false, watchDrag: true }} className="w-full" style={{ touchAction: "pan-y" }}>
           <CarouselContent className="-ml-4">
             
@@ -264,16 +287,18 @@ export default function Gallery() {
             />
           ))}
         </div>
-      </div>
+      </Reveal>
 
       {/* Centered CTA Button */}
-      <div className="flex justify-center mt-16 select-none">
-        <Link href="/gallery">
-          <Button variant="cta" size="cta">
-            View More
-          </Button>
-        </Link>
-      </div>
+      <Reveal variant="fade-up" delay={200} duration={700}>
+        <div className="flex justify-center mt-16 select-none">
+          <Link href="/gallery">
+            <Button variant="cta" size="cta">
+              View More
+            </Button>
+          </Link>
+        </div>
+      </Reveal>
 
     </Section>
   );

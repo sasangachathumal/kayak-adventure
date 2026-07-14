@@ -72,14 +72,14 @@ export default function About() {
         {/* Right Side: Trust & Showcase Grid */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg lg:max-w-none mx-auto">
           {/* Card 1: Showcase Image (1:1 aspect ratio card) */}
-          <div className="relative aspect-square rounded-[24px] overflow-hidden border border-zinc-200/40 shadow-sm hover:shadow-md transition-all duration-300 bg-zinc-900 flex items-center justify-center">
+          <div className="relative aspect-square rounded-[24px] overflow-hidden border border-zinc-200/40 shadow-sm hover:shadow-md transition-all duration-300 bg-white flex items-center justify-center">
             <Image
               src="/about-image.png"
               alt="Kayaking through tropical mangrove forest lagoon"
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
               priority
-              className="object-cover pointer-events-none select-none opacity-65"
+              className="object-cover pointer-events-none select-none opacity-40"
             />
             
             {/* Center Logo Overlay */}

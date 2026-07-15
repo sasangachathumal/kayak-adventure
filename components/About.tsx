@@ -18,10 +18,17 @@ import {
   Wifi,
   ShieldCheck,
   Leaf,
+  LucideIcon,
 } from "lucide-react";
 
+interface Amenity {
+  icon: LucideIcon;
+  label: string;
+  spin?: boolean;
+}
+
 /** Data-driven amenity list — keeps the JSX clean */
-const amenities = [
+const amenities: Amenity[] = [
   { icon: LifeBuoy, label: "Life Jackets", spin: true },
   { icon: Users, label: "Expert Guides" },
   { icon: Lock, label: "Secure Lockers" },
@@ -32,7 +39,7 @@ const amenities = [
   { icon: Camera, label: "Tour Photos" },
   { icon: HeartPulse, label: "First Aid Kit" },
   { icon: Wifi, label: "Base Wi-Fi" },
-] as const;
+];
 
 export default function About() {
   return (

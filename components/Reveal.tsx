@@ -8,8 +8,8 @@ type RevealVariant =
   | "fade-down"     // Fade in + slide down
   | "fade-left"     // Fade in + slide from left
   | "fade-right"    // Fade in + slide from right
-  | "clip-up"       // Clip-path reveal from bottom (Awwwards text reveal)
-  | "clip-left"     // Clip-path reveal from left
+  | "clip-up"       // Masked reveal from bottom (overflow:hidden + translateY — cross-browser)
+  | "clip-left"     // Masked reveal from left (overflow:hidden + translateX — cross-browser)
   | "scale-up"      // Scale from 0.92 + fade
   | "blur-in"       // Blur-in + fade (cinematic)
   | "slide-up"      // Pure translate-up (no fade, for masked text)
@@ -34,7 +34,7 @@ interface RevealProps {
   staggerDelay?: number;
 }
 
-// ─── Transform Maps ──────────────────────────────────────────────────────────
+// ─── Transform Maps (used for non-clip variants) ──────────────────────────────
 const getHiddenStyles = (variant: RevealVariant): CSSProperties => {
   switch (variant) {
     case "fade-up":
@@ -45,10 +45,6 @@ const getHiddenStyles = (variant: RevealVariant): CSSProperties => {
       return { opacity: 0, transform: "translateX(-48px)" };
     case "fade-right":
       return { opacity: 0, transform: "translateX(48px)" };
-    case "clip-up":
-      return { clipPath: "inset(100% -10% -10% -10%)" };
-    case "clip-left":
-      return { clipPath: "inset(-10% 100% -10% -10%)" };
     case "scale-up":
       return { opacity: 0, transform: "scale(0.92) translateY(24px)" };
     case "blur-in":
@@ -56,7 +52,7 @@ const getHiddenStyles = (variant: RevealVariant): CSSProperties => {
     case "slide-up":
       return { transform: "translateY(100%)" };
     case "stagger":
-      return { opacity: 1 }; // parent doesn't animate itself
+      return { opacity: 1 };
     default:
       return { opacity: 0, transform: "translateY(48px)" };
   }
@@ -69,10 +65,6 @@ const getVisibleStyles = (variant: RevealVariant): CSSProperties => {
     case "fade-left":
     case "fade-right":
       return { opacity: 1, transform: "translate(0)" };
-    case "clip-up":
-      return { clipPath: "inset(-10% -10% -10% -10%)" };
-    case "clip-left":
-      return { clipPath: "inset(-10% -10% -10% -10%)" };
     case "scale-up":
       return { opacity: 1, transform: "scale(1) translateY(0)" };
     case "blur-in":
@@ -115,7 +107,9 @@ export default function Reveal({
   const [isVisible, setIsVisible] = useState(false);
   const [preloaderDone, setPreloaderDone] = useState(false);
 
-  // Sync preloader state
+  // Sync preloader state — with a safety timeout fallback.
+  // If preloaderFinished never fires (page refresh, direct URL, race condition)
+  // we force-reveal after 3.5s so nothing stays permanently hidden.
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -124,9 +118,18 @@ export default function Reveal({
       return;
     }
 
-    const handleFinished = () => setPreloaderDone(true);
+    const handleFinished = () => {
+      setPreloaderDone(true);
+      clearTimeout(fallback);
+    };
+
+    const fallback = setTimeout(() => setPreloaderDone(true), 3500);
+
     window.addEventListener("preloaderFinished", handleFinished);
-    return () => window.removeEventListener("preloaderFinished", handleFinished);
+    return () => {
+      window.removeEventListener("preloaderFinished", handleFinished);
+      clearTimeout(fallback);
+    };
   }, []);
 
   useEffect(() => {
@@ -151,10 +154,47 @@ export default function Reveal({
     return () => observer.disconnect();
   }, [threshold, once, preloaderDone]);
 
+  // ── clip-up / clip-left: two-element mask technique ────────────────────────
+  // Using overflow:hidden on the outer wrapper + translateY/X on the inner
+  // content is the industry-standard cross-browser approach (works in Chrome,
+  // Safari, Firefox). clip-path: inset() had negative-value issues in Chrome
+  // and edge-clipping issues in Safari.
+  if (variant === "clip-up") {
+    const innerStyle: CSSProperties = {
+      transform: isVisible ? "translateY(0%)" : "translateY(105%)",
+      transition: `transform ${duration}ms ${getEasing(variant)} ${delay}ms`,
+      willChange: "transform",
+    };
+    return (
+      // @ts-expect-error — dynamic tag name
+      // overflowY:"clip" masks vertically without affecting overflowX,
+      // so whitespace-nowrap text can extend beyond the container width.
+      <Tag ref={ref} className={className} style={{ overflowX: "visible", overflowY: "clip" }}>
+        <div style={innerStyle}>{children}</div>
+      </Tag>
+    );
+  }
+
+  if (variant === "clip-left") {
+    const innerStyle: CSSProperties = {
+      transform: isVisible ? "translateX(0%)" : "translateX(-105%)",
+      transition: `transform ${duration}ms ${getEasing(variant)} ${delay}ms`,
+      willChange: "transform",
+    };
+    return (
+      // @ts-expect-error — dynamic tag name
+      // overflowX:"clip" masks horizontally without affecting overflowY
+      <Tag ref={ref} className={className} style={{ overflowX: "clip", overflowY: "visible" }}>
+        <div style={innerStyle}>{children}</div>
+      </Tag>
+    );
+  }
+
+  // ── All other variants: single-element opacity/transform ───────────────────
   const style: CSSProperties = {
     ...(isVisible ? getVisibleStyles(variant) : getHiddenStyles(variant)),
     transition: `all ${duration}ms ${getEasing(variant)} ${delay}ms`,
-    willChange: "transform, opacity, filter, clip-path",
+    willChange: "transform, opacity, filter",
   };
 
   return (

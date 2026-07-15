@@ -20,13 +20,13 @@ interface GalleryGridProps {
 }
 
 export default function GalleryGrid({ images }: GalleryGridProps) {
-  const [visibleCount, setVisibleCount] = React.useState(16);
+  const [visibleCount, setVisibleCount] = React.useState(10);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
 
   const visibleImages = images.slice(0, visibleCount);
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 16, images.length));
+    setVisibleCount((prev) => Math.min(prev + 10, images.length));
   };
 
   // Lock body scroll when lightbox is open

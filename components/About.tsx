@@ -5,7 +5,34 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Section from "./Section";
 import Reveal from "./Reveal";
-import { LifeBuoy, GlassWater, Lock, Car, Users, Droplet, Backpack, Camera, HeartPulse, Wifi, ShieldCheck, Leaf } from "lucide-react";
+import {
+  LifeBuoy,
+  GlassWater,
+  Lock,
+  Car,
+  Users,
+  Droplet,
+  Backpack,
+  Camera,
+  HeartPulse,
+  Wifi,
+  ShieldCheck,
+  Leaf,
+} from "lucide-react";
+
+/** Data-driven amenity list — keeps the JSX clean */
+const amenities = [
+  { icon: LifeBuoy, label: "Life Jackets", spin: true },
+  { icon: Users, label: "Expert Guides" },
+  { icon: Lock, label: "Secure Lockers" },
+  { icon: Car, label: "Free Parking" },
+  { icon: Droplet, label: "Rinse Showers" },
+  { icon: GlassWater, label: "Bottled Water" },
+  { icon: Backpack, label: "Dry Bags" },
+  { icon: Camera, label: "Tour Photos" },
+  { icon: HeartPulse, label: "First Aid Kit" },
+  { icon: Wifi, label: "Base Wi-Fi" },
+] as const;
 
 export default function About() {
   return (
@@ -158,113 +185,45 @@ export default function About() {
         </div>
       </div>
 
-      {/* Tier 2: Amenities Grid */}
+      {/* Amenities — presented as a natural continuation of the About story */}
       <Reveal variant="fade-up" delay={100} duration={800}>
-        <div className="pt-8 border-t border-zinc-200">
-          <span className="block text-zinc-400 text-[11px] sm:text-xs font-semibold tracking-[0.2em] mb-8 text-left">
-            Amenities & Conveniences Included:
-          </span>
+        <div className="flex flex-col gap-6">
+          {/* Contextual sub-heading that ties to the About narrative */}
+          <div className="flex items-center gap-4">
+            <h3 className="font-serif text-[22px] sm:text-[26px] text-zinc-800 font-medium tracking-wide whitespace-nowrap">
+              Everything you need, <span className="italic">included.</span>
+            </h3>
+            {/* Fading decorative line extending to the right */}
+            <div className="flex-1 h-px bg-gradient-to-r from-zinc-300/80 to-transparent" />
+          </div>
 
-          <div className="grid grid-cols-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 justify-items-center">
-            {/* Amenity 1 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Life Jackets">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <LifeBuoy className="size-4.5 sm:size-5 animate-spin-slow" />
+          {/* Mobile: horizontal scroll strip of compact pills  |  sm+: card grid */}
+          <div className="flex overflow-x-auto gap-2.5 pb-1 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-4 sm:overflow-visible sm:pb-0">
+            {amenities.map(({ icon: Icon, label, spin }) => (
+              <div
+                key={label}
+                className={[
+                  // Mobile: compact horizontal pill
+                  "flex items-center gap-2.5 shrink-0 snap-start",
+                  "bg-white/50 backdrop-blur-sm px-3.5 py-2.5 rounded-full",
+                  "border border-zinc-200/50",
+                  "hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300",
+                  // sm+: switch to taller card style
+                  "sm:gap-3.5 sm:px-5 sm:py-4 sm:rounded-2xl sm:shrink sm:snap-align-none",
+                  "sm:justify-start sm:w-full",
+                ].join(" ")}
+                title={label}
+              >
+                <div className="flex items-center justify-center size-7 sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
+                  <Icon
+                    className={`size-3.5 sm:size-5${spin ? " animate-spin-slow" : ""}`}
+                  />
+                </div>
+                <span className="font-sans text-[12px] sm:text-[13.5px] font-bold text-zinc-800 tracking-wide whitespace-nowrap">
+                  {label}
+                </span>
               </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Life Jackets
-              </span>
-            </div>
-
-            {/* Amenity 2 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Expert Guides">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Users className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Expert Guides
-              </span>
-            </div>
-
-            {/* Amenity 3 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Secure Lockers">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Lock className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Secure Lockers
-              </span>
-            </div>
-
-            {/* Amenity 4 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Free Parking">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Car className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Free Parking
-              </span>
-            </div>
-
-            {/* Amenity 5 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Rinse Showers">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Droplet className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Rinse Showers
-              </span>
-            </div>
-
-            {/* Amenity 6 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Bottled Water">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <GlassWater className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Bottled Water
-              </span>
-            </div>
-
-            {/* Amenity 7 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Dry Bags">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Backpack className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Dry Bags
-              </span>
-            </div>
-
-            {/* Amenity 8 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Tour Photos">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Camera className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Tour Photos
-              </span>
-            </div>
-
-            {/* Amenity 9 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="First Aid Kit">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <HeartPulse className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                First Aid Kit
-              </span>
-            </div>
-
-            {/* Amenity 10 */}
-            <div className="flex items-center justify-center sm:justify-start gap-0 sm:gap-3.5 bg-white/50 backdrop-blur-sm p-1.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl border border-zinc-200/50 hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300 aspect-square sm:aspect-auto w-full max-w-[48px] sm:max-w-none" title="Base Wi-Fi">
-              <div className="flex items-center justify-center size-[32px] sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Wifi className="size-4.5 sm:size-5" />
-              </div>
-              <span className="hidden sm:block font-sans text-[13.5px] font-bold text-zinc-800 tracking-wide truncate">
-                Base Wi-Fi
-              </span>
-            </div>
+            ))}
           </div>
         </div>
       </Reveal>

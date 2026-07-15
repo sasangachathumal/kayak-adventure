@@ -1,6 +1,6 @@
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, ArrowDown, type LucideIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -41,13 +41,18 @@ const buttonVariants = cva(
   }
 )
 
+interface ButtonProps extends ButtonPrimitive.Props, VariantProps<typeof buttonVariants> {
+  ctaIcon?: LucideIcon;
+}
+
 function Button({
   className,
   variant = "default",
   size = "default",
   children,
+  ctaIcon: CtaIcon = ArrowUpRight,
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonProps) {
   return (
     <ButtonPrimitive
       data-slot="button"
@@ -58,10 +63,18 @@ function Button({
         <>
           <span>{children}</span>
           <span className="relative size-[36px] shrink-0 rounded-full bg-[#00b2d6] text-white flex items-center justify-center overflow-hidden transition-all duration-500 ease-in-out group-hover/button:bg-[#0099b8] group-hover/button:scale-105">
-            {/* Arrow 1: Slides out to the top-right */}
-            <ArrowUpRight className="size-4 stroke-[2.5] transition-all duration-500 ease-in-out transform group-hover/button:translate-x-6 group-hover/button:-translate-y-6 group-hover/button:opacity-0" />
-            {/* Arrow 2: Slides in from the bottom-left */}
-            <ArrowUpRight className="absolute size-4 stroke-[2.5] -translate-x-6 translate-y-6 opacity-0 transition-all duration-500 ease-in-out transform group-hover/button:translate-x-0 group-hover/button:translate-y-0 group-hover/button:opacity-100" />
+            {/* Icon 1: Slides out */}
+            <CtaIcon className={cn("size-4 stroke-[2.5] transition-all duration-500 ease-in-out transform",
+              CtaIcon === ArrowUpRight
+                ? "group-hover/button:translate-x-6 group-hover/button:-translate-y-6 group-hover/button:opacity-0"
+                : "group-hover/button:translate-y-6 group-hover/button:opacity-0"
+            )} />
+            {/* Icon 2: Slides in */}
+            <CtaIcon className={cn("absolute size-4 stroke-[2.5] opacity-0 transition-all duration-500 ease-in-out transform",
+              CtaIcon === ArrowUpRight
+                ? "-translate-x-6 translate-y-6 group-hover/button:translate-x-0 group-hover/button:translate-y-0 group-hover/button:opacity-100"
+                : "-translate-y-6 group-hover/button:translate-y-0 group-hover/button:opacity-100"
+            )} />
           </span>
         </>
       ) : (

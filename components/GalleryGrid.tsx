@@ -5,29 +5,29 @@ import Image from "next/image";
 import { X, ArrowLeft, ArrowRight } from "lucide-react";
 import Section from "./Section";
 import Reveal from "./Reveal";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// ─── Image data ──────────────────────────────────────────────────────────────
-interface GalleryImage {
+export interface GalleryImage {
   src: string;
   alt: string;
   /** Grid span hint: "tall" spans 2 rows on desktop */
   span?: "tall";
 }
 
-const images: GalleryImage[] = [
-  { src: "/gallery-image-2.png", alt: "Mangrove Archway",     span: "tall" },
-  { src: "/gallery-image-4.png", alt: "Aerial Lake View" },
-  { src: "/gallery-image-5.png", alt: "Canopy Tunnel Path" },
-  { src: "/gallery-image-3.png", alt: "Golden Hour Waters",   span: "tall" },
-  { src: "/gallery-image-7.png", alt: "Lagoon Reflections" },
-  { src: "/gallery-image-6.png", alt: "Paddling Exploration" },
-  { src: "/gallery-image-1.png", alt: "Sunset on the Water" },
-];
+interface GalleryGridProps {
+  images: GalleryImage[];
+}
 
-// ─── Component ───────────────────────────────────────────────────────────────
-export default function GalleryGrid() {
+export default function GalleryGrid({ images }: GalleryGridProps) {
+  const [visibleCount, setVisibleCount] = React.useState(16);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
+
+  const visibleImages = images.slice(0, visibleCount);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 16, images.length));
+  };
 
   // Lock body scroll when lightbox is open
   React.useEffect(() => {
@@ -53,13 +53,13 @@ export default function GalleryGrid() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightboxIndex]);
+  }, [lightboxIndex, images.length]);
 
   return (
     <>
       <Section
         id="gallery-grid"
-        className="bg-[#f0efeb] pt-16 sm:pt-20 pb-12 sm:pb-16"
+        className="bg-[#f0efeb] pt-16 sm:pt-20 pb-16 sm:pb-24"
         containerClassName="flex flex-col gap-10 sm:gap-12"
       >
         {/* Section sub-heading */}
@@ -72,13 +72,13 @@ export default function GalleryGrid() {
           </div>
         </Reveal>
 
-        {/* ── Desktop Masonry Grid (4 cols, 2 rows) ─────────────────────── */}
-        <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-4 sm:gap-5 md:gap-6">
-          {images.map((img, idx) => (
+        {/* ── Desktop Masonry Grid (4 cols, auto rows) ─────────────────────── */}
+        <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+          {visibleImages.map((img, idx) => (
             <Reveal
               key={img.src}
               variant="fade-up"
-              delay={idx * 80}
+              delay={(idx % 8) * 80}
               duration={800}
               className={cn(img.span === "tall" && "md:row-span-2")}
             >
@@ -94,7 +94,7 @@ export default function GalleryGrid() {
                     "border border-transparent hover:border-[#00b2d6]/30",
                     "transition-all duration-500",
                     img.span === "tall"
-                      ? "aspect-[3/4] md:aspect-auto md:h-full"
+                      ? "aspect-[3/4] md:aspect-[3/4]"
                       : "aspect-[3/2]"
                   )}
                 >
@@ -102,7 +102,7 @@ export default function GalleryGrid() {
                     src={img.src}
                     alt={img.alt}
                     fill
-                    sizes={img.span === "tall" ? "(max-width: 768px) 50vw, 25vw" : "(max-width: 768px) 50vw, 25vw"}
+                    sizes="(max-width: 768px) 50vw, 25vw"
                     className="object-cover pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   />
                   {/* Hover overlay with caption */}
@@ -119,11 +119,11 @@ export default function GalleryGrid() {
 
         {/* ── Mobile Grid (2 cols, simpler) ──────────────────────────────── */}
         <div className="grid grid-cols-2 gap-3 sm:hidden">
-          {images.map((img, idx) => (
+          {visibleImages.map((img, idx) => (
             <Reveal
               key={img.src}
               variant="fade-up"
-              delay={idx * 60}
+              delay={(idx % 6) * 60}
               duration={700}
             >
               <button
@@ -151,6 +151,17 @@ export default function GalleryGrid() {
             </Reveal>
           ))}
         </div>
+
+        {/* Load More Button */}
+        {visibleCount < images.length && (
+          <Reveal variant="fade-up" duration={700}>
+            <div className="flex justify-center mt-8 select-none">
+              <Button variant="cta" size="cta" onClick={handleLoadMore}>
+                Load More
+              </Button>
+            </div>
+          </Reveal>
+        )}
       </Section>
 
       {/* ── Lightbox Modal ────────────────────────────────────────────────── */}

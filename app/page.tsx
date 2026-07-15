@@ -1,12 +1,13 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Gallery from "@/components/Gallery";
-import Testimonials from "@/components/Testimonials";
-import CTA from "@/components/CTA";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
-import Preloader from "@/components/Preloader";
+import Navbar from "@/components/shared/Navbar";
+import Hero from "@/components/landing/Hero";
+import About from "@/components/landing/About";
+import GalleryPreview from "@/components/landing/GalleryPreview";
+import Testimonials from "@/components/landing/Testimonials";
+import FAQ from "@/components/landing/FAQ";
+import CTA from "@/components/shared/CTA";
+import Footer from "@/components/shared/Footer";
+import ScrollToTop from "@/components/shared/ScrollToTop";
+import Preloader from "@/components/shared/Preloader";
 
 export default function Home() {
   return (
@@ -16,8 +17,9 @@ export default function Home() {
       <Navbar />
       <Hero />
       <About />
-      <Gallery />
+      <GalleryPreview />
       <Testimonials />
+      <FAQ />
       <CTA />
       <Footer />
     </main>

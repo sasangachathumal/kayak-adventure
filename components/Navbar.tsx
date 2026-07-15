@@ -10,7 +10,7 @@ type MenuState = "closed" | "opening" | "open" | "closing";
 
 const navigationItems = [
   { label: "Home",     href: "#",           index: 0 },
-  { label: "Gallery",  href: "#gallery",    index: 1 },
+  { label: "Gallery",  href: "/gallery",    index: 1 },
   { label: "About Us", href: "#about",      index: 2 },
   { label: "Contact",  href: "#contact",   index: 3 },
 ];

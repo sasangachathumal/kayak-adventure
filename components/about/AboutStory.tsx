@@ -1,61 +1,54 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
-import {
-  LifeBuoy,
-  GlassWater,
-  Lock,
-  Car,
-  Users,
-  Droplet,
-  Backpack,
-  Camera,
-  HeartPulse,
-  Wifi,
-  ShieldCheck,
-  Leaf,
-  LucideIcon,
-} from "lucide-react";
+import { ShieldCheck, Leaf } from "lucide-react";
 
-interface Amenity {
-  icon: LucideIcon;
-  label: string;
-  spin?: boolean;
-}
-
-/** Data-driven amenity list — keeps the JSX clean */
-const amenities: Amenity[] = [
-  { icon: LifeBuoy, label: "Life Jackets", spin: true },
-  { icon: Users, label: "Expert Guides" },
-  { icon: Lock, label: "Secure Lockers" },
-  { icon: Car, label: "Free Parking" },
-  { icon: Droplet, label: "Rinse Showers" },
-  { icon: GlassWater, label: "Bottled Water" },
-  { icon: Backpack, label: "Dry Bags" },
-  { icon: Camera, label: "Tour Photos" },
-  { icon: HeartPulse, label: "First Aid Kit" },
-  { icon: Wifi, label: "Base Wi-Fi" },
+// ─── Timeline milestone data ───────────────────────────────────────────────────
+const milestones = [
+  {
+    year: "2018",
+    title: "The first paddle",
+    description:
+      "Kayak Adventure began with a single kayak and an unshakeable belief that Sri Lanka's waterways deserved to be shared. Our founders paddled Rathgama Lagoon for the first time — and never looked back.",
+  },
+  {
+    year: "2020",
+    title: "Growing the fleet",
+    description:
+      "After two seasons of word-of-mouth growth, we expanded to a full fleet of premium kayaks, adding structured guided routes through the mangrove tunnels and a dedicated safety-first training programme.",
+  },
+  {
+    year: "2022",
+    title: "SLIC insurance partnership",
+    description:
+      "We became one of the first kayak tour operators in Sri Lanka to offer fully insured tours through the Sri Lanka Insurance Corporation — a milestone that cemented our commitment to guest safety.",
+  },
+  {
+    year: "2024",
+    title: "Eco-certified tours",
+    description:
+      "All Kayak Adventure tours are now 100% eco-conscious. We adopted a leave-no-trace ethos, limited group sizes to protect biodiversity, and began active mangrove restoration along Rathgama Lagoon.",
+  },
 ];
 
-export default function About() {
+export default function AboutStory() {
   return (
     <Section
-      id="about"
+      id="our-story"
       className="bg-[#f0efeb] pt-24 pb-12 sm:pt-32 sm:pb-16"
-      containerClassName="flex flex-col gap-10 sm:gap-12"
+      containerClassName="flex flex-col gap-16 sm:gap-20"
     >
+      {/* ── Header Row ───────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        
-        {/* Left Side: Content */}
+
+        {/* Left: Heading block */}
         <div className="flex flex-col text-left">
           {/* Section Tag */}
           <Reveal variant="fade-left" duration={600}>
             <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-brand uppercase">
-              About Us
+              Our Story
             </span>
           </Reveal>
 
@@ -70,7 +63,7 @@ export default function About() {
               className="mt-4 mb-8"
             >
               <defs>
-                <linearGradient id="about-brand-fade-gradient" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
+                <linearGradient id="story-brand-fade" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
                   <stop offset="0%" stopColor="#00b2d6" />
                   <stop offset="60%" stopColor="#00b2d6" stopOpacity="0.6" />
                   <stop offset="100%" stopColor="#00b2d6" stopOpacity="0" />
@@ -78,7 +71,7 @@ export default function About() {
               </defs>
               <path
                 d="M 0 0.5 C 20 0.5, 50 1.2, 72 2 C 50 2.8, 20 3.5, 0 3.5 Z"
-                fill="url(#about-brand-fade-gradient)"
+                fill="url(#story-brand-fade)"
               />
             </svg>
           </Reveal>
@@ -91,40 +84,35 @@ export default function About() {
             </h2>
           </Reveal>
 
-          {/* Description Paragraphs */}
+          {/* Description */}
           <Reveal variant="blur-in" delay={250} duration={800}>
             <p className="font-sans text-[15px] sm:text-[16px] md:text-[17px] text-zinc-600 leading-[1.8] mb-6 font-medium tracking-wide max-w-xl">
-              Kayak Adventure was born from a love for nature and the thrill of exploration. We create meaningful kayaking experiences that let you escape the ordinary and connect with the wild beauty that surrounds us.
+              Kayak Adventure was born from a love for nature and the thrill of
+              exploration. We create meaningful kayaking experiences that let you
+              escape the ordinary and connect with the wild beauty that surrounds us.
             </p>
           </Reveal>
 
           <Reveal variant="blur-in" delay={350} duration={800}>
-            <p className="font-sans text-[14.5px] sm:text-[15px] text-zinc-500 leading-[1.75] mb-8 font-normal tracking-wide max-w-xl">
-              Nestled by the quiet waters of Rathgama Lagoon in Hikkaduwa, Sri Lanka, our guided excursions balance safety, local storytelling, and ecological mindfulness. We guide you through untouched mangrove tunnels, showcasing Sri Lanka&apos;s rich coastal biodiversity.
+            <p className="font-sans text-[14.5px] sm:text-[15px] text-zinc-500 leading-[1.75] font-normal tracking-wide max-w-xl">
+              Nestled by the quiet waters of Rathgama Lagoon in Hikkaduwa, Sri
+              Lanka, our guided excursions balance safety, local storytelling, and
+              ecological mindfulness. We guide you through untouched mangrove
+              tunnels, showcasing Sri Lanka&apos;s rich coastal biodiversity.
             </p>
-          </Reveal>
-
-          {/* CTA Button */}
-          <Reveal variant="fade-up" delay={450} duration={700}>
-            <div className="flex select-none">
-              <Link href="/about">
-                <Button variant="cta" size="cta">
-                  Read More
-                </Button>
-              </Link>
-            </div>
           </Reveal>
         </div>
 
-        {/* Right Side: Trust & Showcase Grid */}
+        {/* Right: Trust & Showcase Grid — matches landing About grid */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg lg:max-w-none mx-auto">
-          {/* Card 1: Brand Logo Card (1:1 aspect ratio card) */}
+
+          {/* Card 1: Brand Logo */}
           <Reveal variant="scale-up" delay={100} duration={700}>
             <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square">
               <div className="relative size-24 sm:size-32 select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
                 <Image
                   src="/logo-with-no-text.svg"
-                  alt="Brand Logo Emblem"
+                  alt="Kayak Adventure brand emblem"
                   fill
                   sizes="128px"
                   className="object-contain"
@@ -139,7 +127,7 @@ export default function About() {
               <div className="relative w-16 h-10 sm:w-32 sm:h-20 shrink-0">
                 <Image
                   src="/slic-general.png"
-                  alt="Sri Lanka Insurance Corporation Trust Logo"
+                  alt="Sri Lanka Insurance Corporation — SLIC"
                   fill
                   sizes="128px"
                   className="object-contain"
@@ -173,7 +161,7 @@ export default function About() {
             </div>
           </Reveal>
 
-          {/* Card 4: Certified Safety */}
+          {/* Card 4: Safety Certified */}
           <Reveal variant="scale-up" delay={400} duration={700}>
             <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4">
               <div className="flex items-center justify-center size-10 sm:size-16 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
@@ -184,7 +172,7 @@ export default function About() {
                   Safety Certified
                 </span>
                 <span className="font-sans text-[10.5px] sm:text-[13px] text-zinc-500 leading-normal tracking-wide max-w-[110px] sm:max-w-[160px]">
-                  First Aid & Lifeguard Trained
+                  First Aid &amp; Lifeguard Trained
                 </span>
               </div>
             </div>
@@ -192,48 +180,49 @@ export default function About() {
         </div>
       </div>
 
-      {/* Amenities — presented as a natural continuation of the About story */}
-      <Reveal variant="fade-up" delay={100} duration={800}>
-        <div className="flex flex-col gap-6">
-          {/* Contextual sub-heading that ties to the About narrative */}
+      {/* ── Timeline ─────────────────────────────────────────────────────── */}
+      <div className="flex flex-col gap-8">
+        {/* Sub-heading */}
+        <Reveal variant="fade-up" duration={700}>
           <div className="flex items-center gap-4">
             <h3 className="font-serif text-[22px] sm:text-[26px] text-zinc-800 font-medium tracking-wide whitespace-nowrap">
-              Everything you need, <span className="italic">included.</span>
+              A journey through <span className="italic">time.</span>
             </h3>
-            {/* Fading decorative line extending to the right */}
             <div className="flex-1 h-px bg-gradient-to-r from-zinc-300/80 to-transparent" />
           </div>
+        </Reveal>
 
-          {/* Mobile: horizontal scroll strip of compact pills  |  sm+: card grid */}
-          <div className="flex overflow-x-auto gap-2.5 pb-1 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-4 sm:overflow-visible sm:pb-0">
-            {amenities.map(({ icon: Icon, label, spin }) => (
-              <div
-                key={label}
-                className={[
-                  // Mobile: compact horizontal pill
-                  "flex items-center gap-2.5 shrink-0 snap-start",
-                  "bg-white/50 backdrop-blur-sm px-3.5 py-2.5 rounded-full",
-                  "border border-zinc-200/50",
-                  "hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300",
-                  // sm+: switch to taller card style
-                  "sm:gap-3.5 sm:px-5 sm:py-4 sm:rounded-2xl sm:shrink sm:snap-align-none",
-                  "sm:justify-start sm:w-full",
-                ].join(" ")}
-                title={label}
-              >
-                <div className="flex items-center justify-center size-7 sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                  <Icon
-                    className={`size-3.5 sm:size-5${spin ? " animate-spin-slow" : ""}`}
-                  />
+        {/* Timeline items */}
+        <div className="relative">
+          {/* Vertical connecting line (desktop) */}
+          <div className="hidden lg:block absolute left-[72px] top-4 bottom-4 w-px bg-gradient-to-b from-brand/40 via-zinc-300/60 to-transparent" />
+
+          <div className="flex flex-col gap-0">
+            {milestones.map(({ year, title, description }, idx) => (
+              <Reveal key={year} variant="fade-up" delay={idx * 80} duration={700}>
+                <div className="grid grid-cols-1 lg:grid-cols-[144px_1fr] gap-4 lg:gap-8 py-7 border-b border-zinc-200/60 last:border-b-0 group">
+                  {/* Year badge */}
+                  <div className="flex items-start lg:justify-center pt-0.5">
+                    <span className="font-serif text-[13px] font-semibold tracking-[0.18em] text-brand uppercase bg-brand/8 border border-brand/20 rounded-full px-3.5 py-1 leading-none select-none">
+                      {year}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex flex-col gap-2">
+                    <h4 className="font-serif text-[19px] sm:text-[22px] text-zinc-900 font-medium leading-snug tracking-wide group-hover:text-brand transition-colors duration-300">
+                      {title}
+                    </h4>
+                    <p className="font-sans text-[14px] sm:text-[15px] text-zinc-500 leading-[1.75] tracking-wide max-w-2xl">
+                      {description}
+                    </p>
+                  </div>
                 </div>
-                <span className="font-sans text-[12px] sm:text-[13.5px] font-bold text-zinc-800 tracking-wide whitespace-nowrap">
-                  {label}
-                </span>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
-      </Reveal>
+      </div>
     </Section>
   );
 }

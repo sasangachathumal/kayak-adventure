@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
+import { Phone, Mail, ArrowUpRight } from "lucide-react";
 import Section from "./Section";
 import Reveal from "./Reveal";
+import ScrambleText from "../animations/ScrambleText";
 
 // WhatsApp Brand SVG Icon
 const WhatsAppIcon = ({ className = "size-5" }: { className?: string }) => (
@@ -36,7 +37,7 @@ export default function Footer() {
         <div className="col-span-12 md:col-span-7 flex flex-col items-start text-left">
           <Reveal variant="fade-up" duration={700}>
             <Link href="/" className="flex items-center gap-3.5 group mb-8 self-start">
-              <div className="relative w-11 h-11 flex-shrink-0">
+              <div className="relative w-11 h-11 shrink-0">
                 <Image
                   src="/logo-with-no-text.svg"
                   alt="Kayak Adventure Logo Icon"
@@ -121,24 +122,24 @@ export default function Footer() {
 
           {/* Social Contact Buttons (Combined Pill) */}
           <Reveal variant="scale-up" delay={200} duration={700}>
-            <div className="flex items-center h-[46px] px-[5px] gap-1.5 bg-white rounded-full border border-zinc-200/50 shadow-sm">
+            <div className="flex items-center h-11.5 px-1.25 gap-1.5 bg-white rounded-full border border-zinc-200/50 shadow-sm">
               <Link
                 href="https://wa.me/94761122261"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+                className="inline-flex items-center justify-center size-9 rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
                 aria-label="WhatsApp"
               >
                 <WhatsAppIcon className="size-5" />
               </Link>
 
-              <div className="w-[1px] h-[20px] bg-zinc-100" />
+              <div className="w-px h-5 bg-zinc-100" />
 
               <Link
                 href="https://www.facebook.com/profile.php?id=61565539648872&rdid=rmGEVPBEUmBlSJyv&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F15Tf7YNeJC%2F"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center size-[36px] rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+                className="inline-flex items-center justify-center size-9 rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
                 aria-label="Facebook"
               >
                 <FacebookIcon className="size-5" />
@@ -164,9 +165,14 @@ export default function Footer() {
               href="https://www.rusiru-salwathura.me"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brand transition-colors font-medium underline underline-offset-2 decoration-zinc-300 hover:decoration-brand"
+              className="text-brand hover:text-brand/80 transition-colors font-medium underline underline-offset-2 decoration-zinc-300 hover:decoration-brand uppercase"
             >
-              code by rusiru.
+              <ScrambleText
+                text="© Code by Rusiru."
+                charClassName={(_, index) =>
+                  index === 16 ? "text-brand" : ""
+                }
+              />
             </Link>
           </div>
         </div>

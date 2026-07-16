@@ -32,14 +32,13 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
     return false;
   });
   const [isMobile, setIsMobile] = React.useState(false);
-  const [visibleCount, setVisibleCount] = React.useState(12);
+  const [visibleCount, setVisibleCount] = React.useState(15);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;
 
     if (((window as unknown) as { __preloaderDone?: boolean }).__preloaderDone) {
-      setPreloaderDone(true);
       return;
     }
 
@@ -63,8 +62,8 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
       setIsMobile(mobile);
       setVisibleCount((prev) => {
         // Adjust default count depending on layout
-        if (prev <= 12) {
-          return mobile ? 8 : 12;
+        if (prev <= 15) {
+          return mobile ? 10 : 15;
         }
         return prev;
       });
@@ -82,7 +81,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
   const visibleImages = images.slice(0, visibleCount);
 
   const handleLoadMore = () => {
-    const step = isMobile ? 8 : 12;
+    const step = isMobile ? 10 : 15;
     setVisibleCount((prev) => Math.min(prev + step, images.length));
   };
 
@@ -125,7 +124,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
             <h2 className="font-serif text-[22px] sm:text-[26px] text-zinc-800 font-medium tracking-wide whitespace-nowrap">
               Our <span className="italic">adventures.</span>
             </h2>
-            <div className="flex-1 h-px bg-gradient-to-r from-zinc-300/80 to-transparent" />
+            <div className="flex-1 h-px bg-linear-to-r from-zinc-300/80 to-transparent" />
           </div>
         </Reveal>
 
@@ -149,7 +148,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                 >
                   <AspectRatio 
                     ratio={img.width / img.height}
-                    className="overflow-hidden rounded-[16px] sm:rounded-[24px] shadow-md border border-transparent hover:border-[#00b2d6]/30 transition-all duration-500 bg-zinc-100"
+                    className="overflow-hidden rounded-[16px] sm:rounded-[24px] shadow-md border border-transparent hover:border-brand/30 transition-all duration-500 bg-zinc-100"
                   >
                     {!preloaderDone ? (
                       <Skeleton className="absolute inset-0 w-full h-full bg-zinc-200/50 rounded-[16px] sm:rounded-[24px]" />
@@ -179,7 +178,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                       </>
                     )}
                     {/* Hover overlay with caption */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4 sm:p-6">
+                    <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4 sm:p-6">
                       <span className="font-sans text-[11px] sm:text-[14px] font-semibold text-white tracking-wide">
                         {img.alt}
                       </span>
@@ -206,7 +205,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
       {/* ── Lightbox Modal ────────────────────────────────────────────────── */}
       {lightboxIndex !== null && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center select-none"
+          className="fixed inset-0 z-100 flex items-center justify-center select-none"
           role="dialog"
           aria-modal="true"
           aria-label="Image lightbox"
@@ -220,14 +219,14 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
           {/* Close button */}
           <Button
             onClick={() => setLightboxIndex(null)}
-            className="absolute top-6 right-6 z-[110] flex items-center justify-center size-11 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer backdrop-blur-md p-0"
+            className="absolute top-6 right-6 z-110 flex items-center justify-center size-11 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer backdrop-blur-md p-0"
             aria-label="Close lightbox"
           >
             <X className="size-5" />
           </Button>
 
           {/* Image counter */}
-          <div className="absolute top-7 left-6 z-[110] font-sans text-[12px] sm:text-[13px] font-semibold text-white/60 tracking-wider">
+          <div className="absolute top-7 left-6 z-110 font-sans text-[12px] sm:text-[13px] font-semibold text-white/60 tracking-wider">
             <span className="text-brand">{lightboxIndex + 1}</span>
             <span className="mx-1.5">/</span>
             <span>{images.length}</span>
@@ -236,7 +235,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
           {/* Navigation arrows */}
           <Button
             onClick={() => setLightboxIndex((lightboxIndex - 1 + images.length) % images.length)}
-            className="absolute left-4 sm:left-8 z-[110] group/prev flex items-center justify-center size-11 sm:size-12 rounded-full bg-[#00b2d6] text-white hover:bg-zinc-950 transition-all duration-300 cursor-pointer shadow-lg overflow-hidden p-0 border-none"
+            className="absolute left-4 sm:left-8 z-110 group/prev flex items-center justify-center size-11 sm:size-12 rounded-full bg-brand text-white hover:bg-zinc-950 transition-all duration-300 cursor-pointer shadow-lg overflow-hidden p-0 border-none"
             aria-label="Previous image"
           >
             <ArrowLeft className="size-4 sm:size-5 stroke-[2.5] transition-all duration-500 ease-in-out transform group-hover/prev:-translate-x-6 group-hover/prev:opacity-0" />
@@ -245,7 +244,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
 
           <Button
             onClick={() => setLightboxIndex((lightboxIndex + 1) % images.length)}
-            className="absolute right-4 sm:right-8 z-[110] group/next flex items-center justify-center size-11 sm:size-12 rounded-full bg-[#00b2d6] text-white hover:bg-zinc-950 transition-all duration-300 cursor-pointer shadow-lg overflow-hidden p-0 border-none"
+            className="absolute right-4 sm:right-8 z-110 group/next flex items-center justify-center size-11 sm:size-12 rounded-full bg-brand text-white hover:bg-zinc-950 transition-all duration-300 cursor-pointer shadow-lg overflow-hidden p-0 border-none"
             aria-label="Next image"
           >
             <ArrowRight className="size-4 sm:size-5 stroke-[2.5] transition-all duration-500 ease-in-out transform group-hover/next:translate-x-6 group-hover/next:opacity-0" />
@@ -253,7 +252,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
           </Button>
 
           {/* Main image */}
-          <div className="relative z-[105] w-[90vw] h-[75vh] sm:w-[80vw] sm:h-[80vh] max-w-5xl">
+          <div className="relative z-105 w-[90vw] h-[75vh] sm:w-[80vw] sm:h-[80vh] max-w-5xl">
             <Image
               src={images[lightboxIndex].src}
               alt={images[lightboxIndex].alt}

@@ -158,7 +158,7 @@ export default function About() {
               <PopoverTrigger
                 onMouseEnter={() => setPopoverOpen(true)}
                 onMouseLeave={() => setPopoverOpen(false)}
-                className="relative w-full flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4 cursor-help"
+                className="relative w-full flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4 cursor-help focus:outline-none focus-visible:outline-none focus:ring-0"
               >
                 <div className="relative w-20 h-12.5 sm:w-36 sm:h-22.5 shrink-0">
                   <Image

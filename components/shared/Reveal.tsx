@@ -111,12 +111,7 @@ export default function Reveal({
   }>;
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [preloaderDone, setPreloaderDone] = useState(() => {
-    if (typeof window !== "undefined") {
-      return !!((window as unknown) as { __preloaderDone?: boolean }).__preloaderDone;
-    }
-    return false;
-  });
+  const [preloaderDone, setPreloaderDone] = useState(false);
 
   // Sync preloader state — with a safety timeout fallback.
   // If preloaderFinished never fires (page refresh, direct URL, race condition)
@@ -124,21 +119,35 @@ export default function Reveal({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    if (((window as unknown) as { __preloaderDone?: boolean }).__preloaderDone) {
-      return;
-    }
+    let isActive = true;
+    let fallback: NodeJS.Timeout | null = null;
 
     const handleFinished = () => {
-      setPreloaderDone(true);
-      clearTimeout(fallback);
+      if (isActive) {
+        setPreloaderDone(true);
+        if (fallback) clearTimeout(fallback);
+      }
     };
 
-    const fallback = setTimeout(() => setPreloaderDone(true), 3500);
+    // Defer check to next tick so that parent Preloader's useEffect can run and reset the flag first
+    const deferTimer = setTimeout(() => {
+      if (!isActive) return;
+      const w = window as unknown as { __preloaderDone?: boolean };
+      if (w.__preloaderDone) {
+        setPreloaderDone(true);
+      } else {
+        fallback = setTimeout(() => {
+          if (isActive) setPreloaderDone(true);
+        }, 3500);
+        window.addEventListener("preloaderFinished", handleFinished);
+      }
+    }, 0);
 
-    window.addEventListener("preloaderFinished", handleFinished);
     return () => {
+      isActive = false;
+      clearTimeout(deferTimer);
+      if (fallback) clearTimeout(fallback);
       window.removeEventListener("preloaderFinished", handleFinished);
-      clearTimeout(fallback);
     };
   }, []);
 

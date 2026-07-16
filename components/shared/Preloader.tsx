@@ -13,37 +13,47 @@ const PHASE = {
   DESTROY:       2600,   // Unmount from DOM
 } as const;
 
+interface PreloaderWindow {
+  __hasLoadedFirstTime?: boolean;
+  __preloaderDone?: boolean;
+}
+
 export default function Preloader() {
   const pathname = usePathname();
   const [phase, setPhase] = useState<"enter" | "idle" | "exit" | "done">("enter");
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [isNavTransition, setIsNavTransition] = useState(false);
+  
+  // Initialize navigation transition state based on window history, avoiding render-time side-effects
+  const [isNavTransition] = useState(() => {
+    if (typeof window !== "undefined") {
+      const w = window as unknown as PreloaderWindow;
+      return !!w.__hasLoadedFirstTime;
+    }
+    return false;
+  });
 
   useEffect(() => {
-    let navTransition = false;
     if (typeof window !== "undefined") {
-      if ((window as any).__hasLoadedFirstTime) {
-        navTransition = true;
-        setIsNavTransition(true);
-      } else {
-        (window as any).__hasLoadedFirstTime = true;
-      }
+      const w = window as unknown as PreloaderWindow;
+      w.__preloaderDone = false;
+      w.__hasLoadedFirstTime = true;
     }
 
     document.body.style.overflow = "hidden";
 
-    const exitStart = navTransition ? 850 : PHASE.EXIT_START;
-    const destroy = navTransition ? 1600 : PHASE.DESTROY;
+    const exitStart = isNavTransition ? 850 : PHASE.EXIT_START;
+    const destroy = isNavTransition ? 1600 : PHASE.DESTROY;
 
     // Phase: idle
-    const idleTimer = setTimeout(() => setPhase("idle"), navTransition ? 200 : PHASE.WORD_ENTER + 500);
+    const idleTimer = setTimeout(() => setPhase("idle"), isNavTransition ? 200 : PHASE.WORD_ENTER + 500);
 
     // Phase: exit
     const exitTimer = setTimeout(() => {
       setPhase("exit");
       document.body.style.overflow = "";
       if (typeof window !== "undefined") {
-        (window as any).__preloaderDone = true;
+        const w = window as unknown as PreloaderWindow;
+        w.__preloaderDone = true;
         window.dispatchEvent(new Event("preloaderFinished"));
       }
     }, exitStart);
@@ -57,7 +67,7 @@ export default function Preloader() {
       clearTimeout(destroyTimer);
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [isNavTransition]);
 
   // Subtle parallax tilt tracking
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -93,7 +103,7 @@ export default function Preloader() {
 
       {/* Decorative Ambient Glow */}
       <div
-        className="absolute w-[500px] h-[500px] rounded-full opacity-[0.07] blur-[120px] pointer-events-none"
+        className="absolute w-125 h-125 rounded-full opacity-[0.07] blur-[120px] pointer-events-none"
         style={{
           background: "radial-gradient(circle, #00b2d6 0%, transparent 70%)",
           animation: "ambientPulse 3s ease-in-out infinite",
@@ -129,7 +139,7 @@ export default function Preloader() {
         ) : (
           <>
             {/* Logo Emblem */}
-            <div className="relative size-[72px] sm:size-[88px] mb-6 preloader-logo">
+            <div className="relative size-18 sm:size-22 mb-6 preloader-logo">
               {/* Shimmer Sweep Overlay */}
               <div className="absolute inset-0 overflow-hidden rounded-full z-10 pointer-events-none">
                 <div className="preloader-shimmer" />

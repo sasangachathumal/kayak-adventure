@@ -9,15 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 
 export interface GalleryImage {
   src: string;
@@ -41,7 +32,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
     return false;
   });
   const [isMobile, setIsMobile] = React.useState(false);
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const [visibleCount, setVisibleCount] = React.useState(12);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
@@ -70,6 +61,13 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
     const handleResize = () => {
       const mobile = window.innerWidth < 640;
       setIsMobile(mobile);
+      setVisibleCount((prev) => {
+        // Adjust default count depending on layout
+        if (prev <= 12) {
+          return mobile ? 8 : 12;
+        }
+        return prev;
+      });
     };
 
     const timer = setTimeout(handleResize, 0);
@@ -81,101 +79,11 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
     };
   }, []);
 
-  const itemsPerPage = isMobile ? 8 : 12;
-  const totalPages = Math.ceil(images.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedImages = images.slice(startIndex, endIndex);
+  const visibleImages = images.slice(0, visibleCount);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    const section = document.getElementById("gallery-grid");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const renderPaginationItems = () => {
-    const items = [];
-
-    // Helper to build a page button
-    const pageButton = (i: number) => (
-      <PaginationItem key={i}>
-        <PaginationLink
-          isActive={currentPage === i}
-          onClick={(e) => {
-            e.preventDefault();
-            handlePageChange(i);
-          }}
-          className={cn(
-            "cursor-pointer select-none",
-            currentPage === i
-              ? "bg-[#00b2d6] hover:bg-[#00b2d6]/80 text-white border-[#00b2d6] hover:text-white font-medium"
-              : "hover:bg-zinc-100"
-          )}
-        >
-          {i}
-        </PaginationLink>
-      </PaginationItem>
-    );
-
-    // Build the visible page number set using a windowed approach
-    const window = 2; // pages either side of current
-    const pageSet = new Set<number>();
-    pageSet.add(1);
-    pageSet.add(totalPages);
-    for (let i = Math.max(1, currentPage - window); i <= Math.min(totalPages, currentPage + window); i++) {
-      pageSet.add(i);
-    }
-    const sorted = Array.from(pageSet).sort((a, b) => a - b);
-
-    // Previous
-    items.push(
-      <PaginationItem key="prev">
-        <PaginationPrevious
-          onClick={(e) => {
-            e.preventDefault();
-            if (currentPage > 1) handlePageChange(currentPage - 1);
-          }}
-          className={cn(
-            "cursor-pointer select-none",
-            currentPage === 1 && "pointer-events-none opacity-40"
-          )}
-        />
-      </PaginationItem>
-    );
-
-    // Page numbers with ellipsis gaps
-    let prev = 0;
-    for (const page of sorted) {
-      if (prev && page - prev > 1) {
-        items.push(
-          <PaginationItem key={`ellipsis-${prev}`}>
-            <PaginationEllipsis />
-          </PaginationItem>
-        );
-      }
-      items.push(pageButton(page));
-      prev = page;
-    }
-
-    // Next
-    items.push(
-      <PaginationItem key="next">
-        <PaginationNext
-          onClick={(e) => {
-            e.preventDefault();
-            if (currentPage < totalPages) handlePageChange(currentPage + 1);
-          }}
-          className={cn(
-            "cursor-pointer select-none",
-            currentPage === totalPages && "pointer-events-none opacity-40"
-          )}
-        />
-      </PaginationItem>
-    );
-
-    return items;
+  const handleLoadMore = () => {
+    const step = isMobile ? 8 : 12;
+    setVisibleCount((prev) => Math.min(prev + step, images.length));
   };
 
   // Lock body scroll when lightbox is open
@@ -223,7 +131,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
 
         {/* ── Pinterest Columns Layout ─────────────────────── */}
         <div className="columns-2 md:columns-3 lg:columns-4 gap-4 sm:gap-5 md:gap-6">
-          {paginatedImages.map((img, idx) => (
+          {visibleImages.map((img, idx) => (
             <div
               key={img.src}
               className="break-inside-avoid inline-block w-full align-top mb-4 sm:mb-5 md:mb-6"
@@ -235,7 +143,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
               >
                 <Button
                   type="button"
-                  onClick={() => setLightboxIndex(startIndex + idx)}
+                  onClick={() => setLightboxIndex(idx)}
                   className="relative w-full group cursor-pointer focus:outline-none block p-0 h-auto bg-transparent hover:bg-transparent border-none shadow-none text-zinc-950 font-normal leading-none rounded-none"
                   aria-label={`View ${img.alt}`}
                 >
@@ -283,15 +191,13 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
           ))}
         </div>
 
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
+        {/* Load More Button */}
+        {visibleCount < images.length && (
           <Reveal variant="fade-up" duration={700}>
-            <div className="flex justify-center mt-12 select-none">
-              <Pagination>
-                <PaginationContent>
-                  {renderPaginationItems()}
-                </PaginationContent>
-              </Pagination>
+            <div className="flex justify-center mt-8 select-none">
+              <Button variant="cta" size="cta" onClick={handleLoadMore} ctaIcon={ArrowDown}>
+                Load More
+              </Button>
             </div>
           </Reveal>
         )}

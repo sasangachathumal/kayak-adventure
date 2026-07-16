@@ -12,7 +12,7 @@ import {
   Backpack,
   Camera,
   HeartPulse,
-  Wifi,
+  Shirt,
   ShieldCheck,
   Leaf,
   LucideIcon,
@@ -65,8 +65,8 @@ const amenities: Amenity[] = [
   },
   {
     icon: GlassWater,
-    label: "Bottled Water",
-    description: "Chilled, complimentary bottled water provided for all guests.",
+    label: "Welcome Drink",
+    description: "Refreshing, local complimentary welcome drink provided upon arrival.",
   },
   {
     icon: Backpack,
@@ -84,9 +84,9 @@ const amenities: Amenity[] = [
     description: "A comprehensive first aid kit is carried on every single tour, always.",
   },
   {
-    icon: Wifi,
-    label: "Base Wi-Fi",
-    description: "Stay connected between tours with free Wi-Fi at our Rathgama base.",
+    icon: Shirt,
+    label: "Changing Facilities",
+    description: "Comfortable, private changing spaces and restrooms at our Rathgama base.",
   },
 ];
 

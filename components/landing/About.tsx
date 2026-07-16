@@ -183,14 +183,14 @@ export default function About() {
                 side="top"
                 align="center"
                 sideOffset={10}
-                className="w-66 p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-zinc-200 shadow-xl pointer-events-none"
+                className="w-80 sm:w-[420px] p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-zinc-200 shadow-xl pointer-events-none"
               >
-                <PopoverHeader className="flex flex-col gap-1 text-left">
+                <PopoverHeader className="flex flex-col gap-1.5 text-left">
                   <PopoverTitle className="font-serif text-[15px] font-bold text-zinc-900 leading-tight">
-                    SLIC Insurance Policy
+                    Passenger Liability Insurance
                   </PopoverTitle>
                   <PopoverDescription className="font-sans text-[12px] text-zinc-600 leading-relaxed font-normal">
-                    Enjoy absolute peace of mind. Every tour participant is covered under our premium public liability policy with Sri Lanka Insurance Corporation (SLIC).
+                    All passengers joining <strong className="font-bold text-zinc-950">Kayak Adventure Rathgama Lake</strong> are protected under a <strong className="font-bold text-zinc-950">Passenger Liability Insurance</strong> policy provided by <strong className="font-bold text-zinc-950">Sri Lanka Insurance Corporation General Ltd.</strong> (Policy No. PL/014/2025/10). This policy offers coverage of up to Rs. 7,200,000, with a limit of Rs. 300,000 per person per event, ensuring the safety and security of every guest throughout the experience.
                   </PopoverDescription>
                 </PopoverHeader>
               </PopoverContent>
@@ -245,29 +245,29 @@ export default function About() {
             <div className="flex-1 h-px bg-gradient-to-r from-zinc-300/80 to-transparent" />
           </div>
 
-          {/* Mobile: horizontal scroll strip of compact pills  |  sm+: card grid */}
-          <div className="flex overflow-x-auto gap-2.5 pb-1 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-4 sm:overflow-visible sm:pb-0">
+          {/* Mobile: 2-row horizontal scroll strip of larger cards  |  sm+: regular grid */}
+          <div className="grid grid-rows-2 grid-flow-col auto-cols-max overflow-x-auto gap-x-3.5 gap-y-3.5 pb-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid-cols-2 sm:grid-rows-none sm:grid-flow-row md:grid-cols-3 lg:grid-cols-5 sm:gap-4 sm:overflow-visible sm:pb-0">
             {amenities.map(({ icon: Icon, label, spin }) => (
               <div
                 key={label}
                 className={[
-                  // Mobile: compact horizontal pill
-                  "flex items-center gap-2.5 shrink-0 snap-start",
-                  "bg-white/50 backdrop-blur-sm px-3.5 py-2.5 rounded-full",
+                  // Mobile: larger horizontal cards flowing column-first
+                  "flex items-center gap-3 shrink-0 snap-start w-[220px]",
+                  "bg-white/50 backdrop-blur-sm px-4.5 py-3.5 rounded-[18px]",
                   "border border-zinc-200/50",
                   "hover:border-zinc-300 hover:bg-white hover:shadow-sm transition-all duration-300",
-                  // sm+: switch to taller card style
+                  // sm+: switch back to standard responsive grid item styles
                   "sm:gap-3.5 sm:px-5 sm:py-4 sm:rounded-2xl sm:shrink sm:snap-align-none",
                   "sm:justify-start sm:w-full",
                 ].join(" ")}
                 title={label}
               >
-                <div className="flex items-center justify-center size-7 sm:size-[40px] rounded-lg sm:rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
+                <div className="flex items-center justify-center size-9 sm:size-[40px] rounded-xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
                   <Icon
-                    className={`size-3.5 sm:size-5${spin ? " animate-spin-slow" : ""}`}
+                    className={`size-4.5 sm:size-5${spin ? " animate-spin-slow" : ""}`}
                   />
                 </div>
-                <span className="font-sans text-[12px] sm:text-[13.5px] font-bold text-zinc-800 tracking-wide whitespace-nowrap">
+                <span className="font-sans text-[13px] sm:text-[13.5px] font-bold text-zinc-800 tracking-wide whitespace-nowrap">
                   {label}
                 </span>
               </div>

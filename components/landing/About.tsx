@@ -1,10 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
+import {
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverDescription,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   LifeBuoy,
   GlassWater,
@@ -15,7 +24,7 @@ import {
   Backpack,
   Camera,
   HeartPulse,
-  Wifi,
+  Shirt,
   ShieldCheck,
   Leaf,
   LucideIcon,
@@ -34,14 +43,16 @@ const amenities: Amenity[] = [
   { icon: Lock, label: "Secure Lockers" },
   { icon: Car, label: "Free Parking" },
   { icon: Droplet, label: "Rinse Showers" },
-  { icon: GlassWater, label: "Bottled Water" },
+  { icon: GlassWater, label: "Welcome Drink" },
   { icon: Backpack, label: "Dry Bags" },
   { icon: Camera, label: "Tour Photos" },
   { icon: HeartPulse, label: "First Aid Kit" },
-  { icon: Wifi, label: "Base Wi-Fi" },
+  { icon: Shirt, label: "Changing Facilities" },
 ];
 
 export default function About() {
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
   return (
     <Section
       id="about"
@@ -121,52 +132,74 @@ export default function About() {
           {/* Card 1: Brand Logo Card (1:1 aspect ratio card) */}
           <Reveal variant="scale-up" delay={100} duration={700}>
             <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square">
-              <div className="relative size-24 sm:size-32 select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
+              <div className="relative w-28 h-16 sm:w-44 sm:h-24 select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
                 <Image
-                  src="/logo-with-no-text.svg"
-                  alt="Brand Logo Emblem"
+                  src="/kayak-logo.svg"
+                  alt="Brand Logo with Text"
                   fill
-                  sizes="128px"
+                  sizes="200px"
                   className="object-contain"
                 />
               </div>
             </div>
           </Reveal>
 
-          {/* Card 2: SLIC Insurance */}
+          {/* Card 2: SLIC Insurance with Shadcn Popover */}
           <Reveal variant="scale-up" delay={200} duration={700}>
-            <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4">
-              <div className="relative w-16 h-10 sm:w-32 sm:h-20 shrink-0">
-                <Image
-                  src="/slic-general.png"
-                  alt="Sri Lanka Insurance Corporation Trust Logo"
-                  fill
-                  sizes="128px"
-                  className="object-contain"
-                />
-              </div>
-              <div className="flex flex-col items-center gap-0.5 sm:gap-1.5">
-                <span className="font-serif text-[15px] sm:text-[20px] font-semibold text-zinc-900 leading-snug tracking-wide">
-                  Insured Tours
-                </span>
-                <span className="font-sans text-[10.5px] sm:text-[13px] text-zinc-500 leading-normal tracking-wide max-w-[110px] sm:max-w-[160px]">
-                  Full coverage under SLIC policy
-                </span>
-              </div>
-            </div>
+            <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+              <PopoverTrigger
+                onMouseEnter={() => setPopoverOpen(true)}
+                onMouseLeave={() => setPopoverOpen(false)}
+                className="relative flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4 cursor-help"
+              >
+                <div className="relative w-20 h-12.5 sm:w-36 sm:h-22.5 shrink-0">
+                  <Image
+                    src="/slic-general.png"
+                    alt="Sri Lanka Insurance Corporation Trust Logo"
+                    fill
+                    sizes="144px"
+                    className="object-contain"
+                  />
+                </div>
+                <div className="flex flex-col items-center gap-0.5 sm:gap-1.5">
+                  <span className="font-serif text-[17px] sm:text-[22px] font-semibold text-zinc-900 leading-snug tracking-wide">
+                    Insured Tours
+                  </span>
+                  <span className="font-sans text-[11.5px] sm:text-[14.5px] text-zinc-500 leading-normal tracking-wide max-w-[120px] sm:max-w-[180px]">
+                    Full coverage under SLIC policy
+                  </span>
+                </div>
+              </PopoverTrigger>
+
+              <PopoverContent
+                side="top"
+                align="center"
+                sideOffset={10}
+                className="w-66 p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-zinc-200 shadow-xl pointer-events-none"
+              >
+                <PopoverHeader className="flex flex-col gap-1 text-left">
+                  <PopoverTitle className="font-serif text-[15px] font-bold text-zinc-900 leading-tight">
+                    SLIC Insurance Policy
+                  </PopoverTitle>
+                  <PopoverDescription className="font-sans text-[12px] text-zinc-600 leading-relaxed font-normal">
+                    Enjoy absolute peace of mind. Every tour participant is covered under our premium public liability policy with Sri Lanka Insurance Corporation (SLIC).
+                  </PopoverDescription>
+                </PopoverHeader>
+              </PopoverContent>
+            </Popover>
           </Reveal>
 
           {/* Card 3: Eco Conscious */}
           <Reveal variant="scale-up" delay={300} duration={700}>
-            <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4">
-              <div className="flex items-center justify-center size-10 sm:size-16 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <Leaf className="size-5 sm:size-8" />
+            <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2.5 sm:gap-5">
+              <div className="flex items-center justify-center size-12 sm:size-20 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
+                <Leaf className="size-6 sm:size-10" />
               </div>
               <div className="flex flex-col items-center gap-0.5 sm:gap-1.5">
-                <span className="font-serif text-[15px] sm:text-[20px] font-semibold text-zinc-900 leading-snug tracking-wide">
+                <span className="font-serif text-[17px] sm:text-[22px] font-semibold text-zinc-900 leading-snug tracking-wide">
                   Eco Conscious
                 </span>
-                <span className="font-sans text-[10.5px] sm:text-[13px] text-zinc-500 leading-normal tracking-wide max-w-[110px] sm:max-w-[160px]">
+                <span className="font-sans text-[11.5px] sm:text-[14.5px] text-zinc-500 leading-normal tracking-wide max-w-[120px] sm:max-w-[180px]">
                   100% sustainable tours protecting our lagoons
                 </span>
               </div>
@@ -175,16 +208,16 @@ export default function About() {
 
           {/* Card 4: Certified Safety */}
           <Reveal variant="scale-up" delay={400} duration={700}>
-            <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4">
-              <div className="flex items-center justify-center size-10 sm:size-16 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
-                <ShieldCheck className="size-5 sm:size-8" />
+            <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2.5 sm:gap-5">
+              <div className="flex items-center justify-center size-12 sm:size-20 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/60 shadow-sm text-[#00b2d6] shrink-0">
+                <ShieldCheck className="size-6 sm:size-10" />
               </div>
               <div className="flex flex-col items-center gap-0.5 sm:gap-1.5">
-                <span className="font-serif text-[15px] sm:text-[20px] font-semibold text-zinc-900 leading-snug tracking-wide">
+                <span className="font-serif text-[17px] sm:text-[22px] font-semibold text-zinc-900 leading-snug tracking-wide">
                   Safety Certified
                 </span>
-                <span className="font-sans text-[10.5px] sm:text-[13px] text-zinc-500 leading-normal tracking-wide max-w-[110px] sm:max-w-[160px]">
-                  First Aid & Lifeguard Trained
+                <span className="font-sans text-[11.5px] sm:text-[14.5px] text-zinc-500 leading-normal tracking-wide max-w-[120px] sm:max-w-[180px]">
+                  First Aid &amp; Lifeguard Trained
                 </span>
               </div>
             </div>

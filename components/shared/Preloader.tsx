@@ -134,7 +134,6 @@ export default function Preloader() {
                 const name = pathname === "/" ? "Home" : pathname.replace(/^\/|\/$/g, "");
                 return name.charAt(0).toUpperCase() + name.slice(1);
               })()}
-              <span className="italic font-medium">.</span>
             </span>
           </div>
         ) : (

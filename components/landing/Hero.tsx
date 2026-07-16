@@ -106,7 +106,7 @@ export default function Hero() {
           {/* CTA Button using shadcn Button */}
           <Reveal variant="fade-up" delay={550} duration={700}>
             <div className="flex select-none">
-              <Link href="#featuredSection">
+              <Link href="https://wa.me/94761122261?text=Hello!" target="_blank" rel="noopener noreferrer">
                 <Button variant="cta" size="cta">
                   Contact Us
                 </Button>

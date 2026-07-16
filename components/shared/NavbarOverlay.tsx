@@ -85,7 +85,7 @@ export default function NavbarOverlay({
         {/* Social Pill */}
         <div className="flex items-center h-[42px] px-[5px] gap-1.5 bg-white rounded-full border border-zinc-100 shadow-sm">
           <Link
-            href="https://wa.me/94761122261"
+            href="https://wa.me/94761122261?text=Hello!"
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleClose}

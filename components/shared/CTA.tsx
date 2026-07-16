@@ -70,9 +70,9 @@ export default function CTA() {
         {/* CTA Button using brand styles */}
         <Reveal variant="scale-up" delay={400} duration={700}>
           <div className="flex select-none">
-            <Link href="https://wa.me/94761122261" target="_blank" rel="noopener noreferrer">
+            <Link href="https://wa.me/94761122261?text=Hello!" target="_blank" rel="noopener noreferrer">
               <Button variant="cta" size="cta">
-                Contact
+                Contact Us
               </Button>
             </Link>
           </div>

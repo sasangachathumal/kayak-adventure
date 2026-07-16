@@ -169,7 +169,7 @@ export default function Navbar() {
             `}
           >
             <Link
-              href="https://wa.me/94761122261"
+              href="https://wa.me/94761122261?text=Hello!"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center size-9 rounded-full text-zinc-600 hover:bg-zinc-100 hover:text-brand transition-all duration-300 cursor-pointer"

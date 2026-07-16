@@ -124,7 +124,7 @@ export default function Footer() {
           <Reveal variant="scale-up" delay={200} duration={700}>
             <div className="flex items-center h-11.5 px-1.25 gap-1.5 bg-white rounded-full border border-zinc-200/50 shadow-sm">
               <Link
-                href="https://wa.me/94761122261"
+                href="https://wa.me/94761122261?text=Hello!"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center size-9 rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"

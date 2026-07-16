@@ -8,6 +8,7 @@ import Reveal from "../shared/Reveal";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export interface GalleryImage {
   src: string;
@@ -146,9 +147,9 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                   className="relative w-full group cursor-pointer focus:outline-none block p-0 h-auto bg-transparent hover:bg-transparent border-none shadow-none text-zinc-950 font-normal leading-none rounded-none"
                   aria-label={`View ${img.alt}`}
                 >
-                  <div 
-                    className="relative w-full overflow-hidden rounded-[16px] sm:rounded-[24px] shadow-md border border-transparent hover:border-[#00b2d6]/30 transition-all duration-500 bg-zinc-100"
-                    style={{ aspectRatio: `${img.width} / ${img.height}` }}
+                  <AspectRatio 
+                    ratio={img.width / img.height}
+                    className="overflow-hidden rounded-[16px] sm:rounded-[24px] shadow-md border border-transparent hover:border-[#00b2d6]/30 transition-all duration-500 bg-zinc-100"
                   >
                     {!preloaderDone ? (
                       <Skeleton className="absolute inset-0 w-full h-full bg-zinc-200/50 rounded-[16px] sm:rounded-[24px]" />
@@ -183,7 +184,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                         {img.alt}
                       </span>
                     </div>
-                  </div>
+                  </AspectRatio>
                 </Button>
               </Reveal>
             </div>

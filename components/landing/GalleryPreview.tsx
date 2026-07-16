@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface ShowcaseImageProps {
   src: string;
@@ -168,14 +169,14 @@ export default function GalleryPreview() {
 
         {/* Right Side: Top Landscape Showcase */}
         <Reveal variant="scale-up" delay={200} duration={900} className="hidden lg:block">
-          <div className="w-full relative aspect-[1.8/1] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-md">
+          <AspectRatio ratio={1.8} className="w-full overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-md">
             <ShowcaseImage
               src="/gallery-image-1.png"
               alt="Kayakers paddling at sunset"
               sizes="50vw"
               preloaderDone={preloaderDone}
             />
-          </div>
+          </AspectRatio>
         </Reveal>
 
       </div>

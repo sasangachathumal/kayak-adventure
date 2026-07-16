@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
@@ -13,6 +12,10 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 
 const testimonials = [
   {
@@ -123,45 +126,43 @@ export default function Testimonials() {
               
               {testimonials.map((t, index) => (
                 <CarouselItem key={index} className="pl-6 basis-full sm:basis-1/2 lg:basis-1/3">
-                  <div className="flex flex-col text-left h-full min-h-[250px] lg:min-h-[310px] bg-white border border-zinc-200/50 p-8 rounded-[24px] shadow-sm hover:shadow-md hover:border-zinc-200/80 transition-all duration-300">
-                    
-                    {/* Large Stylized Cyan Quote Mark */}
-                    <span className="font-serif text-[64px] text-[#00b2d6] leading-[1] select-none h-10 -mt-2 block">
-                      &ldquo;
-                    </span>
+                  <Card className="flex flex-col text-left h-full min-h-[250px] lg:min-h-[310px] bg-white border border-zinc-200/50 p-8 rounded-[24px] shadow-sm hover:shadow-md hover:border-zinc-200/80 ring-0 [--card-spacing:0px] transition-all duration-300">
+                    <CardContent className="p-0 flex flex-col h-full flex-1">
+                      {/* Large Stylized Cyan Quote Mark */}
+                      <span className="font-serif text-[64px] text-[#00b2d6] leading-[1] select-none h-10 -mt-2 block">
+                        &ldquo;
+                      </span>
 
-                    {/* Testimonial text */}
-                    <p className="font-sans text-[15px] sm:text-[16px] text-zinc-700 leading-relaxed font-normal tracking-wide mb-6 flex-1">
-                      {t.quote}
-                    </p>
+                      {/* Testimonial text */}
+                      <p className="font-sans text-[15px] sm:text-[16px] text-zinc-700 leading-relaxed font-normal tracking-wide mb-6 flex-1">
+                        {t.quote}
+                      </p>
 
-                    {/* Subtle Separator */}
-                    <div className="w-12 h-[1px] bg-zinc-200 mb-6" />
+                      {/* Subtle Separator */}
+                      <Separator className="w-12 h-[1px] bg-zinc-200 mb-6" />
 
-                    {/* Author Meta */}
-                    <div className="flex items-center gap-3">
-                      {/* Rounded Image */}
-                      <div className="relative size-11 rounded-full overflow-hidden border border-zinc-200 bg-zinc-100 shadow-inner">
-                        <Image
-                          src={t.image}
-                          alt={t.author}
-                          fill
-                          sizes="44px"
-                          className="object-cover pointer-events-none select-none"
-                        />
+                      {/* Author Meta */}
+                      <div className="flex items-center gap-3">
+                        <Avatar className="size-11 border border-zinc-200 bg-zinc-100 shadow-inner">
+                          <AvatarImage
+                            src={t.image}
+                            alt={t.author}
+                            className="object-cover pointer-events-none select-none"
+                          />
+                          <AvatarFallback>{t.author.charAt(0)}</AvatarFallback>
+                        </Avatar>
+
+                        <div className="flex flex-col">
+                          <span className="font-sans text-[13px] sm:text-[14px] font-semibold text-zinc-900 leading-tight">
+                            {t.author}
+                          </span>
+                          <span className="font-sans text-[11px] text-zinc-400 mt-0.5">
+                            {t.location}
+                          </span>
+                        </div>
                       </div>
-
-                      <div className="flex flex-col">
-                        <span className="font-sans text-[13px] sm:text-[14px] font-semibold text-zinc-900 leading-tight">
-                          {t.author}
-                        </span>
-                        <span className="font-sans text-[11px] text-zinc-400 mt-0.5">
-                          {t.location}
-                        </span>
-                      </div>
-                    </div>
-
-                  </div>
+                    </CardContent>
+                  </Card>
                 </CarouselItem>
               ))}
 

@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
 import { cn } from "@/lib/utils";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 interface FAQItem {
   question: string;
@@ -35,12 +34,6 @@ const faqData: FAQItem[] = [
 ];
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
     <Section id="faq" className="pt-2 md:pt-6 pb-24 bg-[#f0efeb]">
       <div className="lg:grid lg:grid-cols-12 lg:gap-16 items-start">
@@ -89,16 +82,15 @@ export default function FAQ() {
           {/* Subtitle Description */}
           <Reveal variant="blur-in" delay={300} duration={800}>
             <p className="font-sans text-[15px] sm:text-[16px] text-zinc-600 leading-[1.75] font-medium tracking-wide max-w-sm">
-              Have questions about our Rathgama mangrove tours? We have compiled list of answers to help you prepare for your journey.
+              Have questions about our Rathgama mangrove tours? We have compiled a list of answers to help you prepare for your journey.
             </p>
           </Reveal>
         </div>
 
         {/* Right Column: Accordions */}
-        <div className="lg:col-span-7 space-y-4">
-          {faqData.map((item, idx) => {
-            const isOpen = openIndex === idx;
-            return (
+        <div className="lg:col-span-7">
+          <Accordion className="border-0 rounded-none shadow-none bg-transparent overflow-visible gap-4 flex flex-col">
+            {faqData.map((item, idx) => (
               <Reveal 
                 key={idx}
                 variant="fade-up" 
@@ -106,51 +98,17 @@ export default function FAQ() {
                 duration={700}
                 className={cn(idx >= 3 && "hidden md:block")}
               >
-                <div 
-                  className={cn(
-                    "border-b border-zinc-200/80 transition-all duration-300 pb-2",
-                    isOpen && "border-b border-[#00b2d6]/30"
-                  )}
-                >
-                  <button
-                    type="button"
-                    onClick={() => toggleFAQ(idx)}
-                    className="w-full flex items-center justify-between text-left py-4 focus:outline-none group select-none animate-none h-auto bg-transparent hover:bg-transparent border-none shadow-none p-0 cursor-pointer"
-                  >
-                    <span 
-                      className={cn(
-                        "font-sans text-[16px] sm:text-[18px] font-semibold tracking-wide text-zinc-800 transition-colors duration-300 group-hover:text-zinc-900",
-                        isOpen && "text-[#00b2d6]"
-                      )}
-                    >
-                      {item.question}
-                    </span>
-                    <span 
-                      className={cn(
-                        "flex size-7 items-center justify-center rounded-full bg-zinc-100 text-zinc-500 transition-all duration-300 group-hover:bg-zinc-200 group-hover:text-zinc-700",
-                        isOpen && "bg-[#00b2d6]/10 text-[#00b2d6] rotate-180"
-                      )}
-                    >
-                      <ChevronDown className="size-4" />
-                    </span>
-                  </button>
-
-                  <div 
-                    className={cn(
-                      "grid transition-all duration-300 ease-in-out",
-                      isOpen ? "grid-rows-[1fr] opacity-100 mt-2 pb-2" : "grid-rows-[0fr] opacity-0"
-                    )}
-                  >
-                    <div className="overflow-hidden">
-                      <p className="font-sans text-[14px] sm:text-[15px] text-zinc-600 leading-[1.7] max-w-xl">
-                        {item.answer}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <AccordionItem value={`item-${idx}`} className="border-b border-zinc-200/80 pb-2 data-open:bg-transparent">
+                  <AccordionTrigger className="w-full flex items-center justify-between text-left py-4 hover:no-underline select-none font-sans text-[16px] sm:text-[18px] font-medium tracking-normal text-zinc-800 transition-colors duration-300 hover:text-zinc-900 group data-open:text-[#00b2d6] cursor-pointer p-0 border-none after:hidden **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-7 **:data-[slot=accordion-trigger-icon]:text-zinc-500 **:data-[slot=accordion-trigger-icon]:bg-zinc-100 **:data-[slot=accordion-trigger-icon]:rounded-full **:data-[slot=accordion-trigger-icon]:p-1.5 data-open:**:data-[slot=accordion-trigger-icon]:bg-[#00b2d6]/10 data-open:**:data-[slot=accordion-trigger-icon]:text-[#00b2d6]">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="font-sans text-[14px] sm:text-[15px] text-zinc-600 leading-[1.7] max-w-xl pb-4 p-0 mt-2">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
               </Reveal>
-            );
-          })}
+            ))}
+          </Accordion>
         </div>
 
       </div>

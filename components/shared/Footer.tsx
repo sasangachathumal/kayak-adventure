@@ -162,7 +162,7 @@ export default function Footer() {
           <div>
             Designed & Developed by{" "}
             <Link
-              href="https://www.rusiru-salwathura.me"
+              href="https://rusiru-salwathura.me"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand hover:text-brand/80 transition-colors font-medium underline underline-offset-2 decoration-zinc-300 hover:decoration-brand uppercase"

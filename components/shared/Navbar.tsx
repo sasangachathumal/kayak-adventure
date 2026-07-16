@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 type MenuState = "closed" | "opening" | "open" | "closing";
 
 const navigationItems = [
-  { label: "Home",     href: "/",           index: 0 },
-  { label: "Gallery",  href: "/gallery",    index: 1 },
-  { label: "About Us", href: "/about",      index: 2 },
-  { label: "Contact",  href: "/#contact",   index: 3 },
+  { label: "Home",     href: "/",         index: 0 },
+  { label: "Gallery",  href: "/gallery",  index: 1 },
+  { label: "About Us", href: "/about",    index: 2 },
+  { label: "Contact",  href: "/contact",  index: 3 },
 ];
 
 export default function Navbar() {
@@ -147,12 +147,12 @@ export default function Navbar() {
           </div>
           <div className="flex flex-col justify-center -space-y-0.5">
             <span className={`font-logo text-[32px] leading-none tracking-normal transition-colors duration-300 ${
-              (pathname === "/gallery" || pathname === "/about") && !scrolled && !isOpen && !isOpening ? "text-white" : "text-zinc-900"
+              (pathname === "/gallery" || pathname === "/about" || pathname === "/contact") && !scrolled && !isOpen && !isOpening ? "text-white" : "text-zinc-900"
             }`}>
               KAYAK
             </span>
             <span className={`font-sans text-[9px] font-bold tracking-[0.43em] leading-none transition-colors duration-300 mt-0.5 ${
-              (pathname === "/gallery" || pathname === "/about") && !scrolled && !isOpen && !isOpening ? "text-white/90" : "text-zinc-800"
+              (pathname === "/gallery" || pathname === "/about" || pathname === "/contact") && !scrolled && !isOpen && !isOpening ? "text-white/90" : "text-zinc-800"
             }`}>
               ADVENTURE
             </span>

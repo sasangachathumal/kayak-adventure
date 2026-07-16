@@ -76,8 +76,7 @@ export default function AboutPageHero() {
               Our story, our values, and the people behind every paddle.
             </span>
             <span className="hidden md:inline">
-              Discover the story, values, and people behind Kayak Adventure —
-              Sri Lanka&apos;s most trusted guided kayaking experience.
+              Discover the story, values, and people behind Kayak Adventure, Sri Lanka&apos;s most trusted guided kayaking experience.
             </span>
           </p>
         </Reveal>

@@ -27,6 +27,7 @@ export default function Preloader() {
   const [isNavTransition] = useState(() => {
     if (typeof window !== "undefined") {
       const w = window as unknown as PreloaderWindow;
+      w.__preloaderDone = false; // Reset immediately on page transition to prevent child Reveal race conditions
       return !!w.__hasLoadedFirstTime;
     }
     return false;

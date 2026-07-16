@@ -131,15 +131,23 @@ export default function About() {
         <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-lg lg:max-w-none mx-auto">
           {/* Card 1: Brand Logo Card (1:1 aspect ratio card) */}
           <Reveal variant="scale-up" delay={100} duration={700}>
-            <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square">
-              <div className="relative w-28 h-16 sm:w-44 sm:h-24 select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
+            <div className="flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2.5 sm:gap-3.5">
+              <div className="relative size-16 sm:size-24 select-none pointer-events-none transform hover:scale-105 transition-transform duration-300">
                 <Image
-                  src="/kayak-logo.svg"
-                  alt="Brand Logo with Text"
+                  src="/logo-with-no-text.svg"
+                  alt="Brand Logo Emblem"
                   fill
-                  sizes="200px"
+                  sizes="128px"
                   className="object-contain"
                 />
+              </div>
+              <div className="flex flex-col justify-center -space-y-0.5 text-center">
+                <span className="font-logo text-[24px] sm:text-[32px] leading-none tracking-normal text-zinc-900">
+                  KAYAK
+                </span>
+                <span className="font-sans text-[7.5px] sm:text-[9.5px] font-bold tracking-[0.43em] text-zinc-600 leading-none mt-1.5 uppercase">
+                  ADVENTURE
+                </span>
               </div>
             </div>
           </Reveal>
@@ -150,7 +158,7 @@ export default function About() {
               <PopoverTrigger
                 onMouseEnter={() => setPopoverOpen(true)}
                 onMouseLeave={() => setPopoverOpen(false)}
-                className="relative flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4 cursor-help"
+                className="relative w-full flex flex-col items-center justify-center text-center bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-[24px] border border-zinc-200/50 shadow-sm hover:shadow-md hover:border-zinc-200 hover:bg-white transition-all duration-300 aspect-square gap-2 sm:gap-4 cursor-help"
               >
                 <div className="relative w-20 h-12.5 sm:w-36 sm:h-22.5 shrink-0">
                   <Image

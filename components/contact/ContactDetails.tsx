@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
-import { Phone, Mail, Clock, ArrowUpRight } from "lucide-react";
+import { Phone, Mail, Clock, Globe, ArrowUpRight } from "lucide-react";
 
 // ─── WhatsApp SVG icon (inline, matching Footer pattern) ───────────────────────
 const WhatsAppIcon = ({ className = "size-5" }: { className?: string }) => (
@@ -54,6 +54,15 @@ const channels = [
     label: "Operating Hours",
     value: "Daily, 6:00 AM – 6:00 PM",
     sub: "Tours depart at sunrise, midday & sunset",
+    href: null,
+    external: false,
+  },
+  {
+    id: "languages",
+    icon: Globe,
+    label: "Languages Spoken",
+    value: "English, Sinhala",
+    sub: "Guides speak fluent English & Sinhala",
     href: null,
     external: false,
   },

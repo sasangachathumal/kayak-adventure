@@ -25,11 +25,19 @@ const faqData: FAQItem[] = [
   },
   {
     question: "How long does the tour typically last?",
-    answer: "Our standard Rathgama mangrove kayaking tour takes about 2.5 to 3 hours. This runs at a relaxed, leisurely pace, allowing plenty of time to explore narrow mangrove canals, spot wildlife, and take pictures.",
+    answer: "Our Rathgama mangrove kayaking tours typically last 1 to 3 hours (customizable based on your preference). This runs at a relaxed, leisurely pace, allowing plenty of time to explore narrow mangrove canals, spot wildlife, and take pictures.",
   },
   {
     question: "What happens in case of bad weather?",
     answer: "A light tropical drizzle won't stop the tour—in fact, paddling under the rain can be a magical experience in the mangroves! However, in the event of heavy downpours, high winds, or lightning, we will postpone or reschedule the tour for your safety.",
+  },
+  {
+    question: "What is the group size for a tour?",
+    answer: "Our standard group size is 1 to 12 people. For groups larger than 12 participants, please confirm and book early so we can arrange additional guides and equipment for your group.",
+  },
+  {
+    question: "What languages do the guides speak?",
+    answer: "Our guides speak English and Sinhala, ensuring clear instructions, safety briefings, and local storytelling throughout your tour.",
   },
 ];
 

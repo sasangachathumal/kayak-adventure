@@ -17,25 +17,25 @@ import {
 // ─── Timeline milestone data ───────────────────────────────────────────────────
 const milestones = [
   {
-    year: "2018",
+    year: "2022",
     title: "The first paddle",
     description:
       "Kayak Adventure began with a single kayak and an unshakeable belief that Sri Lanka's waterways deserved to be shared. Our founders paddled Rathgama Lagoon for the first time — and never looked back.",
   },
   {
-    year: "2020",
+    year: "2023",
     title: "Growing the fleet",
     description:
       "After two seasons of word-of-mouth growth, we expanded to a full fleet of premium kayaks, adding structured guided routes through the mangrove tunnels and a dedicated safety-first training programme.",
   },
   {
-    year: "2022",
+    year: "2025",
     title: "SLIC insurance partnership",
     description:
       "We became one of the first kayak tour operators in Sri Lanka to offer fully insured tours through the Sri Lanka Insurance Corporation — a milestone that cemented our commitment to guest safety.",
   },
   {
-    year: "2024",
+    year: "2026",
     title: "Eco-certified tours",
     description:
       "All Kayak Adventure tours are now 100% eco-conscious. We adopted a leave-no-trace ethos, limited group sizes to protect biodiversity, and began active mangrove restoration along Rathgama Lagoon.",

@@ -228,11 +228,11 @@ export default function ContactDetails() {
                 href="https://maps.app.goo.gl/oft6MJNk3JXXCy1eA"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-2 text-zinc-500 hover:text-brand transition-colors text-[14px] group w-fit"
+                className="flex items-start gap-2.5 text-zinc-600 hover:text-brand transition-colors text-[14px] group w-fit cursor-pointer"
               >
-                {/* Google Maps pin */}
+                {/* Google Maps Pin Logo */}
                 <svg
-                  className="w-3 h-4 shrink-0 mt-0.5 group-hover:scale-110 transition-transform"
+                  className="w-3.5 h-5 shrink-0 mt-0.5 group-hover:scale-110 transition-transform"
                   viewBox="0 0 256 367"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -243,9 +243,9 @@ export default function ContactDetails() {
                   <path fill="#1A73E8" d="M30.015 45.765C48.86 23.218 82.02 0 127.736 0c22.18 0 38.89 5.823 38.89 5.823L90.29 96.516H36.205z" />
                   <path fill="#EA4335" d="M12.612 188.892S0 164.194 0 128.414c0-33.817 13.146-63.377 30.015-82.649l60.318 50.759z" />
                 </svg>
-                <span className="underline underline-offset-2 decoration-zinc-300 group-hover:decoration-brand transition-all leading-snug">
-                  Kayak Adventure, Rathgama Lagoon, Hikkaduwa, Sri Lanka
-                  <ArrowUpRight className="inline-block size-3 ml-1 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                <span className="wrap-break-word underline-offset-2 hover:underline inline-flex items-center gap-1 underline">
+                  Kayak Adventure, Rathgama, Sri Lanka.
+                  <ArrowUpRight className="size-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
                 </span>
               </Link>
             </div>
@@ -255,8 +255,8 @@ export default function ContactDetails() {
           <Reveal variant="scale-up" delay={200} duration={800}>
             <div className="w-full rounded-[24px] overflow-hidden border border-zinc-200/60 shadow-sm aspect-[4/3] min-h-[300px]">
               <iframe
-                title="Kayak Adventure — Rathgama Lagoon, Hikkaduwa, Sri Lanka"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.8609838064326!2d80.18503!3d6.0910!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae173f6f5d5a9b3%3A0x0!2sRathgama+Lake!5e0!3m2!1sen!2slk!4v1680000000000!5m2!1sen!2slk"
+                title="Kayak Adventure — Rathgama Lake, Hikkaduwa, Sri Lanka"
+                src="https://maps.google.com/maps?q=Kayak+Adventure,+Rathgama+Lake&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0, display: "block" }}
@@ -271,10 +271,10 @@ export default function ContactDetails() {
           <Reveal variant="fade-up" delay={300} duration={650}>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: "Tour Duration", value: "2 – 3 hours" },
-                { label: "Group Size", value: "Max 12 guests" },
-                { label: "Languages", value: "EN · SI · TA" },
-                { label: "Booking", value: "Same day available" },
+                { label: "Tour Duration", value: "1 – 3 hours (custom)" },
+                { label: "Group Size", value: "1 – 12 guests" },
+                { label: "Languages", value: "EN · SI" },
+                { label: "Booking", value: "Advance / Same day" },
               ].map(({ label, value }) => (
                 <div
                   key={label}

@@ -42,7 +42,7 @@ export default function FAQ() {
         <div className="lg:col-span-5 mb-12 lg:mb-0">
           {/* Section Tag */}
           <Reveal variant="fade-left" duration={600}>
-            <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
+            <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-brand uppercase">
               FAQ
             </span>
           </Reveal>
@@ -88,7 +88,7 @@ export default function FAQ() {
         </div>
 
         {/* Right Column: Accordions */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 lg:pt-[68px]">
           <Accordion className="border-0 rounded-none shadow-none bg-transparent overflow-visible gap-4 flex flex-col">
             {faqData.map((item, idx) => (
               <Reveal 

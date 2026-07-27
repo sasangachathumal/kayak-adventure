@@ -3,7 +3,6 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
@@ -17,6 +16,38 @@ import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
+const FEATURED_IMAGES = [
+  "/featured-images/img166.avif",
+  "/featured-images/img179.avif",
+  "/featured-images/img206.avif",
+  "/featured-images/img208.avif",
+  "/featured-images/img21.avif",
+  "/featured-images/img231.avif",
+  "/featured-images/img236.avif",
+  "/featured-images/img276.avif",
+  "/featured-images/img277.avif",
+  "/featured-images/img29.avif",
+  "/featured-images/img292.avif",
+  "/featured-images/img294.avif",
+  "/featured-images/img328.avif",
+  "/featured-images/img347.avif",
+  "/featured-images/img350.avif",
+  "/featured-images/img361.avif",
+  "/featured-images/img362.avif",
+  "/featured-images/img40.avif",
+  "/featured-images/img55.avif",
+  "/featured-images/img68.avif",
+];
+
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 interface ShowcaseImageProps {
   src: string;
   alt: string;
@@ -26,31 +57,62 @@ interface ShowcaseImageProps {
 
 function ShowcaseImage({ src, alt, sizes, preloaderDone }: ShowcaseImageProps) {
   const [loaded, setLoaded] = React.useState(false);
+  const [imageSrc, setImageSrc] = React.useState(src);
+  const [isBlurringOut, setIsBlurringOut] = React.useState(false);
+  const isMounted = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+      setImageSrc(src);
+      return;
+    }
+
+    if (src !== imageSrc) {
+      // Step 1: Smoothly blur out current image
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsBlurringOut(true);
+
+      // Step 2: Swap to new src while blurred out
+      const timer = setTimeout(() => {
+        setImageSrc(src);
+        setLoaded(false);
+      }, 350);
+
+      return () => clearTimeout(timer);
+    }
+  }, [src, imageSrc]);
+
   return (
     <>
       {!preloaderDone ? (
         <Skeleton className="absolute inset-0 w-full h-full bg-zinc-200/50 rounded-[inherit]" />
       ) : (
-        <>
+        <div className="relative w-full h-full overflow-hidden rounded-[inherit] bg-zinc-200/60">
           <Skeleton 
             className={cn(
-              "absolute inset-0 w-full h-full bg-zinc-200 rounded-[inherit] transition-opacity duration-500",
-              loaded ? "opacity-0 pointer-events-none" : "opacity-100 animate-pulse"
+              "absolute inset-0 w-full h-full bg-zinc-200 rounded-[inherit] transition-opacity duration-500 z-0",
+              loaded && !isBlurringOut ? "opacity-0 pointer-events-none" : "opacity-100 animate-pulse"
             )} 
           />
           <Image
-            src={src}
+            src={imageSrc}
             alt={alt}
             fill
             sizes={sizes}
             loading="lazy"
-            onLoad={() => setLoaded(true)}
+            onLoad={() => {
+              setLoaded(true);
+              setIsBlurringOut(false);
+            }}
             className={cn(
-              "object-cover pointer-events-none select-none transition-all duration-700 ease-out",
-              loaded ? "opacity-100 blur-0 scale-100" : "opacity-0 blur-sm scale-95"
+              "object-cover pointer-events-none select-none transition-all duration-700 ease-out z-10",
+              loaded && !isBlurringOut
+                ? "opacity-100 blur-0 scale-100"
+                : "opacity-30 blur-xl scale-105"
             )}
           />
-        </>
+        </div>
       )}
     </>
   );
@@ -67,10 +129,47 @@ export default function GalleryPreview() {
     return false;
   });
 
+  const [galleryImages, setGalleryImages] = React.useState<string[]>(
+    FEATURED_IMAGES.slice(0, 7)
+  );
+
+  const poolRef = React.useRef<string[]>(FEATURED_IMAGES);
+  const poolIndexRef = React.useRef<number>(7);
+  const slotIndexRef = React.useRef<number>(0);
+
+  // Initialize random shuffle on mount & setup interval cycling
+  React.useEffect(() => {
+    const shuffled = shuffleArray(FEATURED_IMAGES);
+    poolRef.current = shuffled;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setGalleryImages(shuffled.slice(0, 7));
+    poolIndexRef.current = 7;
+    slotIndexRef.current = 0;
+
+    const interval = setInterval(() => {
+      if (document.hidden) return;
+
+      const nextImg = poolRef.current[poolIndexRef.current % poolRef.current.length];
+      const targetSlot = slotIndexRef.current % 7;
+
+      setGalleryImages((prev) => {
+        const updated = [...prev];
+        updated[targetSlot] = nextImg;
+        return updated;
+      });
+
+      poolIndexRef.current += 1;
+      slotIndexRef.current += 1;
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   React.useEffect(() => {
     if (typeof window === "undefined") return;
 
     if (((window as unknown) as { __preloaderDone?: boolean }).__preloaderDone) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreloaderDone(true);
       return;
     }
@@ -117,7 +216,7 @@ export default function GalleryPreview() {
         <div className="flex flex-col text-left">
           {/* Section Tag */}
           <Reveal variant="fade-left" duration={600}>
-            <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-[#00b2d6] uppercase">
+            <span className="font-sans text-[10px] sm:text-[11px] font-bold tracking-[0.35em] text-brand uppercase">
               Gallery
             </span>
           </Reveal>
@@ -171,7 +270,7 @@ export default function GalleryPreview() {
         <Reveal variant="scale-up" delay={200} duration={900} className="hidden lg:block">
           <AspectRatio ratio={1.8} className="w-full overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-md">
             <ShowcaseImage
-              src="/gallery-image-1.png"
+              src={galleryImages[0]}
               alt="Kayakers paddling at sunset"
               sizes="50vw"
               preloaderDone={preloaderDone}
@@ -188,7 +287,7 @@ export default function GalleryPreview() {
         <Reveal variant="fade-up" delay={0} duration={800} className="md:row-span-2">
           <div className="relative aspect-3/4 md:aspect-auto md:h-full rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
             <ShowcaseImage
-              src="/gallery-image-2.png"
+              src={galleryImages[1]}
               alt="Mangrove Archway"
               sizes="(max-width: 768px) 50vw, 25vw"
               preloaderDone={preloaderDone}
@@ -201,7 +300,7 @@ export default function GalleryPreview() {
         <Reveal variant="fade-up" delay={100} duration={800}>
           <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
             <ShowcaseImage
-              src="/gallery-image-4.png"
+              src={galleryImages[2]}
               alt="Aerial Lake View"
               sizes="(max-width: 768px) 50vw, 25vw"
               preloaderDone={preloaderDone}
@@ -213,7 +312,7 @@ export default function GalleryPreview() {
         <Reveal variant="fade-up" delay={200} duration={800}>
           <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
             <ShowcaseImage
-              src="/gallery-image-5.png"
+              src={galleryImages[3]}
               alt="Canopy Tunnel Path"
               sizes="(max-width: 768px) 50vw, 25vw"
               preloaderDone={preloaderDone}
@@ -225,7 +324,7 @@ export default function GalleryPreview() {
         <Reveal variant="fade-up" delay={300} duration={800} className="md:row-span-2">
           <div className="relative aspect-3/4 md:aspect-auto md:h-full rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
             <ShowcaseImage
-              src="/gallery-image-3.png"
+              src={galleryImages[4]}
               alt="Golden Hour Waters"
               sizes="(max-width: 768px) 50vw, 25vw"
               preloaderDone={preloaderDone}
@@ -238,7 +337,7 @@ export default function GalleryPreview() {
         <Reveal variant="fade-up" delay={400} duration={800}>
           <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
             <ShowcaseImage
-              src="/gallery-image-7.png"
+              src={galleryImages[5]}
               alt="Lagoon Reflections"
               sizes="(max-width: 768px) 50vw, 25vw"
               preloaderDone={preloaderDone}
@@ -250,7 +349,7 @@ export default function GalleryPreview() {
         <Reveal variant="fade-up" delay={500} duration={800}>
           <div className="relative aspect-1.5/1 rounded-[20px] sm:rounded-[24px] overflow-hidden shadow-md">
             <ShowcaseImage
-              src="/gallery-image-6.png"
+              src={galleryImages[6]}
               alt="Paddling Exploration"
               sizes="(max-width: 768px) 50vw, 25vw"
               preloaderDone={preloaderDone}
@@ -268,7 +367,7 @@ export default function GalleryPreview() {
             <CarouselItem className="pl-4 basis-[85%]">
               <div className="relative aspect-3/4 rounded-[20px] overflow-hidden shadow-md">
                 <ShowcaseImage
-                  src="/gallery-image-2.png"
+                  src={galleryImages[1]}
                   alt="Mangrove Archway"
                   sizes="85vw"
                   preloaderDone={preloaderDone}
@@ -279,7 +378,7 @@ export default function GalleryPreview() {
             <CarouselItem className="pl-4 basis-[85%]">
               <div className="relative aspect-3/4 rounded-[20px] overflow-hidden shadow-md">
                 <ShowcaseImage
-                  src="/gallery-image-4.png"
+                  src={galleryImages[2]}
                   alt="Aerial Lake View"
                   sizes="85vw"
                   preloaderDone={preloaderDone}
@@ -290,7 +389,7 @@ export default function GalleryPreview() {
             <CarouselItem className="pl-4 basis-[85%]">
               <div className="relative aspect-3/4 rounded-[20px] overflow-hidden shadow-md">
                 <ShowcaseImage
-                  src="/gallery-image-5.png"
+                  src={galleryImages[3]}
                   alt="Canopy Tunnel Path"
                   sizes="85vw"
                   preloaderDone={preloaderDone}
@@ -301,7 +400,7 @@ export default function GalleryPreview() {
             <CarouselItem className="pl-4 basis-[85%]">
               <div className="relative aspect-3/4 rounded-[20px] overflow-hidden shadow-md">
                 <ShowcaseImage
-                  src="/gallery-image-3.png"
+                  src={galleryImages[4]}
                   alt="Golden Hour Waters"
                   sizes="85vw"
                   preloaderDone={preloaderDone}
@@ -312,7 +411,7 @@ export default function GalleryPreview() {
             <CarouselItem className="pl-4 basis-[85%]">
               <div className="relative aspect-3/4 rounded-[20px] overflow-hidden shadow-md">
                 <ShowcaseImage
-                  src="/gallery-image-6.png"
+                  src={galleryImages[5]}
                   alt="Lagoon Reflections"
                   sizes="85vw"
                   preloaderDone={preloaderDone}
@@ -323,7 +422,7 @@ export default function GalleryPreview() {
             <CarouselItem className="pl-4 basis-[85%]">
               <div className="relative aspect-3/4 rounded-[20px] overflow-hidden shadow-md">
                 <ShowcaseImage
-                  src="/gallery-image-7.png"
+                  src={galleryImages[6]}
                   alt="Paddling Exploration"
                   sizes="85vw"
                   preloaderDone={preloaderDone}
@@ -342,7 +441,7 @@ export default function GalleryPreview() {
               onClick={() => api?.scrollTo(idx)}
               className={cn(
                 "size-2 rounded-full transition-all duration-300 p-0 h-2 bg-zinc-200 border-none min-w-0 min-h-0",
-                current === idx ? "bg-[#00b2d6] w-2" : "bg-zinc-200"
+                current === idx ? "bg-brand w-2" : "bg-zinc-200"
               )}
               aria-label={`Go to slide ${idx + 1}`}
             />
@@ -364,3 +463,4 @@ export default function GalleryPreview() {
     </Section>
   );
 }
+

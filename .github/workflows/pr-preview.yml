@@ -56,7 +56,7 @@ jobs:
         with:
           script: |
             const alias = '${{ steps.alias.outputs.name }}';
-            const body = `🚀 **Preview ready**\n\nAlias: \`${alias}\`\n\nThe exact URL is printed in the *Upload preview version* step of this run. It follows the pattern:\n\`https://${alias}-<worker-name>.<your-subdomain>.workers.dev\``;
+            const body = `🚀 **Preview ready**\n\nAlias: \`${alias}\`\n\nThe exact URL is printed in the *Upload preview version* step of this run. It follows the pattern:\n\`https://${alias}-kayak-adventure.sasanga-dev.workers.dev\``;
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

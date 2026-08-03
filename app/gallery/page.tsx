@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
-import { buildMetadata } from "@/lib/seo";
-import Navbar from "@/components/shared/Navbar";
-import GalleryPageHero from "@/components/gallery/GalleryPageHero";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
+import GalleryPageHero from "@/components/gallery/GalleryPageHero";
 import CTA from "@/components/shared/CTA";
 import Footer from "@/components/shared/Footer";
-import ScrollToTop from "@/components/shared/ScrollToTop";
+import Navbar from "@/components/shared/Navbar";
 import Preloader from "@/components/shared/Preloader";
+import ScrollToTop from "@/components/shared/ScrollToTop";
+import { buildMetadata } from "@/lib/seo";
 import fs from "fs";
+import type { Metadata } from "next";
 import path from "path";
 
 // ─── Page-specific SEO metadata ──────────────────────────────────────────────
@@ -82,6 +82,12 @@ export default function GalleryPage() {
     });
   } catch (e) {
     console.error("Error reading gallery-images dir:", e);
+  }
+
+  if (imageList.length === 0) {
+    throw new Error(
+      `Gallery build produced 0 images. cwd=${process.cwd()}, dir=${dirPath}`
+    );
   }
 
   return (

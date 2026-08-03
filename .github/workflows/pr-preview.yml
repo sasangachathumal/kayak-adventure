@@ -25,6 +25,11 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - name: Debug gallery files
+        run: |
+          echo "cwd: $(pwd)"
+          ls -la public/gallery-images | head -5
+          ls public/gallery-images | wc -l
 
       - name: Build
         run: npx opennextjs-cloudflare build

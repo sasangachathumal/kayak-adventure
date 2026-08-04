@@ -10,7 +10,11 @@ function getAvifDimensions(filePath) {
 
 const dir = path.join(process.cwd(), "public/gallery-images");
 const files = fs.readdirSync(dir).filter((f) => f.endsWith(".avif"));
-files.sort((a, b) => (+(a.match(/\d+/)?.[0] ?? 0)) - (+(b.match(/\d+/)?.[0] ?? 0)));
+files.sort((a, b) => {
+  const numA = parseInt(a.match(/\d+/)?.[0] || "0", 10);
+  const numB = parseInt(b.match(/\d+/)?.[0] || "0", 10);
+  return numB - numA;   // was numA - numB — swap the operands for latest-first
+});
 
 const images = files.map((file, idx) => {
   const num = file.match(/\d+/)?.[0] ?? "";

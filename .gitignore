@@ -66,3 +66,6 @@ next-env.d.ts
 .npm/
 .eslintcache
 .stylelintcache
+
+.open-next
+.wrangler

@@ -1,15 +1,14 @@
+import { DEFAULT_SEO, localBusinessJsonLd } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import {
   Geist,
   Geist_Mono,
   Inter,
-  Playfair_Display,
   Permanent_Marker,
+  Playfair_Display,
 } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import { DEFAULT_SEO, localBusinessJsonLd } from "@/lib/seo";
-import { Analytics } from "@vercel/analytics/next";
 
 // ─── Fonts ───────────────────────────────────────────────────────────────────
 
@@ -73,7 +72,6 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         {children}
-        <Analytics />
       </body>
     </html>
   );

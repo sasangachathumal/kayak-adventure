@@ -1,11 +1,26 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
-  "name": "kayak-adventure",
-  "compatibility_date": "2026-07-22",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  }
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "kayak-adventure",
+	"compatibility_date": "2026-07-22",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "kayak_CMS_KV",
+			"id": "3d2b3fce600242bb8fe4057ad606f57d",
+			"preview_id": "ed5cc410b4af40c59db93fa64a8ae961"
+		}
+	],
+	"r2_buckets": [
+		{
+			"bucket_name": "kayak-adventure-gallery",
+			"binding": "kayak_adventure_gallery"
+		}
+	]
 }

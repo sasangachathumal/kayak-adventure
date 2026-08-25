@@ -22,6 +22,7 @@ export type Testimonial = {
   name: string;
   location: string;
   quote: string;
+  rating?: number;      // 1 to 5 stars (default: 5)
   avatarKey?: string;   // R2 object key (optional)
   createdAt: number;
 };

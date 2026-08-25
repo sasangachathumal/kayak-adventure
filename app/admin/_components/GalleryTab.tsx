@@ -3,6 +3,8 @@
 import * as React from 'react';
 import GalleryUploadCard from './GalleryUploadCard';
 import GalleryItemCard from './GalleryItemCard';
+import EditGalleryModal from './EditGalleryModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 import type { GalleryItem } from '@/lib/types';
 
 interface GalleryTabProps {
@@ -20,8 +22,12 @@ export default function GalleryTab({
   deletingId,
   setDeletingId,
 }: GalleryTabProps) {
-  async function handleDelete(id: string) {
-    if (!confirm('Delete this media item from the live gallery?')) return;
+  const [editingItem, setEditingItem] = React.useState<GalleryItem | null>(null);
+  const [deletingItem, setDeletingItem] = React.useState<GalleryItem | null>(null);
+
+  async function handleConfirmDelete() {
+    if (!deletingItem) return;
+    const id = deletingItem.id;
     setDeletingId(id);
     try {
       const res = await fetch('/api/admin/gallery', {
@@ -32,11 +38,18 @@ export default function GalleryTab({
       if (!res.ok) throw new Error('Delete failed');
       setGalleryList((prev) => prev.filter((i) => i.id !== id));
       showFeedback('success', 'Item removed from gallery.');
+      setDeletingItem(null);
     } catch (err: unknown) {
       showFeedback('error', err instanceof Error ? err.message : 'Delete failed');
     } finally {
       setDeletingId(null);
     }
+  }
+
+  function handleUpdate(updated: GalleryItem) {
+    setGalleryList((prev) =>
+      prev.map((item) => (item.id === updated.id ? updated : item))
+    );
   }
 
   return (
@@ -68,13 +81,34 @@ export default function GalleryTab({
               <GalleryItemCard
                 key={item.id}
                 item={item}
-                onDelete={handleDelete}
+                onEdit={(i) => setEditingItem(i)}
+                onDelete={(i) => setDeletingItem(i)}
                 deleting={deletingId === item.id}
               />
             ))}
           </div>
         )}
       </div>
+
+      {/* Edit Modal */}
+      <EditGalleryModal
+        item={editingItem}
+        isOpen={Boolean(editingItem)}
+        onClose={() => setEditingItem(null)}
+        onUpdate={handleUpdate}
+        showFeedback={showFeedback}
+      />
+
+      {/* Custom Confirm Delete Modal */}
+      <ConfirmDeleteModal
+        isOpen={Boolean(deletingItem)}
+        title="Delete Gallery Media"
+        description="Are you sure you want to remove this media item from the live gallery?"
+        itemPreview={deletingItem?.alt}
+        isDeleting={Boolean(deletingId)}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setDeletingItem(null)}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Loader2, Plus } from 'lucide-react';
+import StarRating from './StarRating';
 import type { Testimonial } from '@/lib/types';
 
 interface TestimonialFormProps {
@@ -13,6 +14,7 @@ export default function TestimonialForm({ onSave, showFeedback }: TestimonialFor
   const [tName, setTName] = React.useState('');
   const [tLocation, setTLocation] = React.useState('');
   const [tQuote, setTQuote] = React.useState('');
+  const [tRating, setTRating] = React.useState<number>(5);
   const [tAvatar, setTAvatar] = React.useState<File | null>(null);
   const [saving, setSaving] = React.useState(false);
 
@@ -25,6 +27,7 @@ export default function TestimonialForm({ onSave, showFeedback }: TestimonialFor
       formData.set('name', tName);
       formData.set('location', tLocation);
       formData.set('quote', tQuote);
+      formData.set('rating', String(tRating));
       if (tAvatar) formData.set('avatar', tAvatar);
 
       const res = await fetch('/api/admin/testimonials', { method: 'POST', body: formData });
@@ -34,7 +37,7 @@ export default function TestimonialForm({ onSave, showFeedback }: TestimonialFor
       }
       const data = (await res.json().catch(() => ({}))) as { entry?: Testimonial };
       if (data.entry) onSave(data.entry);
-      setTName(''); setTLocation(''); setTQuote(''); setTAvatar(null);
+      setTName(''); setTLocation(''); setTQuote(''); setTRating(5); setTAvatar(null);
       showFeedback('success', 'Testimonial saved!');
     } catch (err: unknown) {
       showFeedback('error', err instanceof Error ? err.message : 'Save failed');
@@ -73,21 +76,44 @@ export default function TestimonialForm({ onSave, showFeedback }: TestimonialFor
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
           <div>
             <label className={labelClass}>Guest Name *</label>
-            <input type="text" value={tName} onChange={(e) => setTName(e.target.value)}
-              placeholder="e.g. Sarah Jenkins" required className={inputClass} />
+            <input
+              type="text"
+              value={tName}
+              onChange={(e) => setTName(e.target.value)}
+              placeholder="e.g. Sarah Jenkins"
+              required
+              className={inputClass}
+            />
           </div>
           <div>
             <label className={labelClass}>Location</label>
-            <input type="text" value={tLocation} onChange={(e) => setTLocation(e.target.value)}
-              placeholder="e.g. London, United Kingdom" className={inputClass} />
+            <input
+              type="text"
+              value={tLocation}
+              onChange={(e) => setTLocation(e.target.value)}
+              placeholder="e.g. London, United Kingdom"
+              className={inputClass}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className={labelClass}>Star Rating</label>
+          <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/80 inline-flex">
+            <StarRating value={tRating} onChange={setTRating} size="md" />
           </div>
         </div>
 
         <div>
           <label className={labelClass}>Review *</label>
-          <textarea value={tQuote} onChange={(e) => setTQuote(e.target.value)}
-            placeholder="e.g. Paddling through the mangroves was pure magic..." rows={3} required
-            className={inputClass} />
+          <textarea
+            value={tQuote}
+            onChange={(e) => setTQuote(e.target.value)}
+            placeholder="e.g. Paddling through the mangroves was pure magic..."
+            rows={3}
+            required
+            className={inputClass}
+          />
         </div>
 
         <div>
@@ -109,7 +135,7 @@ export default function TestimonialForm({ onSave, showFeedback }: TestimonialFor
             {saving ? (
               <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
             ) : (
-              <><Plus className="w-4 h-4" /> Publish </>
+              <><Plus className="w-4 h-4" /> Publish</>
             )}
           </button>
         </div>

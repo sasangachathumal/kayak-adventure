@@ -2,16 +2,22 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Trash2, Video, Image as ImageIcon } from 'lucide-react';
+import { Loader2, Trash2, Video, Image as ImageIcon, Pencil } from 'lucide-react';
 import type { GalleryItem } from '@/lib/types';
 
 interface GalleryItemCardProps {
   item: GalleryItem;
-  onDelete: (id: string) => void;
+  onEdit?: (item: GalleryItem) => void;
+  onDelete: (item: GalleryItem) => void;
   deleting: boolean;
 }
 
-export default function GalleryItemCard({ item, onDelete, deleting }: GalleryItemCardProps) {
+export default function GalleryItemCard({
+  item,
+  onEdit,
+  onDelete,
+  deleting,
+}: GalleryItemCardProps) {
   return (
     <div className="group bg-white rounded-xl sm:rounded-2xl border border-zinc-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
       {/* Thumbnail */}
@@ -52,21 +58,32 @@ export default function GalleryItemCard({ item, onDelete, deleting }: GalleryIte
 
       {/* Card footer */}
       <div className="px-2.5 py-2 sm:px-3 sm:py-2.5 flex items-center justify-between gap-1.5">
-        <p className="text-[10px] sm:text-[11px] text-zinc-500 truncate leading-none">
+        <p className="text-[10px] sm:text-[11px] text-zinc-500 truncate leading-none flex-1 mr-1">
           {item.alt || 'No caption'}
         </p>
-        <button
-          onClick={() => onDelete(item.id)}
-          disabled={deleting}
-          title="Delete"
-          className="shrink-0 p-1 -m-1 min-w-[28px] min-h-[28px] flex items-center justify-center text-zinc-400 hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
-        >
-          {deleting ? (
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
-          ) : (
-            <Trash2 className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-1 shrink-0">
+          {onEdit && (
+            <button
+              onClick={() => onEdit(item)}
+              title="Edit caption and layout"
+              className="p-1 -m-0.5 min-w-[26px] min-h-[26px] flex items-center justify-center text-zinc-400 hover:text-brand transition-colors cursor-pointer"
+            >
+              <Pencil className="w-3.5 h-3.5" />
+            </button>
           )}
-        </button>
+          <button
+            onClick={() => onDelete(item)}
+            disabled={deleting}
+            title="Delete"
+            className="p-1 -m-0.5 min-w-[26px] min-h-[26px] flex items-center justify-center text-zinc-400 hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
+          >
+            {deleting ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="w-3.5 h-3.5" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

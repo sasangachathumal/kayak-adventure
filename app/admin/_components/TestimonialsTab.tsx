@@ -3,6 +3,8 @@
 import * as React from 'react';
 import TestimonialForm from './TestimonialForm';
 import TestimonialCard from './TestimonialCard';
+import EditTestimonialModal from './EditTestimonialModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 import type { Testimonial } from '@/lib/types';
 
 interface TestimonialsTabProps {
@@ -20,8 +22,12 @@ export default function TestimonialsTab({
   deletingId,
   setDeletingId,
 }: TestimonialsTabProps) {
-  async function handleDelete(id: string) {
-    if (!confirm('Delete this testimonial?')) return;
+  const [editingTestimonial, setEditingTestimonial] = React.useState<Testimonial | null>(null);
+  const [deletingTestimonial, setDeletingTestimonial] = React.useState<Testimonial | null>(null);
+
+  async function handleConfirmDelete() {
+    if (!deletingTestimonial) return;
+    const id = deletingTestimonial.id;
     setDeletingId(id);
     try {
       const res = await fetch('/api/admin/testimonials', {
@@ -32,6 +38,7 @@ export default function TestimonialsTab({
       if (!res.ok) throw new Error('Delete failed');
       setTestimonialsList((prev) => prev.filter((t) => t.id !== id));
       showFeedback('success', 'Testimonial deleted.');
+      setDeletingTestimonial(null);
     } catch (err: unknown) {
       showFeedback('error', err instanceof Error ? err.message : 'Delete failed');
     } finally {
@@ -41,6 +48,12 @@ export default function TestimonialsTab({
 
   function handleSave(entry: Testimonial) {
     setTestimonialsList((prev) => [entry, ...prev.filter((t) => t.id !== entry.id)]);
+  }
+
+  function handleUpdate(updated: Testimonial) {
+    setTestimonialsList((prev) =>
+      prev.map((t) => (t.id === updated.id ? updated : t))
+    );
   }
 
   return (
@@ -69,13 +82,34 @@ export default function TestimonialsTab({
               <TestimonialCard
                 key={t.id}
                 testimonial={t}
-                onDelete={handleDelete}
+                onEdit={(item) => setEditingTestimonial(item)}
+                onDelete={(item) => setDeletingTestimonial(item)}
                 deleting={deletingId === t.id}
               />
             ))}
           </div>
         )}
       </div>
+
+      {/* Edit Testimonial Modal */}
+      <EditTestimonialModal
+        testimonial={editingTestimonial}
+        isOpen={Boolean(editingTestimonial)}
+        onClose={() => setEditingTestimonial(null)}
+        onUpdate={handleUpdate}
+        showFeedback={showFeedback}
+      />
+
+      {/* Custom Confirm Delete Modal */}
+      <ConfirmDeleteModal
+        isOpen={Boolean(deletingTestimonial)}
+        title="Delete Testimonial"
+        description="Are you sure you want to remove this review from the website?"
+        itemPreview={`${deletingTestimonial?.name}: ${deletingTestimonial?.quote}`}
+        isDeleting={Boolean(deletingId)}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setDeletingTestimonial(null)}
+      />
     </div>
   );
 }

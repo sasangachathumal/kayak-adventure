@@ -58,6 +58,41 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PUT(req: NextRequest) {
+  if (!(await isAuthed())) return unauthorized();
+  try {
+    const body = (await req.json().catch(() => ({}))) as {
+      id?: string;
+      alt?: string;
+      span?: 'normal' | 'tall';
+    };
+
+    if (!body.id) {
+      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+    }
+
+    const list = await getGallery();
+    const index = list.findIndex((i) => i.id === body.id);
+    if (index === -1) {
+      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+    }
+
+    const current = list[index];
+    const updated: GalleryItem = {
+      ...current,
+      alt: body.alt !== undefined ? body.alt : current.alt,
+      span: body.span !== undefined ? body.span : current.span,
+    };
+
+    list[index] = updated;
+    await saveGallery(list);
+    return NextResponse.json({ ok: true, item: updated });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Update failed';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   if (!(await isAuthed())) return unauthorized();
   try {

@@ -1,3 +1,10 @@
+export interface CloudflareEnv {
+  kayak_CMS_KV: KVNamespace;
+  kayak_adventure_gallery: R2Bucket;
+  ADMIN_SECRET: string;
+  AUTH_SECRET: string;
+}
+
 export type GalleryItem = {
   id: string;
   type: 'image' | 'video';
@@ -5,6 +12,8 @@ export type GalleryItem = {
   contentType: string;
   alt: string;
   span: 'normal' | 'tall';
+  width?: number;
+  height?: number;
   createdAt: number;
 };
 

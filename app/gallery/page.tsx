@@ -7,10 +7,11 @@ import Navbar from "@/components/shared/Navbar";
 import Preloader from "@/components/shared/Preloader";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 import manifestGalleryImages from "@/data/gallery-manifest.json";
+import { getGallery } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
-import fs from "fs";
 import type { Metadata } from "next";
-import path from "path";
+
+export const dynamic = "force-dynamic";
 
 // ─── Page-specific SEO metadata ──────────────────────────────────────────────
 export const metadata: Metadata = buildMetadata({
@@ -32,76 +33,19 @@ export const metadata: Metadata = buildMetadata({
   },
 });
 
-function getAvifDimensions(filePath: string): { width: number; height: number } {
-  const buffer = fs.readFileSync(filePath);
-  const ispe = Buffer.from("ispe");
-  const index = buffer.indexOf(ispe);
-  if (index === -1) {
-    throw new Error("ispe box not found");
-  }
-  const width = buffer.readUInt32BE(index + 8);
-  const height = buffer.readUInt32BE(index + 12);
-  return { width, height };
-}
-
 // ─── Gallery Page ────────────────────────────────────────────────────────────
-export default function GalleryPage() {
-  // const dirPath = path.join(process.cwd(), "public/gallery-images");
-  // let imageList: { src: string; alt: string; span?: "tall"; width: number; height: number }[] = [];
+export default async function GalleryPage() {
+  const cmsItems = await getGallery();
+  const cmsImages: GalleryImage[] = cmsItems.map((item) => ({
+    src: `/api/media/${item.key}`,
+    alt: item.alt || "Kayak Adventure moment",
+    span: item.span === "tall" ? "tall" : undefined,
+    width: item.width || 800,
+    height: item.height || (item.span === "tall" ? 1200 : 600),
+    type: item.type,
+  }));
 
-  // try {
-  //   const files = fs.readdirSync(dirPath);
-  //   const avifFiles = files.filter((file) => file.endsWith(".avif"));
-
-  //   // Sort numerically by the number in 'img{num}.avif'
-  //   avifFiles.sort((a, b) => {
-  //     const numA = parseInt(a.match(/\d+/)?.[0] || "0", 10);
-  //     const numB = parseInt(b.match(/\d+/)?.[0] || "0", 10);
-  //     return numA - numB;
-  //   });
-
-  //   imageList = avifFiles.map((file, idx) => {
-  //     const num = file.match(/\d+/)?.[0] || "";
-  //     const filePath = path.join(dirPath, file);
-  //     let width = 800;
-  //     let height = 600;
-  //     try {
-  //       const dims = getAvifDimensions(filePath);
-  //       width = dims.width;
-  //       height = dims.height;
-  //     } catch (err) {
-  //       console.error(`Failed to get dimensions for ${file}, using default:`, err);
-  //     }
-
-  //     return {
-  //       src: `/gallery-images/${file}`,
-  //       alt: `Kayak Adventure - Moment ${num}`,
-  //       // Pattern for desktop masonry tall spans (every 6th item, and offset offset)
-  //       span: idx % 6 === 0 || idx % 7 === 3 ? "tall" : undefined,
-  //       width,
-  //       height,
-  //     };
-  //   });
-  // } catch (e) {
-  //   console.error("Error reading gallery-images dir:", e);
-  // }
-
-  // const imageList = manifest.map((img, idx) => {
-  //   const num = img.file.match(/\d+/)?.[0] ?? "";
-  //   return {
-  //     src: `/gallery-images/${img.file}`,
-  //     alt: `Kayak Adventure - Moment ${num}`,
-  //     span: idx % 6 === 0 || idx % 7 === 3 ? "tall" : undefined,
-  //     width: img.width,
-  //     height: img.height,
-  //   };
-  // });
-
-  // if (imageList.length === 0) {
-  //   throw new Error(
-  //     `Gallery build produced 0 images`
-  //   );
-  // }
+  const allImages = [...cmsImages, ...(manifestGalleryImages as GalleryImage[])];
 
   return (
     <main className="flex-1 flex flex-col">
@@ -109,7 +53,7 @@ export default function GalleryPage() {
       <ScrollToTop />
       <Navbar />
       <GalleryPageHero />
-      <GalleryGrid images={manifestGalleryImages as GalleryImage[]} />
+      <GalleryGrid images={allImages} />
       <CTA />
       <Footer />
     </main>

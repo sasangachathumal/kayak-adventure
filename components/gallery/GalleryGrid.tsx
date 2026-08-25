@@ -17,6 +17,7 @@ export interface GalleryImage {
   span?: "tall";
   width: number;
   height: number;
+  type?: "image" | "video";
 }
 
 interface GalleryGridProps {
@@ -152,6 +153,15 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                   >
                     {!preloaderDone ? (
                       <Skeleton className="absolute inset-0 w-full h-full bg-zinc-200/50 rounded-[16px] sm:rounded-[24px]" />
+                    ) : img.type === "video" ? (
+                      <video
+                        src={img.src}
+                        className="w-full h-full object-cover rounded-[16px] sm:rounded-[24px]"
+                        muted
+                        playsInline
+                        loop
+                        autoPlay
+                      />
                     ) : (
                       <>
                         <Skeleton 
@@ -163,15 +173,15 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
                         <Image
                           src={img.src}
                           alt={img.alt}
-                          width={img.width}
-                          height={img.height}
+                          fill
                           loading="lazy"
+                          unoptimized
                           onLoad={() => {
                             setLoadedImages((prev) => ({ ...prev, [img.src]: true }));
                           }}
                           sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                           className={cn(
-                            "w-full h-auto pointer-events-none select-none transition-all duration-700 ease-out group-hover:scale-[1.04]",
+                            "w-full h-full object-cover pointer-events-none select-none transition-all duration-700 ease-out group-hover:scale-[1.04]",
                             loadedImages[img.src] ? "opacity-100 blur-0 scale-100" : "opacity-0 blur-sm scale-95"
                           )}
                         />
@@ -251,17 +261,27 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
             <ArrowRight className="absolute size-4 sm:size-5 stroke-[2.5] -translate-x-6 opacity-0 transition-all duration-500 ease-in-out transform group-hover/next:translate-x-0 group-hover/next:opacity-100" />
           </Button>
 
-          {/* Main image */}
-          <div className="relative z-105 w-[90vw] h-[75vh] sm:w-[80vw] sm:h-[80vh] max-w-5xl">
-            <Image
-              src={images[lightboxIndex].src}
-              alt={images[lightboxIndex].alt}
-              fill
-              sizes="90vw"
-              className="object-contain pointer-events-none animate-in zoom-in-95 fade-in duration-300"
-              quality={95}
-              priority
-            />
+          {/* Main image / video */}
+          <div className="relative z-105 w-[90vw] h-[75vh] sm:w-[80vw] sm:h-[80vh] max-w-5xl flex items-center justify-center">
+            {images[lightboxIndex].type === "video" ? (
+              <video
+                src={images[lightboxIndex].src}
+                controls
+                autoPlay
+                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+              />
+            ) : (
+              <Image
+                src={images[lightboxIndex].src}
+                alt={images[lightboxIndex].alt}
+                fill
+                unoptimized
+                sizes="90vw"
+                className="object-contain pointer-events-none animate-in zoom-in-95 fade-in duration-300"
+                quality={95}
+                priority
+              />
+            )}
             {/* Caption below image */}
             <div className="absolute -bottom-10 left-0 right-0 text-center">
               <span className="font-sans text-[13px] sm:text-[14px] font-medium text-white/70 tracking-wide">

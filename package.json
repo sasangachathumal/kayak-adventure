@@ -11,7 +11,8 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "typecheck": "tsc --noEmit",
-    "check-config": "chmod +x scripts/check-config.sh && bash scripts/check-config.sh"
+    "check-config": "chmod +x scripts/check-config.sh && bash scripts/check-config.sh",
+    "check-config-local": "chmod +x scripts/check-config-local.sh && bash scripts/check-config-local.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

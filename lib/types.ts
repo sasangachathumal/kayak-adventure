@@ -28,3 +28,27 @@ export type Testimonial = {
   avatarKey?: string;   // R2 object key (optional)
   createdAt: number;
 };
+
+export type FAQItem = {
+  id: string;
+  question: string;
+  answer: string;
+  hidden?: boolean;
+  order?: number;
+};
+
+export type AnnouncementBar = {
+  enabled: boolean;
+  text: string;
+  linkText?: string;
+  linkUrl?: string;
+};
+
+export type SiteSettings = {
+  announcement?: AnnouncementBar;
+  whatsappNumber?: string;
+  phoneNumber?: string;
+  email?: string;
+  operatingHours?: string;
+  tourPricingNotice?: string;
+};

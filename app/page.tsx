@@ -8,14 +8,16 @@ import CTA from "@/components/shared/CTA";
 import Footer from "@/components/shared/Footer";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 import Preloader from "@/components/shared/Preloader";
-import { getTestimonials, getGallery } from "@/lib/content";
+import { getTestimonials, getGallery, getFAQs, getSiteSettings } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [cmsTestimonials, cmsGallery] = await Promise.all([
+  const [cmsTestimonials, cmsGallery, cmsFaqs, siteSettings] = await Promise.all([
     getTestimonials(),
     getGallery(),
+    getFAQs(),
+    getSiteSettings(),
   ]);
 
   const visibleTestimonials = cmsTestimonials.filter((t) => !t.hidden);
@@ -38,12 +40,12 @@ export default async function Home() {
     <main className="flex-1 flex flex-col">
       <Preloader />
       <ScrollToTop />
-      <Navbar />
+      <Navbar announcement={siteSettings.announcement} />
       <Hero />
       <About />
       <GalleryPreview images={cmsGalleryImages.length > 0 ? cmsGalleryImages : undefined} />
       <Testimonials items={formattedTestimonials} />
-      <FAQ />
+      <FAQ items={cmsFaqs} />
       <CTA />
       <Footer />
     </main>

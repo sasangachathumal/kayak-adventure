@@ -5,43 +5,54 @@ import Reveal from "../shared/Reveal";
 import { cn } from "@/lib/utils";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
-interface FAQItem {
-  question: string;
-  answer: string;
+import type { FAQItem } from "@/lib/types";
+
+interface FAQProps {
+  items?: FAQItem[];
 }
 
-const faqData: FAQItem[] = [
+const defaultFaqData: FAQItem[] = [
   {
+    id: "default-1",
     question: "Do I need any previous kayaking experience?",
     answer: "No experience is necessary! Our tours are designed to be beginner-friendly. Our professional guides provide a full safety briefing and basic paddling instructions on the shore before we launch into the water.",
   },
   {
+    id: "default-2",
     question: "What should I wear and bring with me?",
     answer: "We recommend light, quick-dry clothing, swimwear or shorts, and water sandals. Don't forget sunscreen, a hat, sunglasses, and a waterproof camera or phone pouch. We provide safety life jackets and dry bags for your belongings.",
   },
   {
+    id: "default-3",
     question: "Is there an age limit for the mangrove kayak tours?",
     answer: "Our tours are suitable for participants aged 6 and up. Children must be accompanied by an adult. For safety reasons, every participant must wear a properly fitted life jacket (provided by us) while on the water.",
   },
   {
+    id: "default-4",
     question: "How long does the tour typically last?",
     answer: "Our Rathgama mangrove kayaking tours typically last 1 to 3 hours (customizable based on your preference). This runs at a relaxed, leisurely pace, allowing plenty of time to explore narrow mangrove canals, spot wildlife, and take pictures.",
   },
   {
+    id: "default-5",
     question: "What happens in case of bad weather?",
     answer: "A light tropical drizzle won't stop the tour—in fact, paddling under the rain can be a magical experience in the mangroves! However, in the event of heavy downpours, high winds, or lightning, we will postpone or reschedule the tour for your safety.",
   },
   {
+    id: "default-6",
     question: "What is the group size for a tour?",
     answer: "Our standard group size is 1 to 12 people. For groups larger than 12 participants, please confirm and book early so we can arrange additional guides and equipment for your group.",
   },
   {
+    id: "default-7",
     question: "What languages do the guides speak?",
     answer: "Our guides speak English and Sinhala, ensuring clear instructions, safety briefings, and local storytelling throughout your tour.",
   },
 ];
 
-export default function FAQ() {
+export default function FAQ({ items }: FAQProps = {}) {
+  const activeFaqs = (items && items.length > 0 ? items : defaultFaqData).filter(
+    (f) => !f.hidden
+  );
   return (
     <Section id="faq" className="pt-2 md:pt-6 pb-24 bg-[#f0efeb]">
       <div className="lg:grid lg:grid-cols-12 lg:gap-16 items-start">
@@ -98,9 +109,9 @@ export default function FAQ() {
         {/* Right Column: Accordions */}
         <div className="lg:col-span-7 lg:pt-[68px]">
           <Accordion className="border-0 rounded-none shadow-none bg-transparent overflow-visible gap-4 flex flex-col">
-            {faqData.map((item, idx) => (
+            {activeFaqs.map((item, idx) => (
               <Reveal 
-                key={idx}
+                key={item.id || idx}
                 variant="fade-up" 
                 delay={idx * 80} 
                 duration={700}

@@ -1,15 +1,16 @@
 'use client';
 
 import * as React from 'react';
-import { Image as ImageIcon, MessageSquare } from 'lucide-react';
+import { Image as ImageIcon, MessageSquare, HelpCircle, Settings as SettingsIcon } from 'lucide-react';
 
-type Tab = 'gallery' | 'testimonials';
+export type AdminTab = 'gallery' | 'testimonials' | 'faqs' | 'settings';
 
 interface AdminTabsProps {
-  activeTab: Tab;
-  onTabChange: (tab: Tab) => void;
+  activeTab: AdminTab;
+  onTabChange: (tab: AdminTab) => void;
   galleryCount: number;
   testimonialCount: number;
+  faqCount: number;
 }
 
 export default function AdminTabs({
@@ -17,15 +18,25 @@ export default function AdminTabs({
   onTabChange,
   galleryCount,
   testimonialCount,
+  faqCount,
 }: AdminTabsProps) {
-  const tabs: { key: Tab; label: string; icon: React.ComponentType<{ className?: string }>; count: number }[] = [
+  const tabs: {
+    key: AdminTab;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    count?: number;
+  }[] = [
     { key: 'gallery', label: 'Gallery Media', icon: ImageIcon, count: galleryCount },
     { key: 'testimonials', label: 'Testimonials', icon: MessageSquare, count: testimonialCount },
+    { key: 'faqs', label: 'FAQs', icon: HelpCircle, count: faqCount },
+    { key: 'settings', label: 'Site Settings', icon: SettingsIcon },
   ];
 
-  const tabRefs = React.useRef<Record<Tab, HTMLButtonElement | null>>({
+  const tabRefs = React.useRef<Record<AdminTab, HTMLButtonElement | null>>({
     gallery: null,
     testimonials: null,
+    faqs: null,
+    settings: null,
   });
 
   const [indicatorStyle, setIndicatorStyle] = React.useState<{ left: number; width: number } | null>(null);
@@ -68,7 +79,7 @@ export default function AdminTabs({
               tabRefs.current[key] = el;
             }}
             onClick={() => onTabChange(key)}
-            className={`relative z-10 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap select-none shrink-0 ${
+            className={`relative z-10 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap select-none shrink-0 ${
               isActive
                 ? 'text-zinc-900'
                 : 'text-zinc-500 hover:text-zinc-800'
@@ -80,15 +91,17 @@ export default function AdminTabs({
               }`}
             />
             <span>{label}</span>
-            <span
-              className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-bold transition-all duration-200 ${
-                isActive
-                  ? 'bg-brand/10 text-brand'
-                  : 'bg-zinc-100 text-zinc-500 border border-zinc-200/50'
-              }`}
-            >
-              {count}
-            </span>
+            {count !== undefined && (
+              <span
+                className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-bold transition-all duration-200 ${
+                  isActive
+                    ? 'bg-brand/10 text-brand'
+                    : 'bg-zinc-100 text-zinc-500 border border-zinc-200/50'
+                }`}
+              >
+                {count}
+              </span>
+            )}
           </button>
         );
       })}

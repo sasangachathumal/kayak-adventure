@@ -2,25 +2,33 @@
 
 import * as React from 'react';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
-import type { GalleryItem, Testimonial } from '@/lib/types';
+import type { GalleryItem, Testimonial, FAQItem, SiteSettings } from '@/lib/types';
 import AdminHeader from './_components/AdminHeader';
-import AdminTabs from './_components/AdminTabs';
+import AdminTabs, { type AdminTab } from './_components/AdminTabs';
 import GalleryTab from './_components/GalleryTab';
 import TestimonialsTab from './_components/TestimonialsTab';
+import FAQsTab from './_components/FAQsTab';
+import SettingsTab from './_components/SettingsTab';
 
 interface AdminDashboardProps {
   gallery: GalleryItem[];
   testimonials: Testimonial[];
+  faqs: FAQItem[];
+  settings: SiteSettings;
 }
 
 export default function AdminDashboard({
   gallery: initialGallery,
   testimonials: initialTestimonials,
+  faqs: initialFaqs,
+  settings: initialSettings,
 }: AdminDashboardProps) {
-  const [tab, setTab] = React.useState<'gallery' | 'testimonials'>('gallery');
+  const [tab, setTab] = React.useState<AdminTab>('gallery');
 
   const [galleryList, setGalleryList] = React.useState<GalleryItem[]>(initialGallery);
   const [testimonialsList, setTestimonialsList] = React.useState<Testimonial[]>(initialTestimonials);
+  const [faqsList, setFaqsList] = React.useState<FAQItem[]>(initialFaqs);
+  const [settings, setSettings] = React.useState<SiteSettings>(initialSettings);
 
   const [deletingId, setDeletingId] = React.useState<string | null>(null);
 
@@ -58,6 +66,7 @@ export default function AdminDashboard({
             onTabChange={setTab}
             galleryCount={galleryList.length}
             testimonialCount={testimonialsList.length}
+            faqCount={faqsList.length}
           />
         </div>
 
@@ -78,6 +87,20 @@ export default function AdminDashboard({
             showFeedback={showFeedback}
             deletingId={deletingId}
             setDeletingId={setDeletingId}
+          />
+        )}
+        {tab === 'faqs' && (
+          <FAQsTab
+            faqsList={faqsList}
+            setFaqsList={setFaqsList}
+            showFeedback={showFeedback}
+          />
+        )}
+        {tab === 'settings' && (
+          <SettingsTab
+            settings={settings}
+            setSettings={setSettings}
+            showFeedback={showFeedback}
           />
         )}
       </main>

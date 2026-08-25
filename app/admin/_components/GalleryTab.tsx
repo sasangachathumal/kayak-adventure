@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Search, X, Image as ImageIcon, Video, Eye, EyeOff, RotateCcw } from 'lucide-react';
+import SegmentedControl from './SegmentedControl';
 import GalleryUploadCard from './GalleryUploadCard';
 import GalleryItemCard from './GalleryItemCard';
 import EditGalleryModal from './EditGalleryModal';
@@ -18,7 +19,7 @@ interface GalleryTabProps {
 
 type VisibilityFilter = 'all' | 'visible' | 'hidden';
 type TypeFilter = 'all' | 'image' | 'video';
-type SpanFilter = 'all' | 'normal' | 'tall';
+type SpanFilter = 'all' | 'tall';
 
 export default function GalleryTab({
   galleryList,
@@ -114,11 +115,6 @@ export default function GalleryTab({
     });
   }, [galleryList, searchQuery, visibilityFilter, typeFilter, spanFilter]);
 
-  const visibleCount = galleryList.filter((i) => !i.hidden).length;
-  const hiddenCount = galleryList.filter((i) => i.hidden === true).length;
-  const imageCount = galleryList.filter((i) => i.type === 'image').length;
-  const videoCount = galleryList.filter((i) => i.type === 'video').length;
-
   const isFiltering =
     searchQuery.trim() !== '' ||
     visibilityFilter !== 'all' ||
@@ -170,95 +166,44 @@ export default function GalleryTab({
           </div>
         </div>
 
-        {/* Filter Chips Bar */}
+        {/* Filter Chips Bar with Smooth Gliding Pill Indicator */}
         {galleryList.length > 0 && (
           <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1">
             <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
               {/* Visibility filters */}
-              <div className="inline-flex items-center p-1 bg-white border border-zinc-200/80 rounded-full shadow-xs">
-                <button
-                  onClick={() => setVisibilityFilter('all')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    visibilityFilter === 'all'
-                      ? 'bg-zinc-900 text-white shadow-xs'
-                      : 'text-zinc-600 hover:text-zinc-900'
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setVisibilityFilter('visible')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                    visibilityFilter === 'visible'
-                      ? 'bg-emerald-600 text-white shadow-xs'
-                      : 'text-zinc-600 hover:text-emerald-700'
-                  }`}
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>Visible</span>
-                </button>
-                <button
-                  onClick={() => setVisibilityFilter('hidden')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                    visibilityFilter === 'hidden'
-                      ? 'bg-amber-600 text-white shadow-xs'
-                      : 'text-zinc-600 hover:text-amber-700'
-                  }`}
-                >
-                  <EyeOff className="w-3.5 h-3.5" />
-                  <span>Hidden</span>
-                </button>
-              </div>
+              <SegmentedControl<VisibilityFilter>
+                value={visibilityFilter}
+                onChange={setVisibilityFilter}
+                options={[
+                  { value: 'all', label: 'All' },
+                  { value: 'visible', label: 'Visible', icon: Eye },
+                  { value: 'hidden', label: 'Hidden', icon: EyeOff },
+                ]}
+                activeColor="bg-zinc-900"
+              />
 
               {/* Media Type filters */}
-              <div className="inline-flex items-center p-1 bg-white border border-zinc-200/80 rounded-full shadow-xs">
-                <button
-                  onClick={() => setTypeFilter('all')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    typeFilter === 'all'
-                      ? 'bg-brand text-white shadow-xs'
-                      : 'text-zinc-600 hover:text-zinc-900'
-                  }`}
-                >
-                  All Types
-                </button>
-                <button
-                  onClick={() => setTypeFilter('image')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                    typeFilter === 'image'
-                      ? 'bg-brand text-white shadow-xs'
-                      : 'text-zinc-600 hover:text-brand'
-                  }`}
-                >
-                  <ImageIcon className="w-3.5 h-3.5" />
-                  <span>Photos</span>
-                </button>
-                <button
-                  onClick={() => setTypeFilter('video')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                    typeFilter === 'video'
-                      ? 'bg-brand text-white shadow-xs'
-                      : 'text-zinc-600 hover:text-brand'
-                  }`}
-                >
-                  <Video className="w-3.5 h-3.5" />
-                  <span>Videos</span>
-                </button>
-              </div>
+              <SegmentedControl<TypeFilter>
+                value={typeFilter}
+                onChange={setTypeFilter}
+                options={[
+                  { value: 'all', label: 'All Types' },
+                  { value: 'image', label: 'Photos', icon: ImageIcon },
+                  { value: 'video', label: 'Videos', icon: Video },
+                ]}
+                activeColor="bg-brand"
+              />
 
               {/* Span layout filter */}
-              <div className="inline-flex items-center p-1 bg-white border border-zinc-200/80 rounded-full shadow-xs">
-                <button
-                  onClick={() => setSpanFilter(spanFilter === 'tall' ? 'all' : 'tall')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    spanFilter === 'tall'
-                      ? 'bg-zinc-800 text-white shadow-xs'
-                      : 'text-zinc-600 hover:text-zinc-900'
-                  }`}
-                >
-                  Tall (2×1) only
-                </button>
-              </div>
+              <SegmentedControl<SpanFilter>
+                value={spanFilter}
+                onChange={setSpanFilter}
+                options={[
+                  { value: 'all', label: 'All Layouts' },
+                  { value: 'tall', label: 'Tall (2×1) only' },
+                ]}
+                activeColor="bg-zinc-800"
+              />
             </div>
 
             {/* Clear all filters button */}

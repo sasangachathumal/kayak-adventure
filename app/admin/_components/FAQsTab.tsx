@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Loader2, Plus, Search, X, Pencil, Trash2, Eye, EyeOff, RotateCcw } from 'lucide-react';
+import SegmentedControl from './SegmentedControl';
 import EditFAQModal from './EditFAQModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import type { FAQItem } from '@/lib/types';
@@ -127,9 +128,6 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
     });
   }, [faqsList, searchQuery, visibilityFilter]);
 
-  const visibleCount = faqsList.filter((f) => !f.hidden).length;
-  const hiddenCount = faqsList.filter((f) => f.hidden === true).length;
-
   const isFiltering = searchQuery.trim() !== '' || visibilityFilter !== 'all';
 
   function resetFilters() {
@@ -240,43 +238,19 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
           </div>
         </div>
 
-        {/* Filter Chips Bar */}
+        {/* Filter Chips Bar with Smooth Gliding Pill Indicator */}
         {faqsList.length > 0 && (
           <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1">
-            <div className="inline-flex items-center p-1 bg-white border border-zinc-200/80 rounded-full shadow-xs">
-              <button
-                onClick={() => setVisibilityFilter('all')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                  visibilityFilter === 'all'
-                    ? 'bg-zinc-900 text-white shadow-xs'
-                    : 'text-zinc-600 hover:text-zinc-900'
-                }`}
-              >
-                All
-              </button>
-              <button
-                onClick={() => setVisibilityFilter('visible')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                  visibilityFilter === 'visible'
-                    ? 'bg-emerald-600 text-white shadow-xs'
-                    : 'text-zinc-600 hover:text-emerald-700'
-                }`}
-              >
-                <Eye className="w-3.5 h-3.5" />
-                <span>Visible</span>
-              </button>
-              <button
-                onClick={() => setVisibilityFilter('hidden')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                  visibilityFilter === 'hidden'
-                    ? 'bg-amber-600 text-white shadow-xs'
-                    : 'text-zinc-600 hover:text-amber-700'
-                }`}
-              >
-                <EyeOff className="w-3.5 h-3.5" />
-                <span>Hidden</span>
-              </button>
-            </div>
+            <SegmentedControl<VisibilityFilter>
+              value={visibilityFilter}
+              onChange={setVisibilityFilter}
+              options={[
+                { value: 'all', label: 'All' },
+                { value: 'visible', label: 'Visible', icon: Eye },
+                { value: 'hidden', label: 'Hidden', icon: EyeOff },
+              ]}
+              activeColor="bg-zinc-900"
+            />
 
             {/* Clear all filters button */}
             {isFiltering && (

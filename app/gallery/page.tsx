@@ -36,7 +36,8 @@ export const metadata: Metadata = buildMetadata({
 // ─── Gallery Page ────────────────────────────────────────────────────────────
 export default async function GalleryPage() {
   const cmsItems = await getGallery();
-  const cmsImages: GalleryImage[] = cmsItems.map((item) => ({
+  const visibleCmsItems = cmsItems.filter((item) => !item.hidden);
+  const cmsImages: GalleryImage[] = visibleCmsItems.map((item) => ({
     src: `/api/media/${item.key}`,
     alt: item.alt || "Kayak Adventure moment",
     span: item.span === "tall" ? "tall" : undefined,

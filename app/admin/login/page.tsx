@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1.5"
+                className="block text-xs font-semibold text-zinc-500 tracking-wider mb-1.5"
               >
                 Password
               </label>

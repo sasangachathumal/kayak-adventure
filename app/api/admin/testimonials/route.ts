@@ -55,6 +55,7 @@ export async function PUT(req: NextRequest) {
     let location: string | undefined;
     let quote: string | undefined;
     let rating: number | undefined;
+    let hidden: boolean | undefined;
     let avatarKey: string | undefined;
 
     if (contentType.includes('multipart/form-data')) {
@@ -63,6 +64,9 @@ export async function PUT(req: NextRequest) {
       name = (form.get('name') as string) || undefined;
       location = (form.get('location') as string) || undefined;
       quote = (form.get('quote') as string) || undefined;
+      if (form.has('hidden')) {
+        hidden = form.get('hidden') === 'true';
+      }
       const rawRating = form.get('rating') ? parseInt(form.get('rating') as string, 10) : undefined;
       if (rawRating && rawRating >= 1 && rawRating <= 5) rating = rawRating;
 
@@ -80,11 +84,13 @@ export async function PUT(req: NextRequest) {
         location?: string;
         quote?: string;
         rating?: number;
+        hidden?: boolean;
       };
       id = body.id || '';
       name = body.name;
       location = body.location;
       quote = body.quote;
+      hidden = body.hidden;
       if (body.rating && body.rating >= 1 && body.rating <= 5) rating = body.rating;
     }
 
@@ -105,6 +111,7 @@ export async function PUT(req: NextRequest) {
       location: location !== undefined ? location : current.location,
       quote: quote !== undefined ? quote : current.quote,
       rating: rating !== undefined ? rating : (current.rating ?? 5),
+      hidden: hidden !== undefined ? hidden : current.hidden,
       avatarKey: avatarKey ?? current.avatarKey,
     };
 

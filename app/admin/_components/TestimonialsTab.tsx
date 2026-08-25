@@ -56,6 +56,32 @@ export default function TestimonialsTab({
     );
   }
 
+  async function handleToggleVisibility(testimonial: Testimonial) {
+    const newHidden = !testimonial.hidden;
+    // Optimistic update
+    setTestimonialsList((prev) =>
+      prev.map((t) => (t.id === testimonial.id ? { ...t, hidden: newHidden } : t))
+    );
+    try {
+      const res = await fetch('/api/admin/testimonials', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: testimonial.id, hidden: newHidden }),
+      });
+      if (!res.ok) throw new Error('Visibility update failed');
+      showFeedback(
+        'success',
+        newHidden ? 'Review is now hidden from the website.' : 'Review is now visible on the website.'
+      );
+    } catch (err: unknown) {
+      // Revert on error
+      setTestimonialsList((prev) =>
+        prev.map((t) => (t.id === testimonial.id ? { ...t, hidden: testimonial.hidden } : t))
+      );
+      showFeedback('error', err instanceof Error ? err.message : 'Failed to update visibility');
+    }
+  }
+
   return (
     <div className="space-y-6 sm:space-y-8">
       <TestimonialForm onSave={handleSave} showFeedback={showFeedback} />
@@ -83,6 +109,7 @@ export default function TestimonialsTab({
                 key={t.id}
                 testimonial={t}
                 onEdit={(item) => setEditingTestimonial(item)}
+                onToggleVisibility={handleToggleVisibility}
                 onDelete={(item) => setDeletingTestimonial(item)}
                 deleting={deletingId === t.id}
               />

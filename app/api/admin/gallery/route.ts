@@ -65,6 +65,7 @@ export async function PUT(req: NextRequest) {
       id?: string;
       alt?: string;
       span?: 'normal' | 'tall';
+      hidden?: boolean;
     };
 
     if (!body.id) {
@@ -82,6 +83,7 @@ export async function PUT(req: NextRequest) {
       ...current,
       alt: body.alt !== undefined ? body.alt : current.alt,
       span: body.span !== undefined ? body.span : current.span,
+      hidden: body.hidden !== undefined ? body.hidden : current.hidden,
     };
 
     list[index] = updated;

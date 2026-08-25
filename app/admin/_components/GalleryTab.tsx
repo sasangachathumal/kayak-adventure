@@ -52,6 +52,32 @@ export default function GalleryTab({
     );
   }
 
+  async function handleToggleVisibility(item: GalleryItem) {
+    const newHidden = !item.hidden;
+    // Optimistic update
+    setGalleryList((prev) =>
+      prev.map((i) => (i.id === item.id ? { ...i, hidden: newHidden } : i))
+    );
+    try {
+      const res = await fetch('/api/admin/gallery', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id, hidden: newHidden }),
+      });
+      if (!res.ok) throw new Error('Visibility update failed');
+      showFeedback(
+        'success',
+        newHidden ? 'Media is now hidden from the website.' : 'Media is now visible on the website.'
+      );
+    } catch (err: unknown) {
+      // Revert on error
+      setGalleryList((prev) =>
+        prev.map((i) => (i.id === item.id ? { ...i, hidden: item.hidden } : i))
+      );
+      showFeedback('error', err instanceof Error ? err.message : 'Failed to update visibility');
+    }
+  }
+
   return (
     <div className="space-y-6 sm:space-y-8">
       <GalleryUploadCard
@@ -82,6 +108,7 @@ export default function GalleryTab({
                 key={item.id}
                 item={item}
                 onEdit={(i) => setEditingItem(i)}
+                onToggleVisibility={handleToggleVisibility}
                 onDelete={(i) => setDeletingItem(i)}
                 deleting={deletingId === item.id}
               />

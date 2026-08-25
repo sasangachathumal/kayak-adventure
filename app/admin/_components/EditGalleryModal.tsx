@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, X, Save, Edit3 } from 'lucide-react';
+import { Loader2, X, Save, Edit3, Eye, EyeOff } from 'lucide-react';
 import type { GalleryItem } from '@/lib/types';
 
 interface EditGalleryModalProps {
@@ -21,12 +21,14 @@ export default function EditGalleryModal({
 }: EditGalleryModalProps) {
   const [alt, setAlt] = React.useState('');
   const [span, setSpan] = React.useState<'normal' | 'tall'>('normal');
+  const [hidden, setHidden] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
 
   React.useEffect(() => {
     if (item) {
       setAlt(item.alt || '');
       setSpan(item.span || 'normal');
+      setHidden(item.hidden === true);
     }
   }, [item]);
 
@@ -50,7 +52,7 @@ export default function EditGalleryModal({
       const res = await fetch('/api/admin/gallery', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: item.id, alt, span }),
+        body: JSON.stringify({ id: item.id, alt, span, hidden }),
       });
 
       if (!res.ok) {
@@ -62,7 +64,7 @@ export default function EditGalleryModal({
       if (data.item) {
         onUpdate(data.item);
       }
-      showFeedback('success', 'Media caption and display updated!');
+      showFeedback('success', 'Media updated successfully!');
       onClose();
     } catch (err: unknown) {
       showFeedback('error', err instanceof Error ? err.message : 'Update failed');
@@ -74,7 +76,7 @@ export default function EditGalleryModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/40 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-lg bg-white rounded-2xl sm:rounded-3xl border border-zinc-200 shadow-2xl p-5 sm:p-7 animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-lg bg-white rounded-2xl sm:rounded-3xl border border-zinc-200 shadow-2xl p-5 sm:p-7 max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200"
         role="dialog"
         aria-modal="true"
       >
@@ -98,7 +100,7 @@ export default function EditGalleryModal({
               Edit <span className="italic">Media</span>
             </h3>
             <p className="text-xs text-zinc-400 mt-0.5">
-              Update caption and grid span layout
+              Update caption, layout, and visibility
             </p>
           </div>
         </div>
@@ -160,6 +162,45 @@ export default function EditGalleryModal({
                   </div>
                 </button>
               ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-zinc-500 tracking-wider mb-1.5">
+              Website Visibility
+            </label>
+            <div className="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                onClick={() => setHidden(false)}
+                className={`p-2.5 sm:p-3 rounded-xl border text-left text-xs transition-all cursor-pointer flex items-center gap-2 ${
+                  !hidden
+                    ? 'border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold'
+                    : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300'
+                }`}
+              >
+                <Eye className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div>
+                  <div>Visible</div>
+                  <div className="text-[10px] text-zinc-400 font-normal">Shown on live site</div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setHidden(true)}
+                className={`p-2.5 sm:p-3 rounded-xl border text-left text-xs transition-all cursor-pointer flex items-center gap-2 ${
+                  hidden
+                    ? 'border-amber-500 bg-amber-50 text-amber-900 font-semibold'
+                    : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300'
+                }`}
+              >
+                <EyeOff className="w-4 h-4 text-amber-600 shrink-0" />
+                <div>
+                  <div>Hidden</div>
+                  <div className="text-[10px] text-zinc-400 font-normal">Hidden from public</div>
+                </div>
+              </button>
             </div>
           </div>
 

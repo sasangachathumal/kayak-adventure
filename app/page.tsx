@@ -18,9 +18,10 @@ export default async function Home() {
     getGallery(),
   ]);
 
+  const visibleTestimonials = cmsTestimonials.filter((t) => !t.hidden);
   const formattedTestimonials: TestimonialItem[] | undefined =
-    cmsTestimonials.length > 0
-      ? cmsTestimonials.map((t) => ({
+    visibleTestimonials.length > 0
+      ? visibleTestimonials.map((t) => ({
           quote: t.quote,
           author: t.name,
           location: t.location,
@@ -30,7 +31,7 @@ export default async function Home() {
       : undefined;
 
   const cmsGalleryImages: string[] = cmsGallery
-    .filter((item) => item.type === "image")
+    .filter((item) => !item.hidden && item.type === "image")
     .map((item) => `/api/media/${item.key}`);
 
   return (

@@ -2,7 +2,7 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, X, Save, Edit3 } from 'lucide-react';
+import { Loader2, X, Save, Edit3, Eye, EyeOff } from 'lucide-react';
 import StarRating from './StarRating';
 import type { Testimonial } from '@/lib/types';
 
@@ -25,6 +25,7 @@ export default function EditTestimonialModal({
   const [location, setLocation] = React.useState('');
   const [quote, setQuote] = React.useState('');
   const [rating, setRating] = React.useState<number>(5);
+  const [hidden, setHidden] = React.useState<boolean>(false);
   const [avatar, setAvatar] = React.useState<File | null>(null);
   const [saving, setSaving] = React.useState(false);
 
@@ -34,6 +35,7 @@ export default function EditTestimonialModal({
       setLocation(testimonial.location || '');
       setQuote(testimonial.quote || '');
       setRating(testimonial.rating ?? 5);
+      setHidden(testimonial.hidden === true);
       setAvatar(null);
     }
   }, [testimonial]);
@@ -61,6 +63,7 @@ export default function EditTestimonialModal({
       formData.set('location', location);
       formData.set('quote', quote);
       formData.set('rating', String(rating));
+      formData.set('hidden', String(hidden));
       if (avatar) formData.set('avatar', avatar);
 
       const res = await fetch('/api/admin/testimonials', {
@@ -117,7 +120,7 @@ export default function EditTestimonialModal({
               Edit <span className="italic">Testimonial</span>
             </h3>
             <p className="text-xs text-zinc-400 mt-0.5">
-              Update reviewer info, review, or rating
+              Update reviewer info, review, rating, and visibility
             </p>
           </div>
         </div>
@@ -148,10 +151,42 @@ export default function EditTestimonialModal({
             </div>
           </div>
 
-          <div>
-            <label className={labelClass}>Star Rating</label>
-            <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/80 inline-flex">
-              <StarRating value={rating} onChange={setRating} size="lg" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+            <div>
+              <label className={labelClass}>Star Rating</label>
+              <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/80 inline-flex">
+                <StarRating value={rating} onChange={setRating} size="lg" />
+              </div>
+            </div>
+
+            <div>
+              <label className={labelClass}>Website Visibility</label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setHidden(false)}
+                  className={`p-2 rounded-xl border text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    !hidden
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
+                      : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300'
+                  }`}
+                >
+                  <Eye className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Visible</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setHidden(true)}
+                  className={`p-2 rounded-xl border text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    hidden
+                      ? 'border-amber-500 bg-amber-50 text-amber-900'
+                      : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300'
+                  }`}
+                >
+                  <EyeOff className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Hidden</span>
+                </button>
+              </div>
             </div>
           </div>
 

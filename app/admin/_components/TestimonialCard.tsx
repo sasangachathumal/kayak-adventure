@@ -1,0 +1,64 @@
+/* eslint-disable @next/next/no-img-element */
+'use client';
+
+import * as React from 'react';
+import { Loader2, Trash2 } from 'lucide-react';
+import type { Testimonial } from '@/lib/types';
+
+interface TestimonialCardProps {
+  testimonial: Testimonial;
+  onDelete: (id: string) => void;
+  deleting: boolean;
+}
+
+export default function TestimonialCard({ testimonial: t, onDelete, deleting }: TestimonialCardProps) {
+  return (
+    <div className="bg-white rounded-xl sm:rounded-2xl border border-zinc-200 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+      <div>
+        {/* Avatar + Name */}
+        <div className="flex items-center gap-2.5 sm:gap-3 mb-3">
+          {t.avatarKey ? (
+            <img
+              src={`/api/media/${t.avatarKey}`}
+              alt={t.name}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-zinc-200 shrink-0"
+            />
+          ) : (
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-brand/10 text-brand border border-brand/20 flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">
+              {t.name.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-semibold text-zinc-900 truncate leading-tight">{t.name}</p>
+            {t.location && (
+              <p className="text-[11px] sm:text-xs text-zinc-400 truncate">{t.location}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Quote in serif italic */}
+        <p className="font-serif text-xs sm:text-sm text-zinc-700 italic leading-relaxed line-clamp-3 mb-3.5 sm:mb-4">
+          &ldquo;{t.quote}&rdquo;
+        </p>
+      </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-2.5 sm:pt-3 border-t border-zinc-100 text-[10px] sm:text-[11px] text-zinc-400">
+        <span>{new Date(t.createdAt).toLocaleDateString()}</span>
+        <button
+          onClick={() => onDelete(t.id)}
+          disabled={deleting}
+          title="Delete"
+          className="p-1 -mr-1 min-h-[28px] flex items-center gap-1 text-zinc-400 hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
+        >
+          {deleting ? (
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          ) : (
+            <Trash2 className="w-3.5 h-3.5" />
+          )}
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
+  );
+}

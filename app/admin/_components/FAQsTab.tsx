@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Plus, HelpCircle, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Plus, Search, X, Pencil, Trash2, Eye, EyeOff, RotateCcw } from 'lucide-react';
 import EditFAQModal from './EditFAQModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import type { FAQItem } from '@/lib/types';
@@ -12,6 +12,8 @@ interface FAQsTabProps {
   showFeedback: (type: 'success' | 'error', message: string) => void;
 }
 
+type VisibilityFilter = 'all' | 'visible' | 'hidden';
+
 export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTabProps) {
   const [question, setQuestion] = React.useState('');
   const [answer, setAnswer] = React.useState('');
@@ -19,6 +21,10 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
   const [editingFaq, setEditingFaq] = React.useState<FAQItem | null>(null);
   const [deletingFaq, setDeletingFaq] = React.useState<FAQItem | null>(null);
   const [deletingId, setDeletingId] = React.useState<string | null>(null);
+
+  // Search & Filter state
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [visibilityFilter, setVisibilityFilter] = React.useState<VisibilityFilter>('all');
 
   async function handleCreateFaq(e: React.FormEvent) {
     e.preventDefault();
@@ -102,6 +108,35 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
     );
   }
 
+  // Filtered FAQs computation
+  const filteredFaqs = React.useMemo(() => {
+    return faqsList.filter((faq) => {
+      // 1. Search Query (question, answer)
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const questionMatch = (faq.question || '').toLowerCase().includes(q);
+        const answerMatch = (faq.answer || '').toLowerCase().includes(q);
+        if (!questionMatch && !answerMatch) return false;
+      }
+
+      // 2. Visibility
+      if (visibilityFilter === 'visible' && faq.hidden === true) return false;
+      if (visibilityFilter === 'hidden' && faq.hidden !== true) return false;
+
+      return true;
+    });
+  }, [faqsList, searchQuery, visibilityFilter]);
+
+  const visibleCount = faqsList.filter((f) => !f.hidden).length;
+  const hiddenCount = faqsList.filter((f) => f.hidden === true).length;
+
+  const isFiltering = searchQuery.trim() !== '' || visibilityFilter !== 'all';
+
+  function resetFilters() {
+    setSearchQuery('');
+    setVisibilityFilter('all');
+  }
+
   const inputClass =
     'w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2.5 sm:px-4 text-base sm:text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all';
   const labelClass = 'block text-xs font-semibold text-zinc-500 tracking-wider mb-1.5';
@@ -158,7 +193,7 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
             <button
               type="submit"
               disabled={!question.trim() || !answer.trim() || saving}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium text-sm px-6 py-3 sm:py-2.5 rounded-xl transition-colors cursor-pointer disabled:opacity-50 min-h-[44px]"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium text-sm px-6 py-3 sm:py-2.5 rounded-xl transition-colors cursor-pointer disabled:opacity-50 min-h-11"
             >
               {saving ? (
                 <>
@@ -174,82 +209,174 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
         </form>
       </div>
 
-      {/* List of FAQs */}
-      <div>
-        <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
-          <h3 className="font-serif text-base sm:text-lg text-zinc-900 font-medium">
-            Published <span className="italic">Questions</span>
-          </h3>
-          <span className="text-[10px] sm:text-xs font-semibold text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-full">
-            {faqsList.length}
-          </span>
+      {/* List of FAQs Header & Filters */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="shrink-0">
+            <h3 className="font-serif text-base sm:text-lg text-zinc-900 font-medium whitespace-nowrap">
+              Published <span className="italic">Questions</span>
+            </h3>
+          </div>
+
+          {/* Search Box */}
+          <div className="relative w-full sm:w-72 md:w-80">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search questions or answers..."
+              className="w-full bg-white border border-zinc-200 rounded-full pl-10 pr-8 py-2 text-xs sm:text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all shadow-xs"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer"
+                aria-label="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="space-y-4 sm:space-y-5">
-          {faqsList.map((faq) => {
-            const isHidden = faq.hidden === true;
-            return (
-              <div
-                key={faq.id}
-                className={`bg-white rounded-2xl sm:rounded-3xl border p-5 sm:p-6 shadow-xs hover:shadow-sm transition-all flex flex-col justify-between ${
-                  isHidden ? 'border-amber-200/80 opacity-80' : 'border-zinc-200'
+        {/* Filter Chips Bar */}
+        {faqsList.length > 0 && (
+          <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1">
+            <div className="inline-flex items-center p-1 bg-white border border-zinc-200/80 rounded-full shadow-xs">
+              <button
+                onClick={() => setVisibilityFilter('all')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                  visibilityFilter === 'all'
+                    ? 'bg-zinc-900 text-white shadow-xs'
+                    : 'text-zinc-600 hover:text-zinc-900'
                 }`}
               >
-                <div className="space-y-2.5">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h4 className="font-semibold text-zinc-900 text-sm sm:text-base leading-snug">
-                      {faq.question}
-                    </h4>
-                    {isHidden && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-zinc-900 text-amber-300">
-                        <EyeOff className="w-2.5 h-2.5" />
-                        Hidden
-                      </span>
-                    )}
+                All
+              </button>
+              <button
+                onClick={() => setVisibilityFilter('visible')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                  visibilityFilter === 'visible'
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'text-zinc-600 hover:text-emerald-700'
+                }`}
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span>Visible</span>
+              </button>
+              <button
+                onClick={() => setVisibilityFilter('hidden')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                  visibilityFilter === 'hidden'
+                    ? 'bg-amber-600 text-white shadow-xs'
+                    : 'text-zinc-600 hover:text-amber-700'
+                }`}
+              >
+                <EyeOff className="w-3.5 h-3.5" />
+                <span>Hidden</span>
+              </button>
+            </div>
+
+            {/* Clear all filters button */}
+            {isFiltering && (
+              <button
+                onClick={resetFilters}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-3 py-1.5 rounded-full transition-colors shrink-0 cursor-pointer"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Reset</span>
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* FAQs List or Empty State */}
+        {faqsList.length === 0 ? (
+          <div className="text-center py-12 sm:py-16 border-2 border-dashed border-zinc-200 rounded-2xl p-4 bg-white/50">
+            <p className="text-xs sm:text-sm text-zinc-400">No CMS FAQs added yet.</p>
+            <p className="text-[11px] sm:text-xs text-zinc-300 mt-1">Default questions are displayed until you add some here.</p>
+          </div>
+        ) : filteredFaqs.length === 0 ? (
+          <div className="text-center py-12 sm:py-16 bg-white border border-zinc-200 rounded-2xl p-6 shadow-xs animate-in fade-in duration-200">
+            <Search className="w-8 h-8 text-zinc-300 mx-auto mb-2" />
+            <p className="text-sm font-medium text-zinc-800">No questions match your search &amp; filters</p>
+            <p className="text-xs text-zinc-400 mt-1 mb-4">Try searching for a different keyword or resetting filters.</p>
+            <button
+              onClick={resetFilters}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand hover:text-brand-hover bg-brand/10 hover:bg-brand/20 px-4 py-2 rounded-full transition-colors cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset all filters</span>
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4 sm:space-y-5">
+            {filteredFaqs.map((faq) => {
+              const isHidden = faq.hidden === true;
+              return (
+                <div
+                  key={faq.id}
+                  className={`bg-white rounded-2xl sm:rounded-3xl border p-5 sm:p-6 shadow-xs hover:shadow-sm transition-all flex flex-col justify-between ${
+                    isHidden ? 'border-amber-200/80 opacity-80' : 'border-zinc-200'
+                  }`}
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h4 className="font-semibold text-zinc-900 text-sm sm:text-base leading-snug">
+                        {faq.question}
+                      </h4>
+                      {isHidden && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-zinc-900 text-amber-300">
+                          <EyeOff className="w-2.5 h-2.5" />
+                          Hidden
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
                   </div>
-                  <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
-                    {faq.answer}
-                  </p>
+
+                  {/* Footer Action Buttons */}
+                  <div className="flex items-center justify-end gap-2 pt-3.5 mt-4 border-t border-zinc-100">
+                    <button
+                      onClick={() => handleToggleVisibility(faq)}
+                      title={isHidden ? 'Hidden from live FAQ. Click to show.' : 'Visible on live FAQ. Click to hide.'}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer min-h-8.5 ${
+                        isHidden
+                          ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100/80'
+                          : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
+                      }`}
+                    >
+                      {isHidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      <span>{isHidden ? 'Hidden' : 'Visible'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setEditingFaq(faq)}
+                      title="Edit question"
+                      className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-500 hover:text-brand hover:bg-zinc-100 flex items-center gap-1.5 transition-colors cursor-pointer min-h-8.5"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      <span>Edit</span>
+                    </button>
+
+                    <button
+                      onClick={() => setDeletingFaq(faq)}
+                      disabled={deletingId === faq.id}
+                      title="Delete question"
+                      className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-red-500 hover:bg-red-50 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 min-h-8.5"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
                 </div>
-
-                {/* Footer Action Buttons with generous vertical space */}
-                <div className="flex items-center justify-end gap-2 pt-3.5 mt-4 border-t border-zinc-100">
-                  <button
-                    onClick={() => handleToggleVisibility(faq)}
-                    title={isHidden ? 'Hidden from live FAQ. Click to show.' : 'Visible on live FAQ. Click to hide.'}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer min-h-[34px] ${
-                      isHidden
-                        ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100/80'
-                        : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
-                    }`}
-                  >
-                    {isHidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    <span>{isHidden ? 'Hidden' : 'Visible'}</span>
-                  </button>
-
-                  <button
-                    onClick={() => setEditingFaq(faq)}
-                    title="Edit question"
-                    className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-500 hover:text-brand hover:bg-zinc-100 flex items-center gap-1.5 transition-colors cursor-pointer min-h-[34px]"
-                  >
-                    <Pencil className="w-3.5 h-3.5" />
-                    <span>Edit</span>
-                  </button>
-
-                  <button
-                    onClick={() => setDeletingFaq(faq)}
-                    disabled={deletingId === faq.id}
-                    title="Delete question"
-                    className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-red-500 hover:bg-red-50 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 min-h-[34px]"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    <span>Delete</span>
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Edit FAQ Modal */}

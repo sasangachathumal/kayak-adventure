@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Search, X, Star, Eye, EyeOff, RotateCcw } from 'lucide-react';
 import TestimonialForm from './TestimonialForm';
 import TestimonialCard from './TestimonialCard';
 import EditTestimonialModal from './EditTestimonialModal';
@@ -15,6 +16,8 @@ interface TestimonialsTabProps {
   setDeletingId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
+type VisibilityFilter = 'all' | 'visible' | 'hidden';
+
 export default function TestimonialsTab({
   testimonialsList,
   setTestimonialsList,
@@ -24,6 +27,11 @@ export default function TestimonialsTab({
 }: TestimonialsTabProps) {
   const [editingTestimonial, setEditingTestimonial] = React.useState<Testimonial | null>(null);
   const [deletingTestimonial, setDeletingTestimonial] = React.useState<Testimonial | null>(null);
+
+  // Search & Filter state
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [visibilityFilter, setVisibilityFilter] = React.useState<VisibilityFilter>('all');
+  const [ratingFilter, setRatingFilter] = React.useState<number | 'all'>('all');
 
   async function handleConfirmDelete() {
     if (!deletingTestimonial) return;
@@ -82,29 +90,191 @@ export default function TestimonialsTab({
     }
   }
 
+  // Filtered testimonials
+  const filteredTestimonials = React.useMemo(() => {
+    return testimonialsList.filter((t) => {
+      // 1. Search Query (name, location, quote)
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const nameMatch = (t.name || '').toLowerCase().includes(q);
+        const locMatch = (t.location || '').toLowerCase().includes(q);
+        const quoteMatch = (t.quote || '').toLowerCase().includes(q);
+        if (!nameMatch && !locMatch && !quoteMatch) return false;
+      }
+
+      // 2. Visibility
+      if (visibilityFilter === 'visible' && t.hidden === true) return false;
+      if (visibilityFilter === 'hidden' && t.hidden !== true) return false;
+
+      // 3. Rating
+      if (ratingFilter !== 'all' && (t.rating ?? 5) !== ratingFilter) return false;
+
+      return true;
+    });
+  }, [testimonialsList, searchQuery, visibilityFilter, ratingFilter]);
+
+  const visibleCount = testimonialsList.filter((t) => !t.hidden).length;
+  const hiddenCount = testimonialsList.filter((t) => t.hidden === true).length;
+  const fiveStarCount = testimonialsList.filter((t) => (t.rating ?? 5) === 5).length;
+
+  const isFiltering =
+    searchQuery.trim() !== '' ||
+    visibilityFilter !== 'all' ||
+    ratingFilter !== 'all';
+
+  function resetFilters() {
+    setSearchQuery('');
+    setVisibilityFilter('all');
+    setRatingFilter('all');
+  }
+
   return (
     <div className="space-y-6 sm:space-y-8">
       <TestimonialForm onSave={handleSave} showFeedback={showFeedback} />
 
-      {/* Saved testimonials */}
-      <div>
-        <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
-          <h3 className="font-serif text-base sm:text-lg text-zinc-900 font-medium">
-            Saved <span className="italic">Reviews</span>
-          </h3>
-          <span className="text-[10px] sm:text-xs font-semibold text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-full">
-            {testimonialsList.length}
-          </span>
+      {/* Saved testimonials Header & Filters */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="shrink-0">
+            <h3 className="font-serif text-base sm:text-lg text-zinc-900 font-medium whitespace-nowrap">
+              Saved <span className="italic">Reviews</span>
+            </h3>
+          </div>
+
+          {/* Search Box */}
+          <div className="relative w-full sm:w-72 md:w-80">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name, location, review..."
+              className="w-full bg-white border border-zinc-200 rounded-full pl-10 pr-8 py-2 text-xs sm:text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all shadow-xs"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer"
+                aria-label="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
         </div>
 
+        {/* Filter Chips Bar */}
+        {testimonialsList.length > 0 && (
+          <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1">
+            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+              {/* Visibility filters */}
+              <div className="inline-flex items-center p-1 bg-white border border-zinc-200/80 rounded-full shadow-xs">
+                <button
+                  onClick={() => setVisibilityFilter('all')}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                    visibilityFilter === 'all'
+                      ? 'bg-zinc-900 text-white shadow-xs'
+                      : 'text-zinc-600 hover:text-zinc-900'
+                  }`}
+                >
+                  All
+                </button>
+                <button
+                  onClick={() => setVisibilityFilter('visible')}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                    visibilityFilter === 'visible'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-zinc-600 hover:text-emerald-700'
+                  }`}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Visible</span>
+                </button>
+                <button
+                  onClick={() => setVisibilityFilter('hidden')}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                    visibilityFilter === 'hidden'
+                      ? 'bg-amber-600 text-white shadow-xs'
+                      : 'text-zinc-600 hover:text-amber-700'
+                  }`}
+                >
+                  <EyeOff className="w-3.5 h-3.5" />
+                  <span>Hidden</span>
+                </button>
+              </div>
+
+              {/* Star rating filters */}
+              <div className="inline-flex items-center p-1 bg-white border border-zinc-200/80 rounded-full shadow-xs">
+                <button
+                  onClick={() => setRatingFilter('all')}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                    ratingFilter === 'all'
+                      ? 'bg-brand text-white shadow-xs'
+                      : 'text-zinc-600 hover:text-zinc-900'
+                  }`}
+                >
+                  All Ratings
+                </button>
+                <button
+                  onClick={() => setRatingFilter(5)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                    ratingFilter === 5
+                      ? 'bg-brand text-white shadow-xs'
+                      : 'text-zinc-600 hover:text-brand'
+                  }`}
+                >
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span>5 Stars</span>
+                </button>
+                <button
+                  onClick={() => setRatingFilter(4)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                    ratingFilter === 4
+                      ? 'bg-brand text-white shadow-xs'
+                      : 'text-zinc-600 hover:text-brand'
+                  }`}
+                >
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span>4 Stars</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Clear all filters button */}
+            {isFiltering && (
+              <button
+                onClick={resetFilters}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-3 py-1.5 rounded-full transition-colors shrink-0 cursor-pointer"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Reset</span>
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Testimonials List or Empty states */}
         {testimonialsList.length === 0 ? (
-          <div className="text-center py-12 sm:py-16 border-2 border-dashed border-zinc-200 rounded-2xl p-4">
+          <div className="text-center py-12 sm:py-16 border-2 border-dashed border-zinc-200 rounded-2xl p-4 bg-white/50">
             <p className="text-xs sm:text-sm text-zinc-400">No CMS testimonials yet.</p>
             <p className="text-[11px] sm:text-xs text-zinc-300 mt-1">Static reviews are displayed until you add some here.</p>
           </div>
+        ) : filteredTestimonials.length === 0 ? (
+          <div className="text-center py-12 sm:py-16 bg-white border border-zinc-200 rounded-2xl p-6 shadow-xs animate-in fade-in duration-200">
+            <Search className="w-8 h-8 text-zinc-300 mx-auto mb-2" />
+            <p className="text-sm font-medium text-zinc-800">No reviews match your search &amp; filters</p>
+            <p className="text-xs text-zinc-400 mt-1 mb-4">Try searching for a different guest name or resetting filters.</p>
+            <button
+              onClick={resetFilters}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand hover:text-brand-hover bg-brand/10 hover:bg-brand/20 px-4 py-2 rounded-full transition-colors cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset all filters</span>
+            </button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
-            {testimonialsList.map((t) => (
+            {filteredTestimonials.map((t) => (
               <TestimonialCard
                 key={t.id}
                 testimonial={t}

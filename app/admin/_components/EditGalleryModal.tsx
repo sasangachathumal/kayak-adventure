@@ -95,9 +95,6 @@ function EditGalleryForm({
           <h3 className="font-serif text-lg sm:text-xl font-medium text-zinc-900 leading-snug">
             Edit <span className="italic">Media</span>
           </h3>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            Update caption, layout, and visibility
-          </p>
         </div>
       </div>
 
@@ -195,7 +192,7 @@ function EditGalleryForm({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 sm:gap-2.5 pt-3 border-t border-zinc-100">
+        <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 sm:gap-2.5 pt-1">
           <button
             type="button"
             onClick={onClose}

@@ -11,10 +11,10 @@ export const ADMIN_TABS: {
   mobileLabel: string;
   icon: React.ComponentType<{ className?: string }>;
 }[] = [
-  { key: 'gallery', label: 'Gallery Media', mobileLabel: 'Gallery', icon: ImageIcon },
+  { key: 'gallery', label: 'Gallery', mobileLabel: 'Gallery', icon: ImageIcon },
   { key: 'testimonials', label: 'Testimonials', mobileLabel: 'Reviews', icon: MessageSquare },
   { key: 'faqs', label: 'FAQs', mobileLabel: 'FAQs', icon: HelpCircle },
-  { key: 'settings', label: 'Site Settings', mobileLabel: 'Settings', icon: SettingsIcon },
+  { key: 'settings', label: 'Settings', mobileLabel: 'Settings', icon: SettingsIcon },
 ];
 
 interface TabsProps {

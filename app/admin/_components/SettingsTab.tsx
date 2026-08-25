@@ -32,9 +32,39 @@ export default function SettingsTab({ settings, setSettings, showFeedback }: Set
 
   const [saving, setSaving] = React.useState(false);
 
+  // Determine if any form value differs from saved settings
+  const hasChanges = React.useMemo(() => {
+    const origAnn = settings.announcement;
+    const annChanged =
+      (origAnn?.enabled ?? false) !== announcementEnabled ||
+      (origAnn?.text ?? '') !== announcementText ||
+      (origAnn?.linkText ?? '') !== announcementLinkText ||
+      (origAnn?.linkUrl ?? '') !== announcementLinkUrl;
+
+    const contactChanged =
+      (settings.whatsappNumber ?? '') !== whatsappNumber ||
+      (settings.phoneNumber ?? '') !== phoneNumber ||
+      (settings.email ?? '') !== email ||
+      (settings.operatingHours ?? '') !== operatingHours ||
+      (settings.tourPricingNotice ?? '') !== tourPricingNotice;
+
+    return annChanged || contactChanged;
+  }, [
+    settings,
+    announcementEnabled,
+    announcementText,
+    announcementLinkText,
+    announcementLinkUrl,
+    whatsappNumber,
+    phoneNumber,
+    email,
+    operatingHours,
+    tourPricingNotice,
+  ]);
+
   async function handleSaveSettings(e: React.FormEvent) {
     e.preventDefault();
-    if (saving) return;
+    if (!hasChanges || saving) return;
 
     setSaving(true);
     const updated: SiteSettings = {
@@ -243,8 +273,8 @@ export default function SettingsTab({ settings, setSettings, showFeedback }: Set
       <div className="flex items-center justify-end pt-2">
         <button
           type="submit"
-          disabled={saving}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium text-sm px-8 py-3 rounded-xl transition-colors shadow-sm cursor-pointer disabled:opacity-50 min-h-11 whitespace-nowrap"
+          disabled={!hasChanges || saving}
+          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium text-sm px-8 py-3 rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-h-11 whitespace-nowrap"
         >
           {saving ? (
             <>
@@ -252,7 +282,7 @@ export default function SettingsTab({ settings, setSettings, showFeedback }: Set
             </>
           ) : (
             <>
-              <Save className="w-4 h-4" /> Save Settings
+              <Save className="w-4 h-4" /> Save 
             </>
           )}
         </button>

@@ -5,33 +5,24 @@ import { Image as ImageIcon, MessageSquare, HelpCircle, Settings as SettingsIcon
 
 export type AdminTab = 'gallery' | 'testimonials' | 'faqs' | 'settings';
 
-interface AdminTabsProps {
+export const ADMIN_TABS: {
+  key: AdminTab;
+  label: string;
+  mobileLabel: string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
+  { key: 'gallery', label: 'Gallery Media', mobileLabel: 'Gallery', icon: ImageIcon },
+  { key: 'testimonials', label: 'Testimonials', mobileLabel: 'Reviews', icon: MessageSquare },
+  { key: 'faqs', label: 'FAQs', mobileLabel: 'FAQs', icon: HelpCircle },
+  { key: 'settings', label: 'Site Settings', mobileLabel: 'Settings', icon: SettingsIcon },
+];
+
+interface TabsProps {
   activeTab: AdminTab;
   onTabChange: (tab: AdminTab) => void;
-  galleryCount: number;
-  testimonialCount: number;
-  faqCount: number;
 }
 
-export default function AdminTabs({
-  activeTab,
-  onTabChange,
-  galleryCount,
-  testimonialCount,
-  faqCount,
-}: AdminTabsProps) {
-  const tabs: {
-    key: AdminTab;
-    label: string;
-    icon: React.ComponentType<{ className?: string }>;
-    count?: number;
-  }[] = [
-    { key: 'gallery', label: 'Gallery Media', icon: ImageIcon, count: galleryCount },
-    { key: 'testimonials', label: 'Testimonials', icon: MessageSquare, count: testimonialCount },
-    { key: 'faqs', label: 'FAQs', icon: HelpCircle, count: faqCount },
-    { key: 'settings', label: 'Site Settings', icon: SettingsIcon },
-  ];
-
+export function AdminDesktopTabs({ activeTab, onTabChange }: TabsProps) {
   const tabRefs = React.useRef<Record<AdminTab, HTMLButtonElement | null>>({
     gallery: null,
     testimonials: null,
@@ -39,12 +30,12 @@ export default function AdminTabs({
     settings: null,
   });
 
-  const [indicatorStyle, setIndicatorStyle] = React.useState<{ left: number; width: number } | null>(null);
+  const [indicator, setIndicator] = React.useState<{ left: number; width: number } | null>(null);
 
   const updateIndicator = React.useCallback(() => {
     const el = tabRefs.current[activeTab];
     if (el) {
-      setIndicatorStyle({
+      setIndicator({
         left: el.offsetLeft,
         width: el.offsetWidth,
       });
@@ -58,19 +49,18 @@ export default function AdminTabs({
   }, [updateIndicator]);
 
   return (
-    <div className="inline-flex items-center p-1 sm:p-1.5 bg-white/60 backdrop-blur-md rounded-full border border-zinc-200/80 shadow-xs relative max-w-full overflow-x-auto no-scrollbar">
-      {/* Animated active pill indicator */}
-      {indicatorStyle && (
+    <div className="hidden md:inline-flex items-center p-1 bg-zinc-100/90 rounded-full border border-zinc-200/60 shadow-xs relative h-10.5">
+      {indicator && (
         <div
-          className="absolute top-1 bottom-1 sm:top-1.5 sm:bottom-1.5 rounded-full bg-white shadow-[0_2px_6px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-zinc-200/70 transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] pointer-events-none"
+          className="absolute top-1 bottom-1 rounded-full bg-white shadow-[0_2px_6px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.03)] border border-zinc-200/60 transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] pointer-events-none"
           style={{
-            left: `${indicatorStyle.left}px`,
-            width: `${indicatorStyle.width}px`,
+            left: `${indicator.left}px`,
+            width: `${indicator.width}px`,
           }}
         />
       )}
 
-      {tabs.map(({ key, label, icon: Icon, count }) => {
+      {ADMIN_TABS.map(({ key, label, icon: Icon }) => {
         const isActive = activeTab === key;
         return (
           <button
@@ -79,32 +69,105 @@ export default function AdminTabs({
               tabRefs.current[key] = el;
             }}
             onClick={() => onTabChange(key)}
-            className={`relative z-10 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap select-none shrink-0 ${
-              isActive
-                ? 'text-zinc-900'
-                : 'text-zinc-500 hover:text-zinc-800'
+            className={`relative z-10 px-4 h-8.5 rounded-full flex items-center gap-2 text-xs font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap select-none shrink-0 ${
+              isActive ? 'text-zinc-900' : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
             <Icon
-              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors duration-200 ${
+              className={`w-3.5 h-3.5 transition-colors duration-200 shrink-0 ${
                 isActive ? 'text-brand' : 'text-zinc-400'
               }`}
             />
             <span>{label}</span>
-            {count !== undefined && (
-              <span
-                className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-bold transition-all duration-200 ${
-                  isActive
-                    ? 'bg-brand/10 text-brand'
-                    : 'bg-zinc-100 text-zinc-500 border border-zinc-200/50'
-                }`}
-              >
-                {count}
-              </span>
-            )}
           </button>
         );
       })}
     </div>
+  );
+}
+
+export function AdminMobileNav({ activeTab, onTabChange }: TabsProps) {
+  const tabRefs = React.useRef<Record<AdminTab, HTMLButtonElement | null>>({
+    gallery: null,
+    testimonials: null,
+    faqs: null,
+    settings: null,
+  });
+
+  const [indicator, setIndicator] = React.useState<{ left: number; width: number } | null>(null);
+
+  const updateIndicator = React.useCallback(() => {
+    const el = tabRefs.current[activeTab];
+    if (el) {
+      setIndicator({
+        left: el.offsetLeft,
+        width: el.offsetWidth,
+      });
+    }
+  }, [activeTab]);
+
+  React.useEffect(() => {
+    updateIndicator();
+    window.addEventListener('resize', updateIndicator);
+    return () => window.removeEventListener('resize', updateIndicator);
+  }, [updateIndicator]);
+
+  return (
+    <nav
+      aria-label="Mobile Navigation"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full bg-white/95 backdrop-blur-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.06)] select-none pointer-events-auto"
+    >
+      <div className="max-w-lg mx-auto px-3 sm:px-6 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] relative">
+        <div className="grid grid-cols-4 gap-1.5 relative">
+          {indicator && (
+            <div
+              className="absolute top-0 bottom-0 rounded-full bg-brand shadow-xs transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] pointer-events-none"
+              style={{
+                left: `${indicator.left}px`,
+                width: `${indicator.width}px`,
+              }}
+            />
+          )}
+
+          {ADMIN_TABS.map(({ key, mobileLabel, icon: Icon }) => {
+            const isActive = activeTab === key;
+            return (
+              <button
+                key={key}
+                ref={(el) => {
+                  tabRefs.current[key] = el;
+                }}
+                onClick={() => onTabChange(key)}
+                className="relative z-10 flex flex-col items-center justify-center py-2 px-1 rounded-full cursor-pointer min-h-[48px] active:scale-95 touch-manipulation transition-transform duration-150"
+              >
+                <div className="flex items-center justify-center">
+                  <Icon
+                    className={`w-5 h-5 transition-all duration-200 ${
+                      isActive ? 'scale-105 text-white' : 'text-zinc-500 hover:text-zinc-800'
+                    }`}
+                  />
+                </div>
+                <span
+                  className={`text-[11px] mt-1 tracking-tight truncate max-w-full font-medium transition-colors duration-200 ${
+                    isActive ? 'text-white font-semibold' : 'text-zinc-500'
+                  }`}
+                >
+                  {mobileLabel}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default function AdminTabs({ activeTab, onTabChange }: TabsProps) {
+  return (
+    <>
+      <AdminDesktopTabs activeTab={activeTab} onTabChange={onTabChange} />
+      <AdminMobileNav activeTab={activeTab} onTabChange={onTabChange} />
+    </>
   );
 }

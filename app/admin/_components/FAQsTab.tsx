@@ -217,7 +217,7 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
                   <button
                     onClick={() => handleToggleVisibility(faq)}
                     title={isHidden ? 'Hidden from live FAQ. Click to show.' : 'Visible on live FAQ. Click to hide.'}
-                    className={`px-2.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer min-h-[34px] ${
                       isHidden
                         ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100/80'
                         : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
@@ -230,7 +230,7 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
                   <button
                     onClick={() => setEditingFaq(faq)}
                     title="Edit question"
-                    className="px-2.5 py-1.5 rounded-xl text-xs font-medium text-zinc-500 hover:text-brand hover:bg-zinc-100 flex items-center gap-1.5 transition-colors cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-500 hover:text-brand hover:bg-zinc-100 flex items-center gap-1.5 transition-colors cursor-pointer min-h-[34px]"
                   >
                     <Pencil className="w-3.5 h-3.5" />
                     <span>Edit</span>
@@ -240,7 +240,7 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
                     onClick={() => setDeletingFaq(faq)}
                     disabled={deletingId === faq.id}
                     title="Delete question"
-                    className="px-2.5 py-1.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-red-500 hover:bg-red-50 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                    className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-red-500 hover:bg-red-50 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 min-h-[34px]"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Delete</span>

@@ -34,9 +34,9 @@ export default function ConfirmDeleteModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/40 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-zinc-950/40 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-md bg-white rounded-2xl sm:rounded-3xl border border-zinc-200 shadow-2xl p-5 sm:p-7 animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-md bg-white rounded-2xl sm:rounded-3xl border border-zinc-200 shadow-2xl p-4 sm:p-7 max-h-[90dvh] overflow-y-auto animate-in zoom-in-95 duration-200"
         role="dialog"
         aria-modal="true"
       >
@@ -44,15 +44,15 @@ export default function ConfirmDeleteModal({
         <button
           onClick={onCancel}
           disabled={isDeleting}
-          className="absolute top-4 right-4 p-1.5 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer disabled:opacity-50"
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 p-2 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer disabled:opacity-50 min-h-[38px] min-w-[38px] flex items-center justify-center"
           aria-label="Close dialog"
         >
           <X className="w-4 h-4" />
         </button>
 
         {/* Icon Header */}
-        <div className="flex items-center gap-3.5 mb-4">
-          <div className="w-11 h-11 rounded-2xl bg-red-50 border border-red-200/60 flex items-center justify-center text-red-600 shrink-0">
+        <div className="flex items-center gap-3.5 mb-4 pr-8">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-red-50 border border-red-200/60 flex items-center justify-center text-red-600 shrink-0">
             <Trash2 className="w-5 h-5" />
           </div>
           <div>
@@ -72,18 +72,18 @@ export default function ConfirmDeleteModal({
 
         {/* Item preview badge */}
         {itemPreview && (
-          <div className="mb-5 p-3 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs text-zinc-700 font-medium italic line-clamp-2">
+          <div className="mb-4 sm:mb-5 p-3 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs text-zinc-700 font-medium italic line-clamp-2">
             &ldquo;{itemPreview}&rdquo;
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-zinc-100">
+        <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 sm:gap-2.5 pt-2 border-t border-zinc-100">
           <button
             type="button"
             onClick={onCancel}
             disabled={isDeleting}
-            className="px-4 py-2 sm:py-2.5 rounded-xl border border-zinc-200 text-xs sm:text-sm font-medium text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-zinc-200 text-xs sm:text-sm font-medium text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer disabled:opacity-50 min-h-[42px]"
           >
             Cancel
           </button>
@@ -91,7 +91,7 @@ export default function ConfirmDeleteModal({
             type="button"
             onClick={onConfirm}
             disabled={isDeleting}
-            className="flex items-center gap-1.5 px-5 py-2 sm:py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-medium transition-colors shadow-sm cursor-pointer disabled:opacity-50 min-h-[38px]"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-medium transition-colors shadow-sm cursor-pointer disabled:opacity-50 min-h-[42px]"
           >
             {isDeleting ? (
               <>

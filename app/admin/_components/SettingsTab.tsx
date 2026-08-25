@@ -32,18 +32,6 @@ export default function SettingsTab({ settings, setSettings, showFeedback }: Set
 
   const [saving, setSaving] = React.useState(false);
 
-  React.useEffect(() => {
-    setAnnouncementEnabled(settings.announcement?.enabled ?? false);
-    setAnnouncementText(settings.announcement?.text ?? '');
-    setAnnouncementLinkText(settings.announcement?.linkText ?? '');
-    setAnnouncementLinkUrl(settings.announcement?.linkUrl ?? '');
-    setWhatsappNumber(settings.whatsappNumber ?? '');
-    setPhoneNumber(settings.phoneNumber ?? '');
-    setEmail(settings.email ?? '');
-    setOperatingHours(settings.operatingHours ?? '');
-    setTourPricingNotice(settings.tourPricingNotice ?? '');
-  }, [settings]);
-
   async function handleSaveSettings(e: React.FormEvent) {
     e.preventDefault();
     if (saving) return;
@@ -114,7 +102,7 @@ export default function SettingsTab({ settings, setSettings, showFeedback }: Set
             aria-checked={announcementEnabled}
             onClick={() => setAnnouncementEnabled(!announcementEnabled)}
             className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full p-1 transition-colors duration-200 ease-in-out focus:outline-none ${
-              announcementEnabled ? 'bg-[#00b2d6]' : 'bg-zinc-200'
+              announcementEnabled ? 'bg-brand' : 'bg-zinc-200'
             }`}
             aria-label="Toggle announcement banner"
           >
@@ -129,7 +117,7 @@ export default function SettingsTab({ settings, setSettings, showFeedback }: Set
 
         {/* Live Banner Preview */}
         {announcementEnabled && (
-          <div className="mb-5 p-3 sm:p-4 rounded-xl bg-[#00b2d6] text-white flex items-center justify-between text-xs sm:text-sm font-medium shadow-sm animate-in fade-in duration-200">
+          <div className="mb-5 p-3 sm:p-4 rounded-xl bg-brand text-white flex items-center justify-between text-xs sm:text-sm font-medium shadow-sm animate-in fade-in duration-200">
             <div className="flex items-center gap-2 truncate">
               <span className="truncate">{announcementText || 'Your announcement message goes here...'}</span>
             </div>
@@ -256,7 +244,7 @@ export default function SettingsTab({ settings, setSettings, showFeedback }: Set
         <button
           type="submit"
           disabled={saving}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#00b2d6] hover:bg-[#0096b4] text-white font-medium text-sm px-8 py-3 rounded-xl transition-colors shadow-sm cursor-pointer disabled:opacity-50 min-h-[44px] whitespace-nowrap"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium text-sm px-8 py-3 rounded-xl transition-colors shadow-sm cursor-pointer disabled:opacity-50 min-h-11 whitespace-nowrap"
         >
           {saving ? (
             <>

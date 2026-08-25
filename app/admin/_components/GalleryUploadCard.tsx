@@ -173,10 +173,10 @@ export default function GalleryUploadCard({ onUpload, showFeedback }: GalleryUpl
               </div>
             </div>
 
-            <div className="flex items-start gap-2 bg-brand/5 border border-brand/15 rounded-xl p-2.5 sm:p-3">
-              <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand shrink-0 mt-0.5" />
-              <p className="text-[11px] sm:text-xs text-zinc-600 leading-relaxed">
-                Images are auto-converted to WebP and <strong className="text-zinc-800">watermarked</strong> before saving.
+            <div className="flex items-center gap-2.5 bg-brand/5 border border-brand/15 rounded-xl px-3 py-2.5 sm:px-3.5 sm:py-3">
+              <RefreshCw className="w-4 h-4 text-brand shrink-0" />
+              <p className="text-xs text-zinc-600 leading-snug">
+                Images are auto-converted to WebP and <strong className="text-zinc-800 font-semibold">watermarked</strong> before saving.
               </p>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function GalleryUploadCard({ onUpload, showFeedback }: GalleryUpl
           <button
             type="submit"
             disabled={!galleryFile || uploading}
-            className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium text-sm sm:text-sm py-3 sm:py-3 rounded-xl transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm min-h-[44px]"
+            className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white font-medium text-sm py-3 rounded-xl transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm min-h-11"
           >
             {uploading ? (
               <><Loader2 className="w-4 h-4 animate-spin" /> Processing &amp; Uploading...</>

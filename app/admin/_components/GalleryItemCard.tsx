@@ -79,9 +79,9 @@ export default function GalleryItemCard({
           {onToggleVisibility && (
             <button
               onClick={() => onToggleVisibility(item)}
-              title={isHidden ? 'Hidden from live site. Click to show.' : 'Visible on live site. Click to hide.'}
-              className={`p-1 -m-0.5 min-w-[26px] min-h-[26px] flex items-center justify-center transition-colors cursor-pointer ${
-                isHidden ? 'text-amber-600 hover:text-amber-700' : 'text-zinc-400 hover:text-zinc-700'
+              title={isHidden ? 'Hidden from live gallery. Click to show.' : 'Visible on live gallery. Click to hide.'}
+              className={`p-1.5 rounded-lg min-w-[32px] min-h-[32px] flex items-center justify-center transition-colors cursor-pointer ${
+                isHidden ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
               }`}
             >
               {isHidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -91,7 +91,7 @@ export default function GalleryItemCard({
             <button
               onClick={() => onEdit(item)}
               title="Edit caption and layout"
-              className="p-1 -m-0.5 min-w-[26px] min-h-[26px] flex items-center justify-center text-zinc-400 hover:text-brand transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-500 hover:text-brand hover:bg-zinc-100 transition-colors cursor-pointer"
             >
               <Pencil className="w-3.5 h-3.5" />
             </button>
@@ -100,7 +100,7 @@ export default function GalleryItemCard({
             onClick={() => onDelete(item)}
             disabled={deleting}
             title="Delete"
-            className="p-1 -m-0.5 min-w-[26px] min-h-[26px] flex items-center justify-center text-zinc-400 hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
+            className="p-1.5 rounded-lg min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
           >
             {deleting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />

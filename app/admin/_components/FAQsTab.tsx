@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Plus, Search, X, Pencil, Trash2, Eye, EyeOff, RotateCcw } from 'lucide-react';
+import { Loader2, Plus, Search, X, Pencil, Trash2, Eye, EyeOff, RotateCcw, ChevronUp, ChevronDown } from 'lucide-react';
 import SegmentedControl from './SegmentedControl';
 import EditFAQModal from './EditFAQModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
@@ -79,6 +79,33 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
         prev.map((f) => (f.id === faq.id ? { ...f, hidden: faq.hidden } : f))
       );
       showFeedback('error', err instanceof Error ? err.message : 'Failed to update visibility');
+    }
+  }
+
+  async function handleMove(faqId: string, direction: 'prev' | 'next') {
+    const fromIndex = faqsList.findIndex((f) => f.id === faqId);
+    if (fromIndex === -1) return;
+    const toIndex = direction === 'prev' ? fromIndex - 1 : fromIndex + 1;
+    if (toIndex < 0 || toIndex >= faqsList.length) return;
+
+    const reordered = [...faqsList];
+    const [moved] = reordered.splice(fromIndex, 1);
+    reordered.splice(toIndex, 0, moved);
+
+    // Optimistic update
+    setFaqsList(reordered);
+
+    try {
+      const res = await fetch('/api/admin/faqs', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderedIds: reordered.map((f) => f.id) }),
+      });
+      if (!res.ok) throw new Error('Reorder failed');
+      showFeedback('success', 'FAQ sequence updated.');
+    } catch (err: unknown) {
+      setFaqsList(faqsList); // Revert on failure
+      showFeedback('error', err instanceof Error ? err.message : 'Failed to save sequence');
     }
   }
 
@@ -258,7 +285,7 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
                 onClick={resetFilters}
                 className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-3 py-1.5 rounded-full transition-colors shrink-0 cursor-pointer"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
               </button>
             )}
@@ -286,8 +313,12 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
           </div>
         ) : (
           <div className="space-y-4 sm:space-y-5">
-            {filteredFaqs.map((faq) => {
+            {filteredFaqs.map((faq, index) => {
+              const originalIndex = faqsList.findIndex((item) => item.id === faq.id);
               const isHidden = faq.hidden === true;
+              const canMovePrev = originalIndex > 0;
+              const canMoveNext = originalIndex < faqsList.length - 1;
+
               return (
                 <div
                   key={faq.id}
@@ -297,6 +328,9 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
                 >
                   <div className="space-y-2.5">
                     <div className="flex items-center gap-2 flex-wrap">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-zinc-950/80 text-white">
+                        #{originalIndex >= 0 ? originalIndex + 1 : index + 1}
+                      </span>
                       <h4 className="font-semibold text-zinc-900 text-sm sm:text-base leading-snug">
                         {faq.question}
                       </h4>
@@ -312,39 +346,63 @@ export default function FAQsTab({ faqsList, setFaqsList, showFeedback }: FAQsTab
                     </p>
                   </div>
 
-                  {/* Footer Action Buttons */}
-                  <div className="flex items-center justify-end gap-2 pt-3.5 mt-4 border-t border-zinc-100">
-                    <button
-                      onClick={() => handleToggleVisibility(faq)}
-                      title={isHidden ? 'Hidden from live FAQ. Click to show.' : 'Visible on live FAQ. Click to hide.'}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer min-h-8.5 ${
-                        isHidden
-                          ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100/80'
-                          : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
-                      }`}
-                    >
-                      {isHidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                      <span>{isHidden ? 'Hidden' : 'Visible'}</span>
-                    </button>
+                  {/* Footer Action Buttons with Sequence Controls */}
+                  <div className="flex items-center justify-between pt-3.5 mt-4 border-t border-zinc-100 flex-wrap gap-2">
+                    {/* Reorder controls */}
+                    <div className="inline-flex items-center p-0.5 bg-zinc-100 rounded-lg">
+                      <button
+                        type="button"
+                        disabled={!canMovePrev}
+                        onClick={() => handleMove(faq.id, 'prev')}
+                        title="Move up in FAQ order"
+                        className="p-1.5 rounded text-zinc-600 hover:text-zinc-900 hover:bg-white transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                      >
+                        <ChevronUp className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        disabled={!canMoveNext}
+                        onClick={() => handleMove(faq.id, 'next')}
+                        title="Move down in FAQ order"
+                        className="p-1.5 rounded text-zinc-600 hover:text-zinc-900 hover:bg-white transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </button>
+                    </div>
 
-                    <button
-                      onClick={() => setEditingFaq(faq)}
-                      title="Edit question"
-                      className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-500 hover:text-brand hover:bg-zinc-100 flex items-center gap-1.5 transition-colors cursor-pointer min-h-8.5"
-                    >
-                      <Pencil className="w-3.5 h-3.5" />
-                      <span>Edit</span>
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleToggleVisibility(faq)}
+                        title={isHidden ? 'Hidden from live FAQ. Click to show.' : 'Visible on live FAQ. Click to hide.'}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer min-h-8.5 ${
+                          isHidden
+                            ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100/80'
+                            : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
+                        }`}
+                      >
+                        {isHidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        <span>{isHidden ? 'Hidden' : 'Visible'}</span>
+                      </button>
 
-                    <button
-                      onClick={() => setDeletingFaq(faq)}
-                      disabled={deletingId === faq.id}
-                      title="Delete question"
-                      className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-red-500 hover:bg-red-50 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 min-h-8.5"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                      <span>Delete</span>
-                    </button>
+                      <button
+                        onClick={() => setEditingFaq(faq)}
+                        title="Edit question"
+                        className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-500 hover:text-brand hover:bg-zinc-100 flex items-center gap-1.5 transition-colors cursor-pointer min-h-8.5"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                        <span>Edit</span>
+                      </button>
+
+                      <button
+                        onClick={() => setDeletingFaq(faq)}
+                        disabled={deletingId === faq.id}
+                        title="Delete question"
+                        className="px-3 py-1.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-red-500 hover:bg-red-50 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 min-h-8.5"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>Delete</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               );

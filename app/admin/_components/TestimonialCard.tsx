@@ -2,12 +2,16 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Trash2, Pencil, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Trash2, Pencil, Eye, EyeOff, ChevronUp, ChevronDown } from 'lucide-react';
 import StarRating from './StarRating';
 import type { Testimonial } from '@/lib/types';
 
 interface TestimonialCardProps {
   testimonial: Testimonial;
+  index: number;
+  canMovePrev: boolean;
+  canMoveNext: boolean;
+  onMove?: (direction: 'prev' | 'next') => void;
   onEdit?: (testimonial: Testimonial) => void;
   onToggleVisibility?: (testimonial: Testimonial) => void;
   onDelete: (testimonial: Testimonial) => void;
@@ -16,6 +20,10 @@ interface TestimonialCardProps {
 
 export default function TestimonialCard({
   testimonial: t,
+  index,
+  canMovePrev,
+  canMoveNext,
+  onMove,
   onEdit,
   onToggleVisibility,
   onDelete,
@@ -30,7 +38,7 @@ export default function TestimonialCard({
       }`}
     >
       <div>
-        {/* Avatar + Name + Rating + Hidden Badge */}
+        {/* Sequence Badge + Avatar + Name + Rating + Hidden Badge */}
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             {t.avatarKey ? (
@@ -45,7 +53,10 @@ export default function TestimonialCard({
               </div>
             )}
             <div className="min-w-0">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-zinc-950/80 text-white">
+                  #{index + 1}
+                </span>
                 <p className="text-xs sm:text-sm font-semibold text-zinc-900 truncate leading-tight">
                   {t.name}
                 </p>
@@ -57,7 +68,7 @@ export default function TestimonialCard({
                 )}
               </div>
               {t.location && (
-                <p className="text-[11px] sm:text-xs text-zinc-400 truncate">{t.location}</p>
+                <p className="text-[11px] sm:text-xs text-zinc-400 truncate mt-0.5">{t.location}</p>
               )}
             </div>
           </div>
@@ -73,15 +84,40 @@ export default function TestimonialCard({
         </p>
       </div>
 
-      {/* Footer */}
+      {/* Footer with Reorder Controls & Actions */}
       <div className="flex items-center justify-between pt-2.5 sm:pt-3 border-t border-zinc-100 text-[10px] sm:text-[11px] text-zinc-400">
-        <span>{new Date(t.createdAt).toLocaleDateString()}</span>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1">
+          {onMove && (
+            <div className="inline-flex items-center p-0.5 bg-zinc-100 rounded-lg mr-1.5">
+              <button
+                type="button"
+                disabled={!canMovePrev}
+                onClick={() => onMove('prev')}
+                title="Move up in order"
+                className="p-1 rounded text-zinc-600 hover:text-zinc-900 hover:bg-white transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronUp className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                disabled={!canMoveNext}
+                onClick={() => onMove('next')}
+                title="Move down in order"
+                className="p-1 rounded text-zinc-600 hover:text-zinc-900 hover:bg-white transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+          <span>{new Date(t.createdAt).toLocaleDateString()}</span>
+        </div>
+
+        <div className="flex items-center gap-1">
           {onToggleVisibility && (
             <button
               onClick={() => onToggleVisibility(t)}
               title={isHidden ? 'Hidden from live site. Click to show.' : 'Visible on live site. Click to hide.'}
-              className={`p-1.5 rounded-lg min-h-[32px] flex items-center gap-1 transition-colors cursor-pointer ${
+              className={`p-1.5 rounded-lg min-h-8 flex items-center gap-1 transition-colors cursor-pointer ${
                 isHidden ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
               }`}
             >
@@ -93,7 +129,7 @@ export default function TestimonialCard({
             <button
               onClick={() => onEdit(t)}
               title="Edit testimonial"
-              className="p-1.5 rounded-lg min-h-[32px] flex items-center gap-1 text-zinc-500 hover:text-brand hover:bg-zinc-100 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg min-h-8 flex items-center gap-1 text-zinc-500 hover:text-brand hover:bg-zinc-100 transition-colors cursor-pointer"
             >
               <Pencil className="w-3.5 h-3.5" />
               <span>Edit</span>
@@ -103,7 +139,7 @@ export default function TestimonialCard({
             onClick={() => onDelete(t)}
             disabled={deleting}
             title="Delete"
-            className="p-1.5 rounded-lg min-h-[32px] flex items-center gap-1 text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
+            className="p-1.5 rounded-lg min-h-8 flex items-center gap-1 text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
           >
             {deleting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />

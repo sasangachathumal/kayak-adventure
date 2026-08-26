@@ -143,3 +143,35 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  if (!(await isAuthed())) return unauthorized();
+  try {
+    const { orderedIds } = (await req.json().catch(() => ({}))) as { orderedIds?: string[] };
+    if (!Array.isArray(orderedIds)) {
+      return NextResponse.json({ error: 'orderedIds array required' }, { status: 400 });
+    }
+
+    const currentList = await getTestimonials();
+    const itemMap = new Map(currentList.map((t) => [t.id, t]));
+    const reordered: Testimonial[] = [];
+
+    for (const id of orderedIds) {
+      const item = itemMap.get(id);
+      if (item) {
+        reordered.push(item);
+        itemMap.delete(id);
+      }
+    }
+
+    for (const remaining of itemMap.values()) {
+      reordered.push(remaining);
+    }
+
+    await saveTestimonials(reordered);
+    return NextResponse.json({ ok: true, list: reordered });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Reorder failed';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}

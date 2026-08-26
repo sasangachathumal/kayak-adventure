@@ -2,11 +2,15 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Trash2, Video, Image as ImageIcon, Pencil, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Trash2, Video, Image as ImageIcon, Pencil, Eye, EyeOff, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { GalleryItem } from '@/lib/types';
 
 interface GalleryItemCardProps {
   item: GalleryItem;
+  index: number;
+  canMovePrev: boolean;
+  canMoveNext: boolean;
+  onMove?: (direction: 'prev' | 'next') => void;
   onEdit?: (item: GalleryItem) => void;
   onToggleVisibility?: (item: GalleryItem) => void;
   onDelete: (item: GalleryItem) => void;
@@ -15,6 +19,10 @@ interface GalleryItemCardProps {
 
 export default function GalleryItemCard({
   item,
+  index,
+  canMovePrev,
+  canMoveNext,
+  onMove,
   onEdit,
   onToggleVisibility,
   onDelete,
@@ -46,8 +54,11 @@ export default function GalleryItemCard({
           />
         )}
 
-        {/* Badges */}
-        <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 flex items-center gap-1 flex-wrap max-w-[90%]">
+        {/* Top Badges: Sequence & Type */}
+        <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 flex items-center gap-1 flex-wrap max-w-[90%] pointer-events-none">
+          <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold tracking-tight bg-zinc-950/80 text-white shadow-sm backdrop-blur-xs">
+            #{index + 1}
+          </span>
           <span className="inline-flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wide uppercase bg-white/90 text-zinc-700 shadow-sm border border-zinc-200/60 backdrop-blur-sm">
             {item.type === 'video' ? (
               <Video className="w-2.5 h-2.5 text-brand" />
@@ -68,6 +79,36 @@ export default function GalleryItemCard({
             </span>
           )}
         </div>
+
+        {/* Quick Overlay Reorder Arrows */}
+        {onMove && (
+          <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+            <button
+              type="button"
+              disabled={!canMovePrev}
+              onClick={(e) => {
+                e.stopPropagation();
+                onMove('prev');
+              }}
+              title="Move earlier in gallery order"
+              className="w-7 h-7 rounded-full bg-white/90 hover:bg-white text-zinc-700 shadow-md border border-zinc-200/80 flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              disabled={!canMoveNext}
+              onClick={(e) => {
+                e.stopPropagation();
+                onMove('next');
+              }}
+              title="Move later in gallery order"
+              className="w-7 h-7 rounded-full bg-white/90 hover:bg-white text-zinc-700 shadow-md border border-zinc-200/80 flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Card footer */}
@@ -80,7 +121,7 @@ export default function GalleryItemCard({
             <button
               onClick={() => onToggleVisibility(item)}
               title={isHidden ? 'Hidden from live gallery. Click to show.' : 'Visible on live gallery. Click to hide.'}
-              className={`p-1.5 rounded-lg min-w-[32px] min-h-[32px] flex items-center justify-center transition-colors cursor-pointer ${
+              className={`p-1.5 rounded-lg min-w-8 min-h-8 flex items-center justify-center transition-colors cursor-pointer ${
                 isHidden ? 'text-amber-700 bg-amber-50/80 hover:bg-amber-100' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
               }`}
             >
@@ -91,7 +132,7 @@ export default function GalleryItemCard({
             <button
               onClick={() => onEdit(item)}
               title="Edit caption and layout"
-              className="p-1.5 rounded-lg min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-500 hover:text-brand hover:bg-zinc-100 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg min-w-8 min-h-8 flex items-center justify-center text-zinc-500 hover:text-brand hover:bg-zinc-100 transition-colors cursor-pointer"
             >
               <Pencil className="w-3.5 h-3.5" />
             </button>
@@ -100,7 +141,7 @@ export default function GalleryItemCard({
             onClick={() => onDelete(item)}
             disabled={deleting}
             title="Delete"
-            className="p-1.5 rounded-lg min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
+            className="p-1.5 rounded-lg min-w-8 min-h-8 flex items-center justify-center text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-50"
           >
             {deleting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />

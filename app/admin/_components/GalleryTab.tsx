@@ -90,6 +90,33 @@ export default function GalleryTab({
     }
   }
 
+  async function handleMove(itemId: string, direction: 'prev' | 'next') {
+    const fromIndex = galleryList.findIndex((i) => i.id === itemId);
+    if (fromIndex === -1) return;
+    const toIndex = direction === 'prev' ? fromIndex - 1 : fromIndex + 1;
+    if (toIndex < 0 || toIndex >= galleryList.length) return;
+
+    const reordered = [...galleryList];
+    const [moved] = reordered.splice(fromIndex, 1);
+    reordered.splice(toIndex, 0, moved);
+
+    // Optimistic update
+    setGalleryList(reordered);
+
+    try {
+      const res = await fetch('/api/admin/gallery', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderedIds: reordered.map((i) => i.id) }),
+      });
+      if (!res.ok) throw new Error('Reorder failed');
+      showFeedback('success', 'Gallery sequence updated.');
+    } catch (err: unknown) {
+      setGalleryList(galleryList); // Revert on failure
+      showFeedback('error', err instanceof Error ? err.message : 'Failed to save sequence');
+    }
+  }
+
   // Filtered gallery items computation
   const filteredGallery = React.useMemo(() => {
     return galleryList.filter((item) => {
@@ -212,7 +239,7 @@ export default function GalleryTab({
                 onClick={resetFilters}
                 className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-3 py-1.5 rounded-full transition-colors shrink-0 cursor-pointer"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
               </button>
             )}
@@ -240,16 +267,23 @@ export default function GalleryTab({
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-4">
-            {filteredGallery.map((item) => (
-              <GalleryItemCard
-                key={item.id}
-                item={item}
-                onEdit={(i) => setEditingItem(i)}
-                onToggleVisibility={handleToggleVisibility}
-                onDelete={(i) => setDeletingItem(i)}
-                deleting={deletingId === item.id}
-              />
-            ))}
+            {filteredGallery.map((item, index) => {
+              const originalIndex = galleryList.findIndex((i) => i.id === item.id);
+              return (
+                <GalleryItemCard
+                  key={item.id}
+                  item={item}
+                  index={originalIndex >= 0 ? originalIndex : index}
+                  canMovePrev={originalIndex > 0}
+                  canMoveNext={originalIndex < galleryList.length - 1}
+                  onMove={(dir) => handleMove(item.id, dir)}
+                  onEdit={(i) => setEditingItem(i)}
+                  onToggleVisibility={handleToggleVisibility}
+                  onDelete={(i) => setDeletingItem(i)}
+                  deleting={deletingId === item.id}
+                />
+              );
+            })}
           </div>
         )}
       </div>

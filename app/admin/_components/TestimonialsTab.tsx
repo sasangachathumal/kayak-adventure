@@ -92,6 +92,33 @@ export default function TestimonialsTab({
     }
   }
 
+  async function handleMove(testimonialId: string, direction: 'prev' | 'next') {
+    const fromIndex = testimonialsList.findIndex((t) => t.id === testimonialId);
+    if (fromIndex === -1) return;
+    const toIndex = direction === 'prev' ? fromIndex - 1 : fromIndex + 1;
+    if (toIndex < 0 || toIndex >= testimonialsList.length) return;
+
+    const reordered = [...testimonialsList];
+    const [moved] = reordered.splice(fromIndex, 1);
+    reordered.splice(toIndex, 0, moved);
+
+    // Optimistic update
+    setTestimonialsList(reordered);
+
+    try {
+      const res = await fetch('/api/admin/testimonials', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderedIds: reordered.map((t) => t.id) }),
+      });
+      if (!res.ok) throw new Error('Reorder failed');
+      showFeedback('success', 'Testimonials sequence updated.');
+    } catch (err: unknown) {
+      setTestimonialsList(testimonialsList); // Revert on failure
+      showFeedback('error', err instanceof Error ? err.message : 'Failed to save sequence');
+    }
+  }
+
   // Filtered testimonials
   const filteredTestimonials = React.useMemo(() => {
     return testimonialsList.filter((t) => {
@@ -212,7 +239,7 @@ export default function TestimonialsTab({
                 onClick={resetFilters}
                 className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-3 py-1.5 rounded-full transition-colors shrink-0 cursor-pointer"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
               </button>
             )}
@@ -240,16 +267,23 @@ export default function TestimonialsTab({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
-            {filteredTestimonials.map((t) => (
-              <TestimonialCard
-                key={t.id}
-                testimonial={t}
-                onEdit={(item) => setEditingTestimonial(item)}
-                onToggleVisibility={handleToggleVisibility}
-                onDelete={(item) => setDeletingTestimonial(item)}
-                deleting={deletingId === t.id}
-              />
-            ))}
+            {filteredTestimonials.map((t, index) => {
+              const originalIndex = testimonialsList.findIndex((item) => item.id === t.id);
+              return (
+                <TestimonialCard
+                  key={t.id}
+                  testimonial={t}
+                  index={originalIndex >= 0 ? originalIndex : index}
+                  canMovePrev={originalIndex > 0}
+                  canMoveNext={originalIndex < testimonialsList.length - 1}
+                  onMove={(dir) => handleMove(t.id, dir)}
+                  onEdit={(item) => setEditingTestimonial(item)}
+                  onToggleVisibility={handleToggleVisibility}
+                  onDelete={(item) => setDeletingTestimonial(item)}
+                  deleting={deletingId === t.id}
+                />
+              );
+            })}
           </div>
         )}
       </div>

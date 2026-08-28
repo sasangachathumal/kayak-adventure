@@ -8,7 +8,8 @@ import { WhatsAppIcon, FacebookIcon } from "./NavbarIcons";
 import NavbarOverlay from "./NavbarOverlay";
 import AnnouncementBar from "./AnnouncementBar";
 import { Button } from "@/components/ui/button";
-import type { AnnouncementBar as AnnouncementBarType } from "@/lib/types";
+import type { AnnouncementBar as AnnouncementBarType, SiteSettings } from "@/lib/types";
+import { getContactLinks } from "@/lib/content";
 
 type MenuState = "closed" | "opening" | "open" | "closing";
 
@@ -21,10 +22,13 @@ const navigationItems = [
 
 interface NavbarProps {
   announcement?: AnnouncementBarType;
+  settings?: SiteSettings;
 }
 
-export default function Navbar({ announcement }: NavbarProps = {}) {
+export default function Navbar({ announcement, settings }: NavbarProps = {}) {
   const pathname = usePathname();
+  const effectiveAnnouncement = announcement || settings?.announcement;
+  const contact = getContactLinks(settings);
   const [menuState, setMenuState] = useState<MenuState>("closed");
   const [navVisible, setNavVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
@@ -146,7 +150,7 @@ export default function Navbar({ announcement }: NavbarProps = {}) {
         `}
       >
         {/* Top Announcement Bar if enabled in CMS */}
-        <AnnouncementBar announcement={announcement} />
+        <AnnouncementBar announcement={effectiveAnnouncement} />
 
         <div
           className={`
@@ -184,7 +188,7 @@ export default function Navbar({ announcement }: NavbarProps = {}) {
             `}
           >
             <Link
-              href="https://wa.me/94761122261?text=Hello!"
+              href={contact.waUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center size-9 rounded-full text-zinc-600 hover:bg-zinc-100 hover:text-brand transition-all duration-300 cursor-pointer"
@@ -230,6 +234,7 @@ export default function Navbar({ announcement }: NavbarProps = {}) {
         isClosing={isClosing}
         handleClose={handleClose}
         navigationItems={navigationItems}
+        settings={settings}
       />
     </>
   );

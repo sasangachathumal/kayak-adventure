@@ -4,6 +4,8 @@ import Link from "next/link";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
 import { Phone, Mail, Clock, Globe, ArrowUpRight } from "lucide-react";
+import type { SiteSettings } from "@/lib/types";
+import { getContactLinks } from "@/lib/content";
 
 // ─── WhatsApp SVG icon (inline, matching Footer pattern) ───────────────────────
 const WhatsAppIcon = ({ className = "size-5" }: { className?: string }) => (
@@ -19,56 +21,61 @@ const FacebookIcon = ({ className = "size-5" }: { className?: string }) => (
   </svg>
 );
 
-// ─── Contact channel data ──────────────────────────────────────────────────────
-const channels = [
-  {
-    id: "whatsapp",
-    icon: WhatsAppIcon,
-    label: "WhatsApp",
-    value: "+94 76 112 2261",
-    sub: "Fastest response — typically within minutes",
-    href: "https://wa.me/94761122261?text=Hello!",
-    external: true,
-  },
-  {
-    id: "phone",
-    icon: Phone,
-    label: "Phone",
-    value: "+94 76 112 2261",
-    sub: "Daily from 6:00 AM – 6:00 PM",
-    href: "tel:+94761122261",
-    external: false,
-  },
-  {
-    id: "email",
-    icon: Mail,
-    label: "Email",
-    value: "hello@kayakadventure.lk",
-    sub: "We reply within 24 hours",
-    href: "mailto:hello@kayakadventure.lk",
-    external: false,
-  },
-  {
-    id: "hours",
-    icon: Clock,
-    label: "Operating Hours",
-    value: "Daily, 6:00 AM – 6:00 PM",
-    sub: "Tours depart at sunrise, midday & sunset",
-    href: null,
-    external: false,
-  },
-  {
-    id: "languages",
-    icon: Globe,
-    label: "Languages Spoken",
-    value: "English, Sinhala",
-    sub: "Guides speak fluent English & Sinhala",
-    href: null,
-    external: false,
-  },
-];
+interface ContactDetailsProps {
+  settings?: SiteSettings;
+}
 
-export default function ContactDetails() {
+export default function ContactDetails({ settings }: ContactDetailsProps) {
+  const contact = getContactLinks(settings);
+
+  const channels = [
+    {
+      id: "whatsapp",
+      icon: WhatsAppIcon,
+      label: "WhatsApp",
+      value: contact.whatsappNumber,
+      sub: "Fastest response — typically within minutes",
+      href: contact.waUrl,
+      external: true,
+    },
+    {
+      id: "phone",
+      icon: Phone,
+      label: "Phone",
+      value: contact.phoneNumber,
+      sub: `Daily from ${contact.operatingHours}`,
+      href: contact.telUrl,
+      external: false,
+    },
+    {
+      id: "email",
+      icon: Mail,
+      label: "Email",
+      value: contact.email,
+      sub: "We reply within 24 hours",
+      href: contact.mailtoUrl,
+      external: false,
+    },
+    {
+      id: "hours",
+      icon: Clock,
+      label: "Operating Hours",
+      value: contact.operatingHours,
+      sub: "Tours depart at sunrise, midday & sunset",
+      href: null,
+      external: false,
+    },
+    {
+      id: "languages",
+      icon: Globe,
+      label: "Languages Spoken",
+      value: "English, Sinhala",
+      sub: "Guides speak fluent English & Sinhala",
+      href: null,
+      external: false,
+    },
+  ];
+
   return (
     <Section
       id="contact-details"
@@ -190,7 +197,7 @@ export default function ContactDetails() {
               </div>
               <div className="flex items-center h-11.5 px-1.25 gap-1.5 bg-white rounded-full border border-zinc-200/50 shadow-sm w-fit">
                 <Link
-                  href="https://wa.me/94761122261?text=Hello!"
+                  href={contact.waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center size-9 rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
@@ -273,7 +280,7 @@ export default function ContactDetails() {
               {[
                 { label: "Tour Duration", value: "1 – 3 hours (custom)" },
                 { label: "Group Size", value: "1 – 12 guests" },
-                { label: "Languages", value: "EN · SI" },
+                { label: "Tour Pricing", value: contact.tourPricingNotice },
                 { label: "Booking", value: "Advance / Same day" },
               ].map(({ label, value }) => (
                 <div

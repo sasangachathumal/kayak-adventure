@@ -128,3 +128,30 @@ export async function saveSiteSettings(settings: SiteSettings): Promise<void> {
   const env = await getEnv();
   await env.kayak_CMS_KV.put(SETTINGS_KEY, JSON.stringify(settings));
 }
+
+export function getContactLinks(settings?: Partial<SiteSettings>) {
+  const whatsappNumber = settings?.whatsappNumber || DEFAULT_SETTINGS.whatsappNumber!;
+  const phoneNumber = settings?.phoneNumber || DEFAULT_SETTINGS.phoneNumber!;
+  const email = settings?.email || DEFAULT_SETTINGS.email!;
+  const operatingHours = settings?.operatingHours || DEFAULT_SETTINGS.operatingHours!;
+  const tourPricingNotice = settings?.tourPricingNotice || DEFAULT_SETTINGS.tourPricingNotice!;
+
+  const waDigits = (whatsappNumber || '').replace(/\D/g, '');
+  const waUrl = waDigits ? `https://wa.me/${waDigits}?text=Hello!` : 'https://wa.me/94761122261?text=Hello!';
+
+  const telDigits = (phoneNumber || '').replace(/[^\d+]/g, '');
+  const telUrl = telDigits ? `tel:${telDigits}` : 'tel:+94761122261';
+
+  const mailtoUrl = email ? `mailto:${email}` : 'mailto:hello@kayakadventure.lk';
+
+  return {
+    whatsappNumber,
+    phoneNumber,
+    email,
+    operatingHours,
+    tourPricingNotice,
+    waUrl,
+    telUrl,
+    mailtoUrl,
+  };
+}

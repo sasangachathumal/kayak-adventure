@@ -40,14 +40,14 @@ export default async function Home() {
     <main className="flex-1 flex flex-col">
       <Preloader />
       <ScrollToTop />
-      <Navbar announcement={siteSettings.announcement} />
-      <Hero />
+      <Navbar settings={siteSettings} />
+      <Hero settings={siteSettings} />
       <About />
       <GalleryPreview images={cmsGalleryImages.length > 0 ? cmsGalleryImages : undefined} />
       <Testimonials items={formattedTestimonials} />
       <FAQ items={cmsFaqs} />
-      <CTA />
-      <Footer />
+      <CTA settings={siteSettings} />
+      <Footer settings={siteSettings} />
     </main>
   );
 }

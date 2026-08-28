@@ -2,6 +2,8 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WhatsAppIcon, FacebookIcon } from "./NavbarIcons";
+import type { SiteSettings } from "@/lib/types";
+import { getContactLinks } from "@/lib/content";
 
 interface NavbarOverlayProps {
   isVisible: boolean;
@@ -10,6 +12,7 @@ interface NavbarOverlayProps {
   isClosing: boolean;
   handleClose: () => void;
   navigationItems: Array<{ label: string; href: string; index: number }>;
+  settings?: SiteSettings;
 }
 
 export default function NavbarOverlay({
@@ -19,8 +22,10 @@ export default function NavbarOverlay({
   isClosing,
   handleClose,
   navigationItems,
+  settings,
 }: NavbarOverlayProps) {
   const pathname = usePathname();
+  const contact = getContactLinks(settings);
 
   if (!isVisible) return null;
 
@@ -85,7 +90,7 @@ export default function NavbarOverlay({
         {/* Social Pill */}
         <div className="flex items-center h-[42px] px-[5px] gap-1.5 bg-white rounded-full border border-zinc-100 shadow-sm">
           <Link
-            href="https://wa.me/94761122261?text=Hello!"
+            href={contact.waUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleClose}

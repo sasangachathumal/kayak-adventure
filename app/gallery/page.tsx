@@ -7,7 +7,7 @@ import Navbar from "@/components/shared/Navbar";
 import Preloader from "@/components/shared/Preloader";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 import manifestGalleryImages from "@/data/gallery-manifest.json";
-import { getGallery } from "@/lib/content";
+import { getGallery, getSiteSettings } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -35,7 +35,10 @@ export const metadata: Metadata = buildMetadata({
 
 // ─── Gallery Page ────────────────────────────────────────────────────────────
 export default async function GalleryPage() {
-  const cmsItems = await getGallery();
+  const [cmsItems, siteSettings] = await Promise.all([
+    getGallery(),
+    getSiteSettings(),
+  ]);
   const visibleCmsItems = cmsItems.filter((item) => !item.hidden);
   const cmsImages: GalleryImage[] = visibleCmsItems.map((item) => ({
     src: `/api/media/${item.key}`,
@@ -52,11 +55,11 @@ export default async function GalleryPage() {
     <main className="flex-1 flex flex-col">
       <Preloader />
       <ScrollToTop />
-      <Navbar />
+      <Navbar settings={siteSettings} />
       <GalleryPageHero />
       <GalleryGrid images={allImages} />
-      <CTA />
-      <Footer />
+      <CTA settings={siteSettings} />
+      <Footer settings={siteSettings} />
     </main>
   );
 }

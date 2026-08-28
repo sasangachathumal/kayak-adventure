@@ -69,20 +69,11 @@ export default function CTA({ settings }: CTAProps = {}) {
 
         {/* Headline */}
         <Reveal variant="clip-up" delay={200} duration={900}>
-          <h2 className="font-serif text-[42px] sm:text-5xl md:text-[64px] text-white font-medium leading-[1.1] tracking-wide mb-6 max-w-162.5">
+          <h2 className="font-serif text-[42px] sm:text-5xl md:text-[64px] text-white font-medium leading-[1.1] tracking-wide mb-10 max-w-162.5">
             Ready for your <br />
             next <span className="italic font-medium">adventure?</span>
           </h2>
         </Reveal>
-
-        {/* Tour Pricing Badge if present */}
-        {contact.tourPricingNotice && (
-          <Reveal variant="fade-up" delay={300} duration={600}>
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/15 border border-white/25 backdrop-blur-xs text-xs sm:text-sm text-white/95 font-medium mb-8">
-              <span>{contact.tourPricingNotice}</span>
-            </div>
-          </Reveal>
-        )}
 
         {/* CTA Button using brand styles */}
         <Reveal variant="scale-up" delay={400} duration={700}>

@@ -5,8 +5,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Section from "./Section";
 import Reveal from "./Reveal";
+import type { SiteSettings } from "@/lib/types";
+import { getContactLinks } from "@/lib/content";
 
-export default function CTA() {
+interface CTAProps {
+  settings?: SiteSettings;
+}
+
+export default function CTA({ settings }: CTAProps = {}) {
+  const contact = getContactLinks(settings);
+
   return (
     <Section
       id="contact"
@@ -70,7 +78,7 @@ export default function CTA() {
         {/* CTA Button using brand styles */}
         <Reveal variant="scale-up" delay={400} duration={700}>
           <div className="flex select-none">
-            <Link href="https://wa.me/94761122261?text=Hello!" target="_blank" rel="noopener noreferrer">
+            <Link href={contact.waUrl} target="_blank" rel="noopener noreferrer">
               <Button variant="cta" size="cta">
                 Contact Us
               </Button>

@@ -6,6 +6,8 @@ import { Phone, Mail, ArrowUpRight } from "lucide-react";
 import Section from "./Section";
 import Reveal from "./Reveal";
 import ScrambleText from "../animations/ScrambleText";
+import type { SiteSettings } from "@/lib/types";
+import { getContactLinks } from "@/lib/content";
 
 // WhatsApp Brand SVG Icon
 const WhatsAppIcon = ({ className = "size-5" }: { className?: string }) => (
@@ -21,8 +23,13 @@ const FacebookIcon = ({ className = "size-5" }: { className?: string }) => (
   </svg>
 );
 
-export default function Footer() {
+interface FooterProps {
+  settings?: SiteSettings;
+}
+
+export default function Footer({ settings }: FooterProps = {}) {
   const currentYear = new Date().getFullYear();
+  const contact = getContactLinks(settings);
 
   return (
     <Section
@@ -107,14 +114,14 @@ export default function Footer() {
             <ul className="space-y-5 font-sans text-[14px] w-full flex flex-col items-start mb-10">
               <li className="flex flex-row items-center gap-3 text-zinc-600">
                 <Phone className="size-5 text-brand shrink-0" />
-                <Link href="tel:+94761122261" className="hover:text-brand transition-colors">
-                  +94 76 112 2261
+                <Link href={contact.telUrl} className="hover:text-brand transition-colors">
+                  {contact.phoneNumber}
                 </Link>
               </li>
               <li className="flex flex-row items-center gap-3 text-zinc-600">
                 <Mail className="size-5 text-brand shrink-0" />
-                <Link href="mailto:hello@kayakadventure.lk" className="hover:text-brand transition-colors break-all">
-                  hello@kayakadventure.lk
+                <Link href={contact.mailtoUrl} className="hover:text-brand transition-colors break-all">
+                  {contact.email}
                 </Link>
               </li>
             </ul>
@@ -124,7 +131,7 @@ export default function Footer() {
           <Reveal variant="scale-up" delay={200} duration={700}>
             <div className="flex items-center h-11.5 px-1.25 gap-1.5 bg-white rounded-full border border-zinc-200/50 shadow-sm">
               <Link
-                href="https://wa.me/94761122261?text=Hello!"
+                href={contact.waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center size-9 rounded-full text-zinc-500 hover:bg-brand hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"

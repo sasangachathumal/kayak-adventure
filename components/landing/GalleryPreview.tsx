@@ -118,7 +118,11 @@ function ShowcaseImage({ src, alt, sizes, preloaderDone }: ShowcaseImageProps) {
   );
 }
 
-export default function GalleryPreview() {
+interface GalleryPreviewProps {
+  images?: string[];
+}
+
+export default function GalleryPreview({ images }: GalleryPreviewProps = {}) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -129,17 +133,22 @@ export default function GalleryPreview() {
     return false;
   });
 
+  const allImages = React.useMemo(() => {
+    if (!images || images.length === 0) return FEATURED_IMAGES;
+    return Array.from(new Set([...images, ...FEATURED_IMAGES]));
+  }, [images]);
+
   const [galleryImages, setGalleryImages] = React.useState<string[]>(
-    FEATURED_IMAGES.slice(0, 7)
+    allImages.slice(0, 7)
   );
 
-  const poolRef = React.useRef<string[]>(FEATURED_IMAGES);
+  const poolRef = React.useRef<string[]>(allImages);
   const poolIndexRef = React.useRef<number>(7);
   const slotIndexRef = React.useRef<number>(0);
 
   // Initialize random shuffle on mount & setup interval cycling
   React.useEffect(() => {
-    const shuffled = shuffleArray(FEATURED_IMAGES);
+    const shuffled = shuffleArray(allImages);
     poolRef.current = shuffled;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setGalleryImages(shuffled.slice(0, 7));
@@ -163,7 +172,7 @@ export default function GalleryPreview() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [allImages]);
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;

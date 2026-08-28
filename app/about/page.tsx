@@ -31,20 +31,26 @@ export const metadata: Metadata = buildMetadata({
   },
 });
 
+import { getSiteSettings } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
+
 // ─── About Page ───────────────────────────────────────────────────────────────
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getSiteSettings();
+
   return (
     <main className="flex-1 flex flex-col">
       <Preloader />
       <ScrollToTop />
-      <Navbar />
+      <Navbar settings={settings} />
       <AboutPageHero />
       <AboutStory />
       <AboutValues />
       <AboutAmenities />
 
-      <CTA />
-      <Footer />
+      <CTA settings={settings} />
+      <Footer settings={settings} />
     </main>
   );
 }

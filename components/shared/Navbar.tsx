@@ -6,7 +6,10 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { WhatsAppIcon, FacebookIcon } from "./NavbarIcons";
 import NavbarOverlay from "./NavbarOverlay";
+import AnnouncementBar from "./AnnouncementBar";
 import { Button } from "@/components/ui/button";
+import type { AnnouncementBar as AnnouncementBarType, SiteSettings } from "@/lib/types";
+import { getContactLinks } from "@/lib/content";
 
 type MenuState = "closed" | "opening" | "open" | "closing";
 
@@ -17,8 +20,15 @@ const navigationItems = [
   { label: "Contact",  href: "/contact",  index: 3 },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  announcement?: AnnouncementBarType;
+  settings?: SiteSettings;
+}
+
+export default function Navbar({ announcement, settings }: NavbarProps = {}) {
   const pathname = usePathname();
+  const effectiveAnnouncement = announcement || settings?.announcement;
+  const contact = getContactLinks(settings);
   const [menuState, setMenuState] = useState<MenuState>("closed");
   const [navVisible, setNavVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
@@ -134,14 +144,23 @@ export default function Navbar() {
       <header
         className={`
           fixed top-0 left-0 right-0 z-40
-          flex items-center justify-between
-          px-8 md:px-16 transition-all duration-300 ease-in-out
+          flex flex-col transition-all duration-300 ease-in-out
           ${navVisible ? "translate-y-0" : "-translate-y-full"}
-          ${scrolled ? "bg-white/80 backdrop-blur-md border-zinc-200/40 shadow-sm py-4" : "py-5 md:py-6"}
+          ${scrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : ""}
         `}
       >
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3.5 select-none group relative z-50">
+        {/* Top Announcement Bar if enabled in CMS */}
+        <AnnouncementBar announcement={effectiveAnnouncement} />
+
+        <div
+          className={`
+            w-full flex items-center justify-between
+            px-8 md:px-16 transition-all duration-300 ease-in-out
+            ${scrolled ? "py-4" : "py-5 md:py-6"}
+          `}
+        >
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3.5 select-none group relative z-50">
           <div className="relative w-12 h-12 shrink-0">
             <Image src="/logo-with-no-text.svg" alt="Kayak Adventure Logo Icon" fill sizes="48px" className="object-contain" />
           </div>
@@ -169,7 +188,7 @@ export default function Navbar() {
             `}
           >
             <Link
-              href="https://wa.me/94761122261?text=Hello!"
+              href={contact.waUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center size-9 rounded-full text-zinc-600 hover:bg-zinc-100 hover:text-brand transition-all duration-300 cursor-pointer"
@@ -204,6 +223,7 @@ export default function Navbar() {
             />
           </Button>
         </div>
+        </div>
       </header>
 
       {/* Full Screen Menu Overlay */}
@@ -214,6 +234,7 @@ export default function Navbar() {
         isClosing={isClosing}
         handleClose={handleClose}
         navigationItems={navigationItems}
+        settings={settings}
       />
     </>
   );

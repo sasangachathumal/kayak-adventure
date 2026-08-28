@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Star } from "lucide-react";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
 import {
@@ -17,7 +17,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
-const testimonials = [
+export interface TestimonialItem {
+  quote: string;
+  author: string;
+  location: string;
+  rating?: number;
+  image?: string;
+}
+
+const defaultTestimonials: TestimonialItem[] = [
   {
     quote: "Paddling through the mangroves was pure magic. The calm, the views, and the whole experience was something I'll never forget.",
     author: "Sarah Jenkins",
@@ -50,7 +58,12 @@ const testimonials = [
   }
 ];
 
-export default function Testimonials() {
+interface TestimonialsProps {
+  items?: TestimonialItem[];
+}
+
+export default function Testimonials({ items }: TestimonialsProps = {}) {
+  const displayTestimonials = items && items.length > 0 ? items : defaultTestimonials;
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -124,14 +137,29 @@ export default function Testimonials() {
           <Carousel setApi={setApi} opts={{ align: "start", loop: false, watchDrag: true }} className="w-full" style={{ touchAction: "pan-y" }}>
             <CarouselContent className="-ml-6">
               
-              {testimonials.map((t, index) => (
+              {displayTestimonials.map((t, index) => (
                 <CarouselItem key={index} className="pl-6 basis-full sm:basis-1/2 lg:basis-1/3">
                   <Card className="flex flex-col text-left h-full min-h-[250px] lg:min-h-[310px] bg-white border border-zinc-200/50 p-8 rounded-[24px] shadow-sm hover:shadow-md hover:border-zinc-200/80 ring-0 [--card-spacing:0px] transition-all duration-300">
                     <CardContent className="p-0 flex flex-col h-full flex-1">
-                      {/* Large Stylized Cyan Quote Mark */}
-                      <span className="font-serif text-[64px] text-[#00b2d6] leading-[1] select-none h-10 -mt-2 block">
-                        &ldquo;
-                      </span>
+                      {/* Quote mark and Star Rating Header */}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-serif text-[64px] text-[#00b2d6] leading-[1] select-none h-10 -mt-2 block">
+                          &ldquo;
+                        </span>
+                        <div className="flex items-center gap-0.5" aria-label={`${t.rating ?? 5} out of 5 stars`}>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              className={cn(
+                                "w-3.5 h-3.5",
+                                star <= (t.rating ?? 5)
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "fill-zinc-200 text-zinc-300"
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </div>
 
                       {/* Testimonial text */}
                       <p className="font-sans text-[15px] sm:text-[16px] text-zinc-700 leading-relaxed font-normal tracking-wide mb-6 flex-1">

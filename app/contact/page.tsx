@@ -27,16 +27,22 @@ export const metadata: Metadata = buildMetadata({
   },
 });
 
+import { getSiteSettings } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
+
 // ─── Contact Page ─────────────────────────────────────────────────────────────
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
+
   return (
     <main className="flex-1 flex flex-col">
       <Preloader />
       <ScrollToTop />
-      <Navbar />
+      <Navbar settings={settings} />
       <ContactPageHero />
-      <ContactDetails />
-      <Footer />
+      <ContactDetails settings={settings} />
+      <Footer settings={settings} />
     </main>
   );
 }

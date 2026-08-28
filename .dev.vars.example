@@ -1,0 +1,4 @@
+# Local development secrets for Cloudflare Worker & OpenNext
+# Copy this file to .dev.vars (which is gitignored) and fill in your values
+ADMIN_SECRET=choose-a-local-admin-password
+AUTH_SECRET=generate-a-random-base64-string-via-openssl-rand-base64-32

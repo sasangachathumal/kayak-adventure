@@ -5,8 +5,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Section from "../shared/Section";
 import Reveal from "../shared/Reveal";
+import type { SiteSettings } from "@/lib/types";
+import { getContactLinks } from "@/lib/content";
 
-export default function Hero() {
+interface HeroProps {
+  settings?: SiteSettings;
+}
+
+export default function Hero({ settings }: HeroProps = {}) {
+  const contact = getContactLinks(settings);
   return (
     <Section
       className="min-h-screen flex flex-col justify-between bg-sky-50"
@@ -106,7 +113,7 @@ export default function Hero() {
           {/* CTA Button using shadcn Button */}
           <Reveal variant="fade-up" delay={550} duration={700}>
             <div className="flex select-none">
-              <Link href="https://wa.me/94761122261?text=Hello!" target="_blank" rel="noopener noreferrer">
+              <Link href={contact.waUrl} target="_blank" rel="noopener noreferrer">
                 <Button variant="cta" size="cta">
                   Contact Us
                 </Button>

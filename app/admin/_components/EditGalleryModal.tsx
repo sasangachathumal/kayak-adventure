@@ -10,6 +10,7 @@ interface EditGalleryModalProps {
   onClose: () => void;
   onUpdate: (updated: GalleryItem) => void;
   showFeedback: (type: 'success' | 'error', message: string) => void;
+  apiEndpoint?: string;
 }
 
 function EditGalleryForm({
@@ -17,11 +18,13 @@ function EditGalleryForm({
   onClose,
   onUpdate,
   showFeedback,
+  apiEndpoint = '/api/admin/gallery',
 }: {
   item: GalleryItem;
   onClose: () => void;
   onUpdate: (updated: GalleryItem) => void;
   showFeedback: (type: 'success' | 'error', message: string) => void;
+  apiEndpoint?: string;
 }) {
   const [alt, setAlt] = React.useState(item.alt || '');
   const [span, setSpan] = React.useState<'normal' | 'tall'>(item.span || 'normal');
@@ -42,7 +45,7 @@ function EditGalleryForm({
 
     setSaving(true);
     try {
-      const res = await fetch('/api/admin/gallery', {
+      const res = await fetch(apiEndpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: item.id, alt, span, hidden }),
@@ -230,6 +233,7 @@ export default function EditGalleryModal({
   onClose,
   onUpdate,
   showFeedback,
+  apiEndpoint,
 }: EditGalleryModalProps) {
   if (!isOpen || !item) return null;
 
@@ -241,6 +245,7 @@ export default function EditGalleryModal({
         onClose={onClose}
         onUpdate={onUpdate}
         showFeedback={showFeedback}
+        apiEndpoint={apiEndpoint}
       />
     </div>
   );

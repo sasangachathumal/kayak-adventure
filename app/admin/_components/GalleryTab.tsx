@@ -1,174 +1,256 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Search, X, Image as ImageIcon, Video, Eye, EyeOff, RotateCcw } from 'lucide-react';
-import SegmentedControl from './SegmentedControl';
-import GalleryUploadCard from './GalleryUploadCard';
-import GalleryItemCard from './GalleryItemCard';
-import EditGalleryModal from './EditGalleryModal';
-import ConfirmDeleteModal from './ConfirmDeleteModal';
-import type { GalleryItem } from '@/lib/types';
+import * as React from "react";
+import {
+  Search,
+  X,
+  Image as ImageIcon,
+  Video,
+  Eye,
+  EyeOff,
+  RotateCcw,
+} from "lucide-react";
+import SegmentedControl from "./SegmentedControl";
+import GalleryUploadCard from "./GalleryUploadCard";
+import GalleryItemCard from "./GalleryItemCard";
+import EditGalleryModal from "./EditGalleryModal";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import type { GalleryItem } from "@/lib/types";
 
 interface GalleryTabProps {
   galleryList: GalleryItem[];
   setGalleryList: React.Dispatch<React.SetStateAction<GalleryItem[]>>;
-  showFeedback: (type: 'success' | 'error', message: string) => void;
+  featuredGalleryList: GalleryItem[];
+  setFeaturedGalleryList: React.Dispatch<React.SetStateAction<GalleryItem[]>>;
+  showFeedback: (type: "success" | "error", message: string) => void;
   deletingId: string | null;
   setDeletingId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-type VisibilityFilter = 'all' | 'visible' | 'hidden';
-type TypeFilter = 'all' | 'image' | 'video';
-type SpanFilter = 'all' | 'tall';
+type GallerySection = "main" | "featured";
+type VisibilityFilter = "all" | "visible" | "hidden";
+type TypeFilter = "all" | "image" | "video";
+type SpanFilter = "all" | "tall";
 
 export default function GalleryTab({
   galleryList,
   setGalleryList,
+  featuredGalleryList,
+  setFeaturedGalleryList,
   showFeedback,
   deletingId,
   setDeletingId,
 }: GalleryTabProps) {
-  const [editingItem, setEditingItem] = React.useState<GalleryItem | null>(null);
-  const [deletingItem, setDeletingItem] = React.useState<GalleryItem | null>(null);
+  const [section, setSection] = React.useState<GallerySection>("main");
+  const [editingItem, setEditingItem] = React.useState<GalleryItem | null>(
+    null,
+  );
+  const [deletingItem, setDeletingItem] = React.useState<GalleryItem | null>(
+    null,
+  );
+
+  // Active section configuration
+  const isFeatured = section === "featured";
+  const activeList = isFeatured ? featuredGalleryList : galleryList;
+  const setActiveList = isFeatured ? setFeaturedGalleryList : setGalleryList;
+  const apiEndpoint = isFeatured
+    ? "/api/admin/featured-gallery"
+    : "/api/admin/gallery";
 
   // Search & Filter state
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [visibilityFilter, setVisibilityFilter] = React.useState<VisibilityFilter>('all');
-  const [typeFilter, setTypeFilter] = React.useState<TypeFilter>('all');
-  const [spanFilter, setSpanFilter] = React.useState<SpanFilter>('all');
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [visibilityFilter, setVisibilityFilter] =
+    React.useState<VisibilityFilter>("all");
+  const [typeFilter, setTypeFilter] = React.useState<TypeFilter>("all");
+  const [spanFilter, setSpanFilter] = React.useState<SpanFilter>("all");
 
   async function handleConfirmDelete() {
     if (!deletingItem) return;
     const id = deletingItem.id;
     setDeletingId(id);
     try {
-      const res = await fetch('/api/admin/gallery', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(apiEndpoint, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       });
-      if (!res.ok) throw new Error('Delete failed');
-      setGalleryList((prev) => prev.filter((i) => i.id !== id));
-      showFeedback('success', 'Item removed from gallery.');
+      if (!res.ok) throw new Error("Delete failed");
+      setActiveList((prev) => prev.filter((i) => i.id !== id));
+      showFeedback(
+        "success",
+        isFeatured
+          ? "Item removed from featured."
+          : "Item removed from gallery.",
+      );
       setDeletingItem(null);
     } catch (err: unknown) {
-      showFeedback('error', err instanceof Error ? err.message : 'Delete failed');
+      showFeedback(
+        "error",
+        err instanceof Error ? err.message : "Delete failed",
+      );
     } finally {
       setDeletingId(null);
     }
   }
 
   function handleUpdate(updated: GalleryItem) {
-    setGalleryList((prev) =>
-      prev.map((item) => (item.id === updated.id ? updated : item))
+    setActiveList((prev) =>
+      prev.map((item) => (item.id === updated.id ? updated : item)),
     );
   }
 
   async function handleToggleVisibility(item: GalleryItem) {
     const newHidden = !item.hidden;
     // Optimistic update
-    setGalleryList((prev) =>
-      prev.map((i) => (i.id === item.id ? { ...i, hidden: newHidden } : i))
+    setActiveList((prev) =>
+      prev.map((i) => (i.id === item.id ? { ...i, hidden: newHidden } : i)),
     );
     try {
-      const res = await fetch('/api/admin/gallery', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(apiEndpoint, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: item.id, hidden: newHidden }),
       });
-      if (!res.ok) throw new Error('Visibility update failed');
+      if (!res.ok) throw new Error("Visibility update failed");
       showFeedback(
-        'success',
-        newHidden ? 'Media is now hidden from the website.' : 'Media is now visible on the website.'
+        "success",
+        newHidden
+          ? "Media is now hidden from website."
+          : "Media is now visible on website.",
       );
     } catch (err: unknown) {
       // Revert on error
-      setGalleryList((prev) =>
-        prev.map((i) => (i.id === item.id ? { ...i, hidden: item.hidden } : i))
+      setActiveList((prev) =>
+        prev.map((i) => (i.id === item.id ? { ...i, hidden: item.hidden } : i)),
       );
-      showFeedback('error', err instanceof Error ? err.message : 'Failed to update visibility');
+      showFeedback(
+        "error",
+        err instanceof Error ? err.message : "Failed to update visibility",
+      );
     }
   }
 
-  async function handleMove(itemId: string, direction: 'prev' | 'next') {
-    const fromIndex = galleryList.findIndex((i) => i.id === itemId);
+  async function handleMove(itemId: string, direction: "prev" | "next") {
+    const fromIndex = activeList.findIndex((i) => i.id === itemId);
     if (fromIndex === -1) return;
-    const toIndex = direction === 'prev' ? fromIndex - 1 : fromIndex + 1;
-    if (toIndex < 0 || toIndex >= galleryList.length) return;
+    const toIndex = direction === "prev" ? fromIndex - 1 : fromIndex + 1;
+    if (toIndex < 0 || toIndex >= activeList.length) return;
 
-    const reordered = [...galleryList];
+    const reordered = [...activeList];
     const [moved] = reordered.splice(fromIndex, 1);
     reordered.splice(toIndex, 0, moved);
 
     // Optimistic update
-    setGalleryList(reordered);
+    setActiveList(reordered);
 
     try {
-      const res = await fetch('/api/admin/gallery', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(apiEndpoint, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderedIds: reordered.map((i) => i.id) }),
       });
-      if (!res.ok) throw new Error('Reorder failed');
-      showFeedback('success', 'Gallery sequence updated.');
+      if (!res.ok) throw new Error("Reorder failed");
+      showFeedback("success", "Sequence updated.");
     } catch (err: unknown) {
-      setGalleryList(galleryList); // Revert on failure
-      showFeedback('error', err instanceof Error ? err.message : 'Failed to save sequence');
+      setActiveList(activeList); // Revert on failure
+      showFeedback(
+        "error",
+        err instanceof Error ? err.message : "Failed to save sequence",
+      );
     }
   }
 
   // Filtered gallery items computation
   const filteredGallery = React.useMemo(() => {
-    return galleryList.filter((item) => {
+    return activeList.filter((item) => {
       // 1. Search Query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        const altMatch = (item.alt || '').toLowerCase().includes(q);
+        const altMatch = (item.alt || "").toLowerCase().includes(q);
         const typeMatch = item.type.toLowerCase().includes(q);
         if (!altMatch && !typeMatch) return false;
       }
 
       // 2. Visibility
-      if (visibilityFilter === 'visible' && item.hidden === true) return false;
-      if (visibilityFilter === 'hidden' && item.hidden !== true) return false;
+      if (visibilityFilter === "visible" && item.hidden === true) return false;
+      if (visibilityFilter === "hidden" && item.hidden !== true) return false;
 
       // 3. Media Type
-      if (typeFilter !== 'all' && item.type !== typeFilter) return false;
+      if (typeFilter !== "all" && item.type !== typeFilter) return false;
 
       // 4. Span
-      if (spanFilter !== 'all' && (item.span || 'normal') !== spanFilter) return false;
+      if (spanFilter !== "all" && (item.span || "normal") !== spanFilter)
+        return false;
 
       return true;
     });
-  }, [galleryList, searchQuery, visibilityFilter, typeFilter, spanFilter]);
+  }, [activeList, searchQuery, visibilityFilter, typeFilter, spanFilter]);
 
   const isFiltering =
-    searchQuery.trim() !== '' ||
-    visibilityFilter !== 'all' ||
-    typeFilter !== 'all' ||
-    spanFilter !== 'all';
+    searchQuery.trim() !== "" ||
+    visibilityFilter !== "all" ||
+    typeFilter !== "all" ||
+    spanFilter !== "all";
 
   function resetFilters() {
-    setSearchQuery('');
-    setVisibilityFilter('all');
-    setTypeFilter('all');
-    setSpanFilter('all');
+    setSearchQuery("");
+    setVisibilityFilter("all");
+    setTypeFilter("all");
+    setSpanFilter("all");
   }
 
   return (
     <div className="space-y-6 sm:space-y-8">
+      {/* Top Section Navigator (Gallery vs Featured) */}
+      <div className="bg-white rounded-2xl sm:rounded-3xl border border-zinc-200/80 p-3 sm:p-4 shadow-xs">
+        <div className="flex items-center gap-2">
+          <SegmentedControl<GallerySection>
+            value={section}
+            onChange={(val) => {
+              setSection(val);
+              resetFilters();
+            }}
+            options={[
+              { value: "main", label: "Gallery" },
+              { value: "featured", label: "Featured" },
+            ]}
+            activeColor="bg-brand"
+            className="bg-zinc-100/90 border-zinc-200/60"
+          />
+        </div>
+      </div>
+
+      {/* Upload Card for the active section */}
       <GalleryUploadCard
-        onUpload={(item) => setGalleryList((prev) => [item, ...prev])}
+        key={section}
+        apiEndpoint={apiEndpoint}
+        tag={isFeatured ? "Featured Upload" : "Gallery Upload"}
+        title={
+          isFeatured ? (
+            <>
+              Add to <span className="italic text-brand">Featured</span>
+            </>
+          ) : (
+            <>
+              Add to <span className="italic">Gallery</span>
+            </>
+          )
+        }
+        onUpload={(item) => setActiveList((prev) => [item, ...prev])}
         showFeedback={showFeedback}
       />
 
       {/* Published items Header & Filters */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-          <div className="shrink-0">
+          <div className="shrink-0 flex items-center gap-2">
             <h3 className="font-serif text-base sm:text-lg text-zinc-900 font-medium whitespace-nowrap">
-              Published <span className="italic">Media</span>
+              {isFeatured ? "Featured" : "Published"}{" "}
+              <span className="italic">Media</span>
             </h3>
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-zinc-100 text-zinc-700 border border-zinc-200">
+              {activeList.length} item{activeList.length === 1 ? "" : "s"}
+            </span>
           </div>
 
           {/* Search Box */}
@@ -183,7 +265,7 @@ export default function GalleryTab({
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery('')}
+                onClick={() => setSearchQuery("")}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer"
                 aria-label="Clear search"
               >
@@ -193,8 +275,8 @@ export default function GalleryTab({
           </div>
         </div>
 
-        {/* Filter Chips Bar with Smooth Gliding Pill Indicator */}
-        {galleryList.length > 0 && (
+        {/* Filter Chips Bar */}
+        {activeList.length > 0 && (
           <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1">
             <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
               {/* Visibility filters */}
@@ -202,9 +284,9 @@ export default function GalleryTab({
                 value={visibilityFilter}
                 onChange={setVisibilityFilter}
                 options={[
-                  { value: 'all', label: 'All' },
-                  { value: 'visible', label: 'Visible', icon: Eye },
-                  { value: 'hidden', label: 'Hidden', icon: EyeOff },
+                  { value: "all", label: "All" },
+                  { value: "visible", label: "Visible", icon: Eye },
+                  { value: "hidden", label: "Hidden", icon: EyeOff },
                 ]}
                 activeColor="bg-zinc-900"
               />
@@ -214,9 +296,9 @@ export default function GalleryTab({
                 value={typeFilter}
                 onChange={setTypeFilter}
                 options={[
-                  { value: 'all', label: 'All Types' },
-                  { value: 'image', label: 'Photos', icon: ImageIcon },
-                  { value: 'video', label: 'Videos', icon: Video },
+                  { value: "all", label: "All Types" },
+                  { value: "image", label: "Photos", icon: ImageIcon },
+                  { value: "video", label: "Videos", icon: Video },
                 ]}
                 activeColor="bg-brand"
               />
@@ -226,8 +308,8 @@ export default function GalleryTab({
                 value={spanFilter}
                 onChange={setSpanFilter}
                 options={[
-                  { value: 'all', label: 'All Layouts' },
-                  { value: 'tall', label: 'Tall (2×1) only' },
+                  { value: "all", label: "All Layouts" },
+                  { value: "tall", label: "Tall (2×1) only" },
                 ]}
                 activeColor="bg-zinc-800"
               />
@@ -247,16 +329,28 @@ export default function GalleryTab({
         )}
 
         {/* Gallery Grid or Empty states */}
-        {galleryList.length === 0 ? (
+        {activeList.length === 0 ? (
           <div className="text-center py-12 sm:py-16 border-2 border-dashed border-zinc-200 rounded-2xl p-4 bg-white/50">
-            <p className="text-xs sm:text-sm text-zinc-400">No CMS media uploaded yet.</p>
-            <p className="text-[11px] sm:text-xs text-zinc-300 mt-1">Static gallery images are shown until you add some here.</p>
+            <p className="text-xs sm:text-sm text-zinc-400">
+              {isFeatured
+                ? "No featured photos uploaded yet."
+                : "No gallery media uploaded yet."}
+            </p>
+            <p className="text-[11px] sm:text-xs text-zinc-300 mt-1">
+              {isFeatured
+                ? "The home page uses fallback featured photos until you upload custom ones here."
+                : "Static gallery images are displayed on /gallery until you add some here."}
+            </p>
           </div>
         ) : filteredGallery.length === 0 ? (
           <div className="text-center py-12 sm:py-16 bg-white border border-zinc-200 rounded-2xl p-6 shadow-xs animate-in fade-in duration-200">
             <Search className="w-8 h-8 text-zinc-300 mx-auto mb-2" />
-            <p className="text-sm font-medium text-zinc-800">No media matches your search &amp; filters</p>
-            <p className="text-xs text-zinc-400 mt-1 mb-4">Try searching for a different keyword or resetting filters.</p>
+            <p className="text-sm font-medium text-zinc-800">
+              No media matches your search &amp; filters
+            </p>
+            <p className="text-xs text-zinc-400 mt-1 mb-4">
+              Try searching for a different keyword or resetting filters.
+            </p>
             <button
               onClick={resetFilters}
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand hover:text-brand-hover bg-brand/10 hover:bg-brand/20 px-4 py-2 rounded-full transition-colors cursor-pointer"
@@ -268,14 +362,16 @@ export default function GalleryTab({
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-4">
             {filteredGallery.map((item, index) => {
-              const originalIndex = galleryList.findIndex((i) => i.id === item.id);
+              const originalIndex = activeList.findIndex(
+                (i) => i.id === item.id,
+              );
               return (
                 <GalleryItemCard
                   key={item.id}
                   item={item}
                   index={originalIndex >= 0 ? originalIndex : index}
                   canMovePrev={originalIndex > 0}
-                  canMoveNext={originalIndex < galleryList.length - 1}
+                  canMoveNext={originalIndex < activeList.length - 1}
                   onMove={(dir) => handleMove(item.id, dir)}
                   onEdit={(i) => setEditingItem(i)}
                   onToggleVisibility={handleToggleVisibility}
@@ -291,6 +387,7 @@ export default function GalleryTab({
       {/* Edit Modal */}
       <EditGalleryModal
         item={editingItem}
+        apiEndpoint={apiEndpoint}
         isOpen={Boolean(editingItem)}
         onClose={() => setEditingItem(null)}
         onUpdate={handleUpdate}
@@ -300,8 +397,12 @@ export default function GalleryTab({
       {/* Custom Confirm Delete Modal */}
       <ConfirmDeleteModal
         isOpen={Boolean(deletingItem)}
-        title="Delete Gallery Media"
-        description="Are you sure you want to remove this media item from the live gallery?"
+        title={isFeatured ? "Delete Featured Photo" : "Delete Gallery Media"}
+        description={
+          isFeatured
+            ? "Are you sure you want to remove this photo from the home page featured preview?"
+            : "Are you sure you want to remove this media item from the live gallery page?"
+        }
         itemPreview={deletingItem?.alt}
         isDeleting={Boolean(deletingId)}
         onConfirm={handleConfirmDelete}

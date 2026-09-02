@@ -1,24 +1,32 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Search, X, Star, Eye, EyeOff, RotateCcw } from 'lucide-react';
-import SegmentedControl from './SegmentedControl';
-import TestimonialForm from './TestimonialForm';
-import TestimonialCard from './TestimonialCard';
-import EditTestimonialModal from './EditTestimonialModal';
-import ConfirmDeleteModal from './ConfirmDeleteModal';
-import type { Testimonial } from '@/lib/types';
+import * as React from "react";
+import { Search, X, Star, Eye, EyeOff, RotateCcw } from "lucide-react";
+import SegmentedControl from "./SegmentedControl";
+import TestimonialForm from "./TestimonialForm";
+import TestimonialCard from "./TestimonialCard";
+import EditTestimonialModal from "./EditTestimonialModal";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import {
+  GoogleLogo,
+  FacebookLogo,
+  InstagramLogo,
+  WhatsAppLogo,
+  TripAdvisorLogo,
+} from "@/components/shared/PlatformIcons";
+import type { Testimonial, TestimonialPlatform } from "@/lib/types";
 
 interface TestimonialsTabProps {
   testimonialsList: Testimonial[];
   setTestimonialsList: React.Dispatch<React.SetStateAction<Testimonial[]>>;
-  showFeedback: (type: 'success' | 'error', message: string) => void;
+  showFeedback: (type: "success" | "error", message: string) => void;
   deletingId: string | null;
   setDeletingId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-type VisibilityFilter = 'all' | 'visible' | 'hidden';
-type RatingFilter = 'all' | 5 | 4;
+type VisibilityFilter = "all" | "visible" | "hidden";
+type RatingFilter = "all" | 5 | 4;
+type PlatformFilter = "all" | TestimonialPlatform;
 
 export default function TestimonialsTab({
   testimonialsList,
@@ -27,42 +35,53 @@ export default function TestimonialsTab({
   deletingId,
   setDeletingId,
 }: TestimonialsTabProps) {
-  const [editingTestimonial, setEditingTestimonial] = React.useState<Testimonial | null>(null);
-  const [deletingTestimonial, setDeletingTestimonial] = React.useState<Testimonial | null>(null);
+  const [editingTestimonial, setEditingTestimonial] =
+    React.useState<Testimonial | null>(null);
+  const [deletingTestimonial, setDeletingTestimonial] =
+    React.useState<Testimonial | null>(null);
 
   // Search & Filter state
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [visibilityFilter, setVisibilityFilter] = React.useState<VisibilityFilter>('all');
-  const [ratingFilter, setRatingFilter] = React.useState<RatingFilter>('all');
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [visibilityFilter, setVisibilityFilter] =
+    React.useState<VisibilityFilter>("all");
+  const [ratingFilter, setRatingFilter] = React.useState<RatingFilter>("all");
+  const [platformFilter, setPlatformFilter] =
+    React.useState<PlatformFilter>("all");
 
   async function handleConfirmDelete() {
     if (!deletingTestimonial) return;
     const id = deletingTestimonial.id;
     setDeletingId(id);
     try {
-      const res = await fetch('/api/admin/testimonials', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/admin/testimonials", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       });
-      if (!res.ok) throw new Error('Delete failed');
+      if (!res.ok) throw new Error("Delete failed");
       setTestimonialsList((prev) => prev.filter((t) => t.id !== id));
-      showFeedback('success', 'Testimonial deleted.');
+      showFeedback("success", "Testimonial deleted.");
       setDeletingTestimonial(null);
     } catch (err: unknown) {
-      showFeedback('error', err instanceof Error ? err.message : 'Delete failed');
+      showFeedback(
+        "error",
+        err instanceof Error ? err.message : "Delete failed",
+      );
     } finally {
       setDeletingId(null);
     }
   }
 
   function handleSave(entry: Testimonial) {
-    setTestimonialsList((prev) => [entry, ...prev.filter((t) => t.id !== entry.id)]);
+    setTestimonialsList((prev) => [
+      entry,
+      ...prev.filter((t) => t.id !== entry.id),
+    ]);
   }
 
   function handleUpdate(updated: Testimonial) {
     setTestimonialsList((prev) =>
-      prev.map((t) => (t.id === updated.id ? updated : t))
+      prev.map((t) => (t.id === updated.id ? updated : t)),
     );
   }
 
@@ -70,32 +89,41 @@ export default function TestimonialsTab({
     const newHidden = !testimonial.hidden;
     // Optimistic update
     setTestimonialsList((prev) =>
-      prev.map((t) => (t.id === testimonial.id ? { ...t, hidden: newHidden } : t))
+      prev.map((t) =>
+        t.id === testimonial.id ? { ...t, hidden: newHidden } : t,
+      ),
     );
     try {
-      const res = await fetch('/api/admin/testimonials', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/admin/testimonials", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: testimonial.id, hidden: newHidden }),
       });
-      if (!res.ok) throw new Error('Visibility update failed');
+      if (!res.ok) throw new Error("Visibility update failed");
       showFeedback(
-        'success',
-        newHidden ? 'Review is now hidden from the website.' : 'Review is now visible on the website.'
+        "success",
+        newHidden
+          ? "Review is now hidden from the website."
+          : "Review is now visible on the website.",
       );
     } catch (err: unknown) {
       // Revert on error
       setTestimonialsList((prev) =>
-        prev.map((t) => (t.id === testimonial.id ? { ...t, hidden: testimonial.hidden } : t))
+        prev.map((t) =>
+          t.id === testimonial.id ? { ...t, hidden: testimonial.hidden } : t,
+        ),
       );
-      showFeedback('error', err instanceof Error ? err.message : 'Failed to update visibility');
+      showFeedback(
+        "error",
+        err instanceof Error ? err.message : "Failed to update visibility",
+      );
     }
   }
 
-  async function handleMove(testimonialId: string, direction: 'prev' | 'next') {
+  async function handleMove(testimonialId: string, direction: "prev" | "next") {
     const fromIndex = testimonialsList.findIndex((t) => t.id === testimonialId);
     if (fromIndex === -1) return;
-    const toIndex = direction === 'prev' ? fromIndex - 1 : fromIndex + 1;
+    const toIndex = direction === "prev" ? fromIndex - 1 : fromIndex + 1;
     if (toIndex < 0 || toIndex >= testimonialsList.length) return;
 
     const reordered = [...testimonialsList];
@@ -106,16 +134,19 @@ export default function TestimonialsTab({
     setTestimonialsList(reordered);
 
     try {
-      const res = await fetch('/api/admin/testimonials', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/admin/testimonials", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderedIds: reordered.map((t) => t.id) }),
       });
-      if (!res.ok) throw new Error('Reorder failed');
-      showFeedback('success', 'Testimonials sequence updated.');
+      if (!res.ok) throw new Error("Reorder failed");
+      showFeedback("success", "Testimonials sequence updated.");
     } catch (err: unknown) {
       setTestimonialsList(testimonialsList); // Revert on failure
-      showFeedback('error', err instanceof Error ? err.message : 'Failed to save sequence');
+      showFeedback(
+        "error",
+        err instanceof Error ? err.message : "Failed to save sequence",
+      );
     }
   }
 
@@ -125,32 +156,48 @@ export default function TestimonialsTab({
       // 1. Search Query (name, location, quote)
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        const nameMatch = (t.name || '').toLowerCase().includes(q);
-        const locMatch = (t.location || '').toLowerCase().includes(q);
-        const quoteMatch = (t.quote || '').toLowerCase().includes(q);
+        const nameMatch = (t.name || "").toLowerCase().includes(q);
+        const locMatch = (t.location || "").toLowerCase().includes(q);
+        const quoteMatch = (t.quote || "").toLowerCase().includes(q);
         if (!nameMatch && !locMatch && !quoteMatch) return false;
       }
 
       // 2. Visibility
-      if (visibilityFilter === 'visible' && t.hidden === true) return false;
-      if (visibilityFilter === 'hidden' && t.hidden !== true) return false;
+      if (visibilityFilter === "visible" && t.hidden === true) return false;
+      if (visibilityFilter === "hidden" && t.hidden !== true) return false;
 
       // 3. Rating
-      if (ratingFilter !== 'all' && (t.rating ?? 5) !== ratingFilter) return false;
+      if (ratingFilter !== "all" && (t.rating ?? 5) !== ratingFilter)
+        return false;
+
+      // 4. Platform
+      if (
+        platformFilter !== "all" &&
+        (t.platform ?? "google") !== platformFilter
+      )
+        return false;
 
       return true;
     });
-  }, [testimonialsList, searchQuery, visibilityFilter, ratingFilter]);
+  }, [
+    testimonialsList,
+    searchQuery,
+    visibilityFilter,
+    ratingFilter,
+    platformFilter,
+  ]);
 
   const isFiltering =
-    searchQuery.trim() !== '' ||
-    visibilityFilter !== 'all' ||
-    ratingFilter !== 'all';
+    searchQuery.trim() !== "" ||
+    visibilityFilter !== "all" ||
+    ratingFilter !== "all" ||
+    platformFilter !== "all";
 
   function resetFilters() {
-    setSearchQuery('');
-    setVisibilityFilter('all');
-    setRatingFilter('all');
+    setSearchQuery("");
+    setVisibilityFilter("all");
+    setRatingFilter("all");
+    setPlatformFilter("all");
   }
 
   return (
@@ -178,7 +225,7 @@ export default function TestimonialsTab({
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery('')}
+                onClick={() => setSearchQuery("")}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer"
                 aria-label="Clear search"
               >
@@ -197,9 +244,9 @@ export default function TestimonialsTab({
                 value={visibilityFilter}
                 onChange={setVisibilityFilter}
                 options={[
-                  { value: 'all', label: 'All' },
-                  { value: 'visible', label: 'Visible', icon: Eye },
-                  { value: 'hidden', label: 'Hidden', icon: EyeOff },
+                  { value: "all", label: "All" },
+                  { value: "visible", label: "Visible", icon: Eye },
+                  { value: "hidden", label: "Hidden", icon: EyeOff },
                 ]}
                 activeColor="bg-zinc-900"
               />
@@ -209,7 +256,7 @@ export default function TestimonialsTab({
                 value={ratingFilter}
                 onChange={setRatingFilter}
                 options={[
-                  { value: 'all', label: 'All Ratings' },
+                  { value: "all", label: "All Ratings" },
                   {
                     value: 5,
                     label: (
@@ -231,6 +278,29 @@ export default function TestimonialsTab({
                 ]}
                 activeColor="bg-brand"
               />
+
+              {/* Platform filters */}
+              <SegmentedControl<PlatformFilter>
+                value={platformFilter}
+                onChange={setPlatformFilter}
+                options={[
+                  { value: "all", label: "All" },
+                  { value: "google", label: "Google", icon: GoogleLogo },
+                  { value: "facebook", label: "Facebook", icon: FacebookLogo },
+                  {
+                    value: "instagram",
+                    label: "Instagram",
+                    icon: InstagramLogo,
+                  },
+                  { value: "whatsapp", label: "WhatsApp", icon: WhatsAppLogo },
+                  {
+                    value: "tripadvisor",
+                    label: "TripAdvisor",
+                    icon: TripAdvisorLogo,
+                  },
+                ]}
+                activeColor="bg-zinc-800"
+              />
             </div>
 
             {/* Clear all filters button */}
@@ -249,14 +319,22 @@ export default function TestimonialsTab({
         {/* Testimonials List or Empty states */}
         {testimonialsList.length === 0 ? (
           <div className="text-center py-12 sm:py-16 border-2 border-dashed border-zinc-200 rounded-2xl p-4 bg-white/50">
-            <p className="text-xs sm:text-sm text-zinc-400">No CMS testimonials yet.</p>
-            <p className="text-[11px] sm:text-xs text-zinc-300 mt-1">Static reviews are displayed until you add some here.</p>
+            <p className="text-xs sm:text-sm text-zinc-400">
+              No CMS testimonials yet.
+            </p>
+            <p className="text-[11px] sm:text-xs text-zinc-300 mt-1">
+              Static reviews are displayed until you add some here.
+            </p>
           </div>
         ) : filteredTestimonials.length === 0 ? (
           <div className="text-center py-12 sm:py-16 bg-white border border-zinc-200 rounded-2xl p-6 shadow-xs animate-in fade-in duration-200">
             <Search className="w-8 h-8 text-zinc-300 mx-auto mb-2" />
-            <p className="text-sm font-medium text-zinc-800">No reviews match your search &amp; filters</p>
-            <p className="text-xs text-zinc-400 mt-1 mb-4">Try searching for a different guest name or resetting filters.</p>
+            <p className="text-sm font-medium text-zinc-800">
+              No reviews match your search &amp; filters
+            </p>
+            <p className="text-xs text-zinc-400 mt-1 mb-4">
+              Try searching for a different guest name or resetting filters.
+            </p>
             <button
               onClick={resetFilters}
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand hover:text-brand-hover bg-brand/10 hover:bg-brand/20 px-4 py-2 rounded-full transition-colors cursor-pointer"
@@ -268,7 +346,9 @@ export default function TestimonialsTab({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
             {filteredTestimonials.map((t, index) => {
-              const originalIndex = testimonialsList.findIndex((item) => item.id === t.id);
+              const originalIndex = testimonialsList.findIndex(
+                (item) => item.id === t.id,
+              );
               return (
                 <TestimonialCard
                   key={t.id}

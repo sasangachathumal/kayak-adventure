@@ -1,18 +1,23 @@
-/* eslint-disable @next/next/no-img-element */
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Loader2, X, Save, Edit3, Eye, EyeOff } from 'lucide-react';
-import StarRating from './StarRating';
-import type { Testimonial } from '@/lib/types';
+import * as React from "react";
+import { Loader2, X, Save, Edit3, Eye, EyeOff } from "lucide-react";
+import StarRating from "./StarRating";
+import {
+  PLATFORMS,
+  type PlatformConfig,
+} from "@/components/shared/PlatformIcons";
+import type { Testimonial, TestimonialPlatform } from "@/lib/types";
 
 interface EditTestimonialModalProps {
   testimonial: Testimonial | null;
   isOpen: boolean;
   onClose: () => void;
   onUpdate: (updated: Testimonial) => void;
-  showFeedback: (type: 'success' | 'error', message: string) => void;
+  showFeedback: (type: "success" | "error", message: string) => void;
 }
+
+const PLATFORM_LIST: PlatformConfig[] = Object.values(PLATFORMS);
 
 function EditTestimonialForm({
   testimonial,
@@ -23,22 +28,27 @@ function EditTestimonialForm({
   testimonial: Testimonial;
   onClose: () => void;
   onUpdate: (updated: Testimonial) => void;
-  showFeedback: (type: 'success' | 'error', message: string) => void;
+  showFeedback: (type: "success" | "error", message: string) => void;
 }) {
-  const [name, setName] = React.useState(testimonial.name || '');
-  const [location, setLocation] = React.useState(testimonial.location || '');
-  const [quote, setQuote] = React.useState(testimonial.quote || '');
+  const [name, setName] = React.useState(testimonial.name || "");
+  const [location, setLocation] = React.useState(testimonial.location || "");
+  const [quote, setQuote] = React.useState(testimonial.quote || "");
   const [rating, setRating] = React.useState<number>(testimonial.rating ?? 5);
-  const [hidden, setHidden] = React.useState<boolean>(testimonial.hidden === true);
+  const [platform, setPlatform] = React.useState<TestimonialPlatform>(
+    testimonial.platform ?? "google",
+  );
+  const [hidden, setHidden] = React.useState<boolean>(
+    testimonial.hidden === true,
+  );
   const [avatar, setAvatar] = React.useState<File | null>(null);
   const [saving, setSaving] = React.useState(false);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !saving) onClose();
+      if (e.key === "Escape" && !saving) onClose();
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [saving, onClose]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -48,40 +58,47 @@ function EditTestimonialForm({
     setSaving(true);
     try {
       const formData = new FormData();
-      formData.set('id', testimonial.id);
-      formData.set('name', name);
-      formData.set('location', location);
-      formData.set('quote', quote);
-      formData.set('rating', String(rating));
-      formData.set('hidden', String(hidden));
-      if (avatar) formData.set('avatar', avatar);
+      formData.set("id", testimonial.id);
+      formData.set("name", name);
+      formData.set("location", location);
+      formData.set("quote", quote);
+      formData.set("rating", String(rating));
+      formData.set("platform", platform);
+      formData.set("hidden", String(hidden));
+      if (avatar) formData.set("avatar", avatar);
 
-      const res = await fetch('/api/admin/testimonials', {
-        method: 'PUT',
+      const res = await fetch("/api/admin/testimonials", {
+        method: "PUT",
         body: formData,
       });
 
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(err.error || 'Update failed');
+        throw new Error(err.error || "Update failed");
       }
 
-      const data = (await res.json().catch(() => ({}))) as { entry?: Testimonial };
+      const data = (await res.json().catch(() => ({}))) as {
+        entry?: Testimonial;
+      };
       if (data.entry) {
         onUpdate(data.entry);
       }
-      showFeedback('success', 'Testimonial updated successfully!');
+      showFeedback("success", "Testimonial updated successfully!");
       onClose();
     } catch (err: unknown) {
-      showFeedback('error', err instanceof Error ? err.message : 'Update failed');
+      showFeedback(
+        "error",
+        err instanceof Error ? err.message : "Update failed",
+      );
     } finally {
       setSaving(false);
     }
   }
 
   const inputClass =
-    'w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2.5 sm:px-4 text-base sm:text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all';
-  const labelClass = 'block text-xs font-semibold text-zinc-500 tracking-wider mb-1.5';
+    "w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2.5 sm:px-4 text-base sm:text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all";
+  const labelClass =
+    "block text-xs font-semibold text-zinc-500 tracking-wider mb-1.5";
 
   return (
     <div
@@ -153,8 +170,8 @@ function EditTestimonialForm({
                 onClick={() => setHidden(false)}
                 className={`p-2 sm:p-2.5 rounded-xl border text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5 min-h-11 ${
                   !hidden
-                    ? 'border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold shadow-xs'
-                    : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300'
+                    ? "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold shadow-xs"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300"
                 }`}
               >
                 <Eye className="w-3.5 h-3.5 text-emerald-600" />
@@ -165,14 +182,39 @@ function EditTestimonialForm({
                 onClick={() => setHidden(true)}
                 className={`p-2 sm:p-2.5 rounded-xl border text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5 min-h-11 ${
                   hidden
-                    ? 'border-amber-500 bg-amber-50 text-amber-900 font-semibold shadow-xs'
-                    : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300'
+                    ? "border-amber-500 bg-amber-50 text-amber-900 font-semibold shadow-xs"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-zinc-300"
                 }`}
               >
                 <EyeOff className="w-3.5 h-3.5 text-amber-600" />
                 <span>Hidden</span>
               </button>
             </div>
+          </div>
+        </div>
+
+        <div>
+          <label className={labelClass}>From</label>
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 sm:gap-2">
+            {PLATFORM_LIST.map((p) => {
+              const isSelected = platform === p.id;
+              const Icon = p.icon;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setPlatform(p.id)}
+                  className={`flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                    isSelected
+                      ? "border-zinc-900 bg-zinc-900 text-white shadow-xs"
+                      : "border-zinc-200 bg-zinc-50 text-zinc-700 hover:bg-zinc-100"
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">{p.shortName}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 

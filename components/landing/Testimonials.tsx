@@ -16,12 +16,15 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { PlatformBadge } from "@/components/shared/PlatformIcons";
+import type { TestimonialPlatform } from "@/lib/types";
 
 export interface TestimonialItem {
   quote: string;
   author: string;
   location: string;
   rating?: number;
+  platform?: TestimonialPlatform;
   image?: string;
 }
 
@@ -30,30 +33,35 @@ const defaultTestimonials: TestimonialItem[] = [
     quote: "Paddling through the mangroves was pure magic. The calm, the views, and the whole experience was something I'll never forget.",
     author: "Sarah Jenkins",
     location: "London, United Kingdom",
+    platform: "google",
     image: "/testimonial-Sarah.jpeg",
   },
   {
     quote: "Our guide was amazing—super friendly and knew so much about the area. It felt safe, fun, and so well organized from start to finish.",
     author: "Marcus Koskinen",
     location: "Helsinki, Finland",
+    platform: "tripadvisor",
     image: "/testimonial-Marcus.jpeg",
   },
   {
     quote: "An absolute highlight of our trip! The scenery is breathtaking, and the kayaks were comfortable and high quality.",
     author: "Lukas Schmidt",
     location: "Munich, Germany",
+    platform: "whatsapp",
     image: "/testimonial-Lukas.jpeg",
   },
   {
     quote: "Superb organization and friendly staff. Highly recommend the sunset tour for stunning photography opportunities.",
     author: "Chloe Bennett",
     location: "Sydney, Australia",
+    platform: "instagram",
     image: "/testimonial-Chloe.jpeg",
   },
   {
     quote: "Getting to explore the hidden channels at sunrise was unforgettable. Highly recommend this to anyone visiting Sri Lanka!",
     author: "Emma Lindqvist",
     location: "Stockholm, Sweden",
+    platform: "facebook",
     image: "/testimonial-Emma.jpeg",
   }
 ];
@@ -169,25 +177,29 @@ export default function Testimonials({ items }: TestimonialsProps = {}) {
                       {/* Subtle Separator */}
                       <Separator className="w-12 h-[1px] bg-zinc-200 mb-6" />
 
-                      {/* Author Meta */}
-                      <div className="flex items-center gap-3">
-                        <Avatar className="size-11 border border-zinc-200 bg-zinc-100 shadow-inner">
-                          <AvatarImage
-                            src={t.image}
-                            alt={t.author}
-                            className="object-cover pointer-events-none select-none"
-                          />
-                          <AvatarFallback>{t.author.charAt(0)}</AvatarFallback>
-                        </Avatar>
+                      {/* Author Meta & Platform Source Badge */}
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <Avatar className="size-11 border border-zinc-200 bg-zinc-100 shadow-inner shrink-0">
+                            <AvatarImage
+                              src={t.image}
+                              alt={t.author}
+                              className="object-cover pointer-events-none select-none"
+                            />
+                            <AvatarFallback>{t.author.charAt(0)}</AvatarFallback>
+                          </Avatar>
 
-                        <div className="flex flex-col">
-                          <span className="font-sans text-[13px] sm:text-[14px] font-semibold text-zinc-900 leading-tight">
-                            {t.author}
-                          </span>
-                          <span className="font-sans text-[11px] text-zinc-400 mt-0.5">
-                            {t.location}
-                          </span>
+                          <div className="flex flex-col min-w-0">
+                            <span className="font-sans text-[13px] sm:text-[14px] font-semibold text-zinc-900 leading-tight truncate">
+                              {t.author}
+                            </span>
+                            <span className="font-sans text-[11px] text-zinc-400 mt-0.5 truncate">
+                              {t.location}
+                            </span>
+                          </div>
                         </div>
+
+                        <PlatformBadge platform={t.platform ?? 'google'} size="sm" className="shrink-0" />
                       </div>
                     </CardContent>
                   </Card>

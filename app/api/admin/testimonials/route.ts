@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getEnv } from '@/lib/cf';
 import { isAuthed } from '@/lib/auth';
 import { getTestimonials, saveTestimonials } from '@/lib/content';
-import type { Testimonial } from '@/lib/types';
+import type { Testimonial, TestimonialPlatform } from '@/lib/types';
 
 const unauthorized = () => NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
     const existing = list.find((t) => t.id === id);
     const rawRating = form.get('rating') ? parseInt(form.get('rating') as string, 10) : undefined;
     const rating = rawRating && rawRating >= 1 && rawRating <= 5 ? rawRating : 5;
+    const platform = (form.get('platform') as TestimonialPlatform) || existing?.platform || 'google';
 
     const entry: Testimonial = {
       id,
@@ -33,6 +34,7 @@ export async function POST(req: NextRequest) {
       location: (form.get('location') as string) ?? '',
       quote: (form.get('quote') as string) ?? '',
       rating,
+      platform,
       avatarKey: avatarKey ?? existing?.avatarKey,
       createdAt: existing?.createdAt ?? Date.now(),
     };
@@ -55,6 +57,7 @@ export async function PUT(req: NextRequest) {
     let location: string | undefined;
     let quote: string | undefined;
     let rating: number | undefined;
+    let platform: TestimonialPlatform | undefined;
     let hidden: boolean | undefined;
     let avatarKey: string | undefined;
 
@@ -64,6 +67,9 @@ export async function PUT(req: NextRequest) {
       name = (form.get('name') as string) || undefined;
       location = (form.get('location') as string) || undefined;
       quote = (form.get('quote') as string) || undefined;
+      if (form.has('platform')) {
+        platform = (form.get('platform') as TestimonialPlatform) || undefined;
+      }
       if (form.has('hidden')) {
         hidden = form.get('hidden') === 'true';
       }
@@ -84,12 +90,14 @@ export async function PUT(req: NextRequest) {
         location?: string;
         quote?: string;
         rating?: number;
+        platform?: TestimonialPlatform;
         hidden?: boolean;
       };
       id = body.id || '';
       name = body.name;
       location = body.location;
       quote = body.quote;
+      platform = body.platform;
       hidden = body.hidden;
       if (body.rating && body.rating >= 1 && body.rating <= 5) rating = body.rating;
     }
@@ -111,6 +119,7 @@ export async function PUT(req: NextRequest) {
       location: location !== undefined ? location : current.location,
       quote: quote !== undefined ? quote : current.quote,
       rating: rating !== undefined ? rating : (current.rating ?? 5),
+      platform: platform !== undefined ? platform : (current.platform ?? 'google'),
       hidden: hidden !== undefined ? hidden : current.hidden,
       avatarKey: avatarKey ?? current.avatarKey,
     };

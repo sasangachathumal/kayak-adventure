@@ -1,9 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import * as React from 'react';
 import { Loader2, Trash2, Pencil, Eye, EyeOff, ChevronUp, ChevronDown } from 'lucide-react';
 import StarRating from './StarRating';
+import { PlatformBadge } from '@/components/shared/PlatformIcons';
 import type { Testimonial } from '@/lib/types';
 
 interface TestimonialCardProps {
@@ -38,7 +38,7 @@ export default function TestimonialCard({
       }`}
     >
       <div>
-        {/* Sequence Badge + Avatar + Name + Rating + Hidden Badge */}
+        {/* Sequence Badge + Platform Badge + Avatar + Name + Rating + Hidden Badge */}
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             {t.avatarKey ? (
@@ -57,6 +57,7 @@ export default function TestimonialCard({
                 <span className="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-zinc-950/80 text-white">
                   #{index + 1}
                 </span>
+                <PlatformBadge platform={t.platform ?? 'google'} size="xs" />
                 <p className="text-xs sm:text-sm font-semibold text-zinc-900 truncate leading-tight">
                   {t.name}
                 </p>

@@ -12,6 +12,7 @@ import SettingsTab from './_components/SettingsTab';
 
 interface AdminDashboardProps {
   gallery: GalleryItem[];
+  featuredGallery: GalleryItem[];
   testimonials: Testimonial[];
   faqs: FAQItem[];
   settings: SiteSettings;
@@ -19,6 +20,7 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({
   gallery: initialGallery,
+  featuredGallery: initialFeaturedGallery,
   testimonials: initialTestimonials,
   faqs: initialFaqs,
   settings: initialSettings,
@@ -26,6 +28,7 @@ export default function AdminDashboard({
   const [tab, setTab] = React.useState<AdminTab>('gallery');
 
   const [galleryList, setGalleryList] = React.useState<GalleryItem[]>(initialGallery);
+  const [featuredGalleryList, setFeaturedGalleryList] = React.useState<GalleryItem[]>(initialFeaturedGallery);
   const [testimonialsList, setTestimonialsList] = React.useState<Testimonial[]>(initialTestimonials);
   const [faqsList, setFaqsList] = React.useState<FAQItem[]>(initialFaqs);
   const [settings, setSettings] = React.useState<SiteSettings>(initialSettings);
@@ -69,6 +72,8 @@ export default function AdminDashboard({
             <GalleryTab
               galleryList={galleryList}
               setGalleryList={setGalleryList}
+              featuredGalleryList={featuredGalleryList}
+              setFeaturedGalleryList={setFeaturedGalleryList}
               showFeedback={showFeedback}
               deletingId={deletingId}
               setDeletingId={setDeletingId}

@@ -8,14 +8,14 @@ import CTA from "@/components/shared/CTA";
 import Footer from "@/components/shared/Footer";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 import Preloader from "@/components/shared/Preloader";
-import { getTestimonials, getGallery, getFAQs, getSiteSettings } from "@/lib/content";
+import { getTestimonials, getFeaturedGallery, getFAQs, getSiteSettings } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [cmsTestimonials, cmsGallery, cmsFaqs, siteSettings] = await Promise.all([
+  const [cmsTestimonials, cmsFeaturedGallery, cmsFaqs, siteSettings] = await Promise.all([
     getTestimonials(),
-    getGallery(),
+    getFeaturedGallery(),
     getFAQs(),
     getSiteSettings(),
   ]);
@@ -28,11 +28,12 @@ export default async function Home() {
           author: t.name,
           location: t.location,
           rating: t.rating ?? 5,
+          platform: t.platform,
           image: t.avatarKey ? `/api/media/${t.avatarKey}` : undefined,
         }))
       : undefined;
 
-  const cmsGalleryImages: string[] = cmsGallery
+  const cmsFeaturedImages: string[] = cmsFeaturedGallery
     .filter((item) => !item.hidden && item.type === "image")
     .map((item) => `/api/media/${item.key}`);
 
@@ -43,7 +44,7 @@ export default async function Home() {
       <Navbar settings={siteSettings} />
       <Hero settings={siteSettings} />
       <About />
-      <GalleryPreview images={cmsGalleryImages.length > 0 ? cmsGalleryImages : undefined} />
+      <GalleryPreview images={cmsFeaturedImages.length > 0 ? cmsFeaturedImages : undefined} />
       <Testimonials items={formattedTestimonials} />
       <FAQ items={cmsFaqs} />
       <CTA settings={siteSettings} />

@@ -2,6 +2,7 @@ import { getEnv } from './cf';
 import type { GalleryItem, Testimonial, FAQItem, SiteSettings } from './types';
 
 const GALLERY_KEY = 'gallery';
+const FEATURED_GALLERY_KEY = 'featured_gallery';
 const TESTIMONIALS_KEY = 'testimonials';
 const FAQS_KEY = 'faqs';
 const SETTINGS_KEY = 'settings';
@@ -76,6 +77,16 @@ export async function getGallery(): Promise<GalleryItem[]> {
   }
 }
 
+export async function getFeaturedGallery(): Promise<GalleryItem[]> {
+  try {
+    const env = await getEnv();
+    if (!env?.kayak_CMS_KV) return [];
+    return ((await env.kayak_CMS_KV.get(FEATURED_GALLERY_KEY, 'json')) as GalleryItem[]) ?? [];
+  } catch {
+    return [];
+  }
+}
+
 export async function getTestimonials(): Promise<Testimonial[]> {
   try {
     const env = await getEnv();
@@ -112,6 +123,11 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 export async function saveGallery(list: GalleryItem[]): Promise<void> {
   const env = await getEnv();
   await env.kayak_CMS_KV.put(GALLERY_KEY, JSON.stringify(list));
+}
+
+export async function saveFeaturedGallery(list: GalleryItem[]): Promise<void> {
+  const env = await getEnv();
+  await env.kayak_CMS_KV.put(FEATURED_GALLERY_KEY, JSON.stringify(list));
 }
 
 export async function saveTestimonials(list: Testimonial[]): Promise<void> {

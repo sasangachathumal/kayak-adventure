@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { isAuthed } from '@/lib/auth';
-import { getGallery, getTestimonials, getFAQs, getSiteSettings } from '@/lib/content';
+import { getGallery, getFeaturedGallery, getTestimonials, getFAQs, getSiteSettings } from '@/lib/content';
 import AdminDashboard from './AdminDashboard';
 
 export const dynamic = 'force-dynamic';
@@ -11,8 +11,9 @@ export default async function AdminPage() {
     redirect('/admin/login');
   }
 
-  const [gallery, testimonials, faqs, settings] = await Promise.all([
+  const [gallery, featuredGallery, testimonials, faqs, settings] = await Promise.all([
     getGallery(),
+    getFeaturedGallery(),
     getTestimonials(),
     getFAQs(),
     getSiteSettings(),
@@ -21,6 +22,7 @@ export default async function AdminPage() {
   return (
     <AdminDashboard
       gallery={gallery}
+      featuredGallery={featuredGallery}
       testimonials={testimonials}
       faqs={faqs}
       settings={settings}

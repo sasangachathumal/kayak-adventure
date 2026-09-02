@@ -21,6 +21,9 @@ import type { GalleryItem } from '@/lib/types';
 interface GalleryUploadCardProps {
   onUpload: (item: GalleryItem) => void;
   showFeedback: (type: 'success' | 'error', message: string) => void;
+  apiEndpoint?: string;
+  tag?: string;
+  title?: React.ReactNode;
 }
 
 interface QueueItem {
@@ -46,7 +49,13 @@ function formatBytes(bytes: number): string {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 }
 
-export default function GalleryUploadCard({ onUpload, showFeedback }: GalleryUploadCardProps) {
+export default function GalleryUploadCard({
+  onUpload,
+  showFeedback,
+  apiEndpoint = '/api/admin/gallery',
+  tag = 'Upload Media',
+  title,
+}: GalleryUploadCardProps) {
   const [queue, setQueue] = React.useState<QueueItem[]>([]);
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -155,7 +164,7 @@ export default function GalleryUploadCard({ onUpload, showFeedback }: GalleryUpl
         // Step 2: Upload to Cloudflare Worker
         updateQueueItem(item.id, { status: 'uploading' });
 
-        const res = await fetch('/api/admin/gallery', {
+        const res = await fetch(apiEndpoint, {
           method: 'POST',
           body: formData,
         });
@@ -201,7 +210,7 @@ export default function GalleryUploadCard({ onUpload, showFeedback }: GalleryUpl
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 sm:mb-6">
         <div>
           <span className="font-sans text-[9px] sm:text-[10px] font-bold tracking-[0.35em] text-brand uppercase">
-            Upload Media
+            {tag}
           </span>
           <svg width="48" height="3" viewBox="0 0 48 3" fill="none" className="mt-1.5 mb-2.5 sm:mt-2 sm:mb-3">
             <defs>
@@ -214,7 +223,11 @@ export default function GalleryUploadCard({ onUpload, showFeedback }: GalleryUpl
             <path d="M 0 0.5 C 14 0.5, 34 1, 48 1.5 C 34 2, 14 2.5, 0 2.5 Z" fill="url(#ul-line)" />
           </svg>
           <h2 className="font-serif text-lg sm:text-2xl text-zinc-900 font-medium leading-snug">
-            Add to <span className="italic">Gallery</span>
+            {title || (
+              <>
+                Add to <span className="italic">Gallery</span>
+              </>
+            )}
           </h2>
         </div>
 

@@ -32,8 +32,5 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
-      - name: Generate gallery manifest
-        run: npm run prebuild
-
       - name: Build
         run: npx opennextjs-cloudflare build

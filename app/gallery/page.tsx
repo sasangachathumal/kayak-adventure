@@ -6,7 +6,6 @@ import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import Preloader from "@/components/shared/Preloader";
 import ScrollToTop from "@/components/shared/ScrollToTop";
-import manifestGalleryImages from "@/data/gallery-manifest.json";
 import { getGallery, getSiteSettings } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -49,7 +48,7 @@ export default async function GalleryPage() {
     type: item.type,
   }));
 
-  const allImages = [...cmsImages, ...(manifestGalleryImages as GalleryImage[])];
+  const allImages = [...cmsImages];
 
   return (
     <main className="flex-1 flex flex-col">

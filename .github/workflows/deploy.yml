@@ -28,9 +28,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate gallery manifest
-        run: npm run prebuild
-
       - name: Build for Cloudflare
         run: npx opennextjs-cloudflare build
 

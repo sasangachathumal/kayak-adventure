@@ -169,7 +169,7 @@ export default function Footer({ settings }: FooterProps = {}) {
           <div>
             Designed & Developed by{" "}
             <Link
-              href="https://rusiru-salwathura.me"
+              href="https://codebyrusiru.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand hover:text-brand/80 transition-colors font-medium underline underline-offset-2 decoration-zinc-300 hover:decoration-brand uppercase"
